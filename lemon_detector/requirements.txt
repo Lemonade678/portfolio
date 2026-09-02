@@ -1,0 +1,11 @@
+# ultralytics ลาก torch, numpy, pillow, pyyaml, matplotlib มาให้เองทั้งหมด
+# ไม่ต้องระบุแยก และไม่ควรระบุด้วย เดี๋ยวเวอร์ชัน torch ชนกันเอง
+ultralytics>=8.3.0
+
+# opencv ใช้สองอย่าง: อ่าน/เขียนรูป และ Haar cascade สำหรับ auto-label
+# ตัว cascade .xml แถมมากับแพ็กเกจอยู่แล้ว ไม่ต้องโหลดเพิ่ม
+opencv-python>=4.8.0
+
+# ใช้เฉพาะตอน export_onnx.py — ถ้าไม่ export เป็น .onnx ตัดสองบรรทัดนี้ออกได้
+onnx>=1.16.0
+onnxruntime>=1.18.0

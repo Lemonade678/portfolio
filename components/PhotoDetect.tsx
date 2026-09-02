@@ -1,0 +1,365 @@
+"use client";
+
+// ─────────────────────────────────────────────────────────────
+// รูปโปรไฟล์ + ของเล่นเล็ก ๆ: กดแล้วรัน YOLOv11 ตรวจจับจริงในเบราว์เซอร์
+//
+// ทำไมต้อง "กดก่อนถึงรัน":
+//   โมเดล yolo11n.onnx หนัก ~10 MB ถ้าโหลดอัตโนมัติทุกคนที่เปิดเว็บ
+//   จะเสีย bandwidth และทำให้ LCP แย่ ทั้งที่คนส่วนใหญ่เข้ามาอ่านข้อความเฉย ๆ
+//   → โหลดตอนกดเท่านั้น (lazy) และ cache session ไว้ที่ module scope กดซ้ำไม่โหลดใหม่
+//
+// ทำไมพิกัดกล่องถึงแปลงง่าย:
+//   public/me.jpg มีสัดส่วน 284:459 และกรอบบนหน้าเว็บล็อก aspect-ratio ตัวเดียวกันเป๊ะ
+//   → object-cover ไม่ได้ครอปอะไรเพิ่ม พิกัด 0..1 จากโมเดลจึงกลายเป็น % บน CSS ได้ตรง ๆ
+//   ถ้าเปลี่ยนรูปใหม่ ต้องแก้ DETECTOR.photoW / photoH ใน content.ts ด้วย ไม่งั้นกล่องเพี้ยน
+//
+// ถ้าโหลดโมเดลไม่ได้ (เน็ตช้า / CDN ล่ม / เบราว์เซอร์ไม่รองรับ wasm):
+//   fallback ไปใช้ผลที่รันไว้ล่วงหน้าใน content.ts แล้ว "บอกตรง ๆ" บน UI ว่าเป็นค่าที่บันทึกไว้
+//   ไม่แอบเนียนว่าเพิ่งรันสด เพราะพอร์ตนี้ขายเรื่องความซื่อสัตย์กับตัวเลขเป็นหลัก
+// ─────────────────────────────────────────────────────────────
+
+import { useCallback, useRef, useState, type CSSProperties } from "react";
+import { DETECTOR, PERSON, type Lang, type L10n } from "@/lib/content";
+
+const t = (s: L10n, lang: Lang) => s[lang];
+
+/** ผลตรวจจับหนึ่งกล่อง — box เก็บเป็นสัดส่วน 0..1 ของรูป ไม่ผูกกับขนาดจอ */
+type Det = { label: string; score: number; box: [number, number, number, number] };
+
+type Status = "idle" | "loading" | "running" | "done" | "fallback";
+
+/** ความกว้างของกรอบรูปบนหน้าเว็บ (px) — ความสูงคิดจากสัดส่วนรูปจริง */
+const FRAME_W = 132;
+
+// COCO 80 คลาส เรียงตาม index ที่ YOLO คืนมา — ลำดับต้องตรงเป๊ะ ห้ามสลับ
+const COCO = [
+  "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck",
+  "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench",
+  "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra",
+  "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee",
+  "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove",
+  "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
+  "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange",
+  "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", "couch",
+  "potted plant", "bed", "dining table", "toilet", "tv", "laptop", "mouse",
+  "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink",
+  "refrigerator", "book", "clock", "vase", "scissors", "teddy bear",
+  "hair drier", "toothbrush",
+];
+
+/** ชื่อคลาสที่ใช้จริง — ถ้า content.ts กำหนด classNames มา (เช่นตอนสลับไปใช้โมเดล
+ *  ที่เทรนเองด้วย lemon_detector/) ให้ใช้ตัวนั้น ไม่งั้นถอยกลับไปใช้ COCO
+ *  แยกออกมาเป็นค่าคงที่ที่ module scope เพราะทั้ง decode() และ JSX ต้องใช้ */
+const CLASS_NAMES: string[] = DETECTOR.classNames ?? COCO;
+
+/** คลาสแรกของโมเดลคือตัวที่เว็บอยากเน้น (COCO = person · โมเดลเรา = Lemon(me):3)
+ *  ใช้ตัดสินสีกล่อง แทนที่จะเทียบกับสตริง "person" ตรง ๆ แบบเดิม
+ *  ซึ่งจะเน้นผิดกล่องทันทีที่เปลี่ยนโมเดล */
+const HERO_LABEL = CLASS_NAMES[0];
+
+// ── โหลด onnxruntime-web จาก CDN ──────────────────────────────
+// เลือก inject <script> แทน `npm i onnxruntime-web` เพราะไม่ต้องแตะ bundler config
+// เรื่องไฟล์ .wasm เลย (ดู README ถ้าอยากย้ายไปเป็น npm dependency จริง ๆ)
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare global {
+  interface Window {
+    ort?: any;
+  }
+}
+
+let ortPromise: Promise<any> | null = null;
+let sessionPromise: Promise<any> | null = null;
+
+function loadOrt(): Promise<any> {
+  if (window.ort) return Promise.resolve(window.ort);
+  if (ortPromise) return ortPromise;
+
+  ortPromise = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = `${DETECTOR.ortCdn}ort.min.js`;
+    s.async = true;
+    s.onload = () => {
+      const ort = window.ort;
+      if (!ort) {
+        reject(new Error("ort missing after load"));
+        return;
+      }
+      // ชี้ที่อยู่ไฟล์ .wasm ไป CDN เดียวกัน ไม่ต้องก๊อปไฟล์เข้ามาใน public/
+      ort.env.wasm.wasmPaths = DETECTOR.ortCdn;
+      // บังคับ 1 thread: multi-thread ต้องใช้ SharedArrayBuffer ซึ่งต้องตั้ง header
+      // COOP/COEP ทั้งเว็บ ไม่คุ้มกับของเล่นชิ้นเดียว
+      ort.env.wasm.numThreads = 1;
+      resolve(ort);
+    };
+    s.onerror = () => reject(new Error("failed to load onnxruntime-web"));
+    document.head.appendChild(s);
+  });
+  return ortPromise;
+}
+
+function getSession(): Promise<any> {
+  if (sessionPromise) return sessionPromise;
+  sessionPromise = loadOrt().then((ort) =>
+    ort.InferenceSession.create(DETECTOR.modelUrl, {
+      executionProviders: ["wasm"],
+      graphOptimizationLevel: "all",
+    }),
+  );
+  return sessionPromise;
+}
+
+// ── pre / post processing ─────────────────────────────────────
+
+/**
+ * letterbox: ย่อรูปให้พอดี 640×640 โดยคงสัดส่วนเดิม แล้วเติมสีเทาตรงขอบ
+ * ถ้ายืดรูปให้เต็มจัตุรัสเฉย ๆ คนในรูปจะผิดสัดส่วนแล้ว accuracy ตก
+ * คืน scale/dx/dy กลับไปด้วย เพราะต้องใช้ถอดพิกัดกลับตอน postprocess
+ */
+function letterbox(img: HTMLImageElement, size: number) {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+  ctx.fillStyle = "rgb(114,114,114)"; // ค่าเดียวกับที่ ultralytics ใช้ตอนเทรน
+  ctx.fillRect(0, 0, size, size);
+
+  const iw = img.naturalWidth;
+  const ih = img.naturalHeight;
+  const scale = Math.min(size / iw, size / ih);
+  const dw = Math.round(iw * scale);
+  const dh = Math.round(ih * scale);
+  const dx = Math.floor((size - dw) / 2);
+  const dy = Math.floor((size - dh) / 2);
+  ctx.drawImage(img, dx, dy, dw, dh);
+
+  const { data } = ctx.getImageData(0, 0, size, size);
+  // จัดเป็น NCHW + ตัด alpha ทิ้ง + หาร 255 ตามที่โมเดลคาดหวัง
+  const input = new Float32Array(3 * size * size);
+  const plane = size * size;
+  for (let i = 0; i < plane; i++) {
+    input[i] = data[i * 4] / 255;
+    input[plane + i] = data[i * 4 + 1] / 255;
+    input[plane * 2 + i] = data[i * 4 + 2] / 255;
+  }
+  return { input, scale, dx, dy, iw, ih };
+}
+
+function iou(a: Det["box"], b: Det["box"]) {
+  const x1 = Math.max(a[0], b[0]);
+  const y1 = Math.max(a[1], b[1]);
+  const x2 = Math.min(a[2], b[2]);
+  const y2 = Math.min(a[3], b[3]);
+  const inter = Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
+  if (inter <= 0) return 0;
+  const areaA = (a[2] - a[0]) * (a[3] - a[1]);
+  const areaB = (b[2] - b[0]) * (b[3] - b[1]);
+  return inter / (areaA + areaB - inter);
+}
+
+/** NMS แยกตามคลาส — โทรศัพท์ที่ทับอยู่บนตัวคนไม่ควรถูกตัดทิ้งเพราะซ้อนกับคน */
+function nms(dets: Det[], thr: number) {
+  const kept: Det[] = [];
+  for (const d of [...dets].sort((a, b) => b.score - a.score)) {
+    if (kept.some((k) => k.label === d.label && iou(k.box, d.box) > thr)) continue;
+    kept.push(d);
+  }
+  return kept;
+}
+
+/**
+ * เอาต์พุตของ YOLOv11 เป็น tensor รูปทรง [1, 84, 8400]
+ *   แถว 0-3  = cx, cy, w, h (พิกัดในสเกล 640 หลัง letterbox)
+ *   แถว 4-83 = คะแนนของ 80 คลาส (v11 ไม่มี objectness แยกเหมือน v5)
+ * ข้อมูลเรียงแบบ channel-major อ่านด้วย data[c * 8400 + i]
+ */
+function decode(
+  data: Float32Array,
+  dims: readonly number[],
+  meta: ReturnType<typeof letterbox>,
+): Det[] {
+  const ch = dims[1];
+  const n = dims[2];
+  const out: Det[] = [];
+
+  for (let i = 0; i < n; i++) {
+    let bestScore = 0;
+    let bestCls = -1;
+    for (let c = 4; c < ch; c++) {
+      const s = data[c * n + i];
+      if (s > bestScore) {
+        bestScore = s;
+        bestCls = c - 4;
+      }
+    }
+    if (bestScore < DETECTOR.confThreshold || bestCls < 0) continue;
+
+    const cx = data[i];
+    const cy = data[n + i];
+    const w = data[2 * n + i];
+    const h = data[3 * n + i];
+
+    // ถอด letterbox: ลบ padding ก่อน แล้วหารสเกล → ได้พิกัดบนรูปจริง
+    // จากนั้นหารด้วยขนาดรูป → เก็บเป็นสัดส่วน 0..1 เอาไปวางกล่องด้วย % ได้เลย
+    const x1 = (cx - w / 2 - meta.dx) / meta.scale / meta.iw;
+    const y1 = (cy - h / 2 - meta.dy) / meta.scale / meta.ih;
+    const x2 = (cx + w / 2 - meta.dx) / meta.scale / meta.iw;
+    const y2 = (cy + h / 2 - meta.dy) / meta.scale / meta.ih;
+
+    out.push({
+      label: CLASS_NAMES[bestCls] ?? `class ${bestCls}`,
+      score: bestScore,
+      box: [Math.max(0, x1), Math.max(0, y1), Math.min(1, x2), Math.min(1, y2)],
+    });
+  }
+  return nms(out, DETECTOR.iouThreshold);
+}
+
+// ── ตัวคอมโพเนนต์ ─────────────────────────────────────────────
+
+export default function PhotoDetect({ lang }: { lang: Lang }) {
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const [status, setStatus] = useState<Status>("idle");
+  const [dets, setDets] = useState<Det[]>([]);
+  const [ms, setMs] = useState<number | null>(null);
+
+  const run = useCallback(async () => {
+    // กดซ้ำตอนกล่องขึ้นอยู่ = ปิดกล่อง จะได้ดูรูปเปล่า ๆ ได้
+    if (status === "done" || status === "fallback") {
+      setDets([]);
+      setStatus("idle");
+      return;
+    }
+    if (status === "loading" || status === "running") return;
+
+    const img = imgRef.current;
+    if (!img) return;
+
+    try {
+      setStatus("loading");
+      const [ort, session] = await Promise.all([loadOrt(), getSession()]);
+
+      setStatus("running");
+      // รอให้รูปโหลดเสร็จก่อน ไม่งั้น naturalWidth เป็น 0 แล้วสเกลพัง
+      if (!img.complete) {
+        await new Promise((res) => {
+          img.onload = res;
+          img.onerror = res;
+        });
+      }
+
+      const meta = letterbox(img, DETECTOR.inputSize);
+      const feeds = {
+        [session.inputNames[0]]: new ort.Tensor("float32", meta.input, [
+          1,
+          3,
+          DETECTOR.inputSize,
+          DETECTOR.inputSize,
+        ]),
+      };
+
+      const t0 = performance.now();
+      const outputs = await session.run(feeds);
+      const elapsed = performance.now() - t0;
+
+      const tensor = outputs[session.outputNames[0]];
+      const found = decode(tensor.data as Float32Array, tensor.dims, meta);
+
+      setDets(found);
+      setMs(Math.round(elapsed));
+      setStatus("done");
+    } catch {
+      // ไม่ log ลง console — พังแล้วก็แค่แสดงผลที่รันไว้ล่วงหน้า
+      // และติดป้ายให้ชัดว่าเป็นค่าที่บันทึกไว้ ไม่ใช่ผลสด
+      setDets(DETECTOR.fallback as Det[]);
+      setMs(null);
+      setStatus("fallback");
+    }
+  }, [status]);
+
+  const busy = status === "loading" || status === "running";
+  const showing = dets.length > 0;
+
+  // ความสูงจริงของกรอบ ใช้บอกระยะที่เส้นสแกนต้องวิ่ง (CSS เดาเองไม่ได้
+  // เพราะตัวเส้นสูงแค่ 2px การ translateY(100%) จะขยับแค่ 2px)
+  const frameH = Math.round((FRAME_W * DETECTOR.photoH) / DETECTOR.photoW);
+
+  const chipText =
+    status === "loading"
+      ? t(DETECTOR.ui.loading, lang)
+      : status === "running"
+        ? t(DETECTOR.ui.running, lang)
+        : status === "fallback"
+          ? t(DETECTOR.ui.cached, lang)
+          : status === "done"
+            ? `yolo11n · ${ms} ms`
+            : t(DETECTOR.ui.idle, lang);
+
+  return (
+    <div className="relative z-10" style={{ width: FRAME_W }}>
+      <button
+        type="button"
+        onClick={run}
+        aria-label={t(DETECTOR.ui.aria, lang)}
+        aria-busy={busy}
+        className="group block w-full cursor-pointer text-left"
+      >
+        <div
+          className="relative overflow-hidden rounded-2xl border-[3px] border-bg bg-surface2 shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+          style={
+            {
+              aspectRatio: `${DETECTOR.photoW} / ${DETECTOR.photoH}`,
+              "--scan-h": `${frameH}px`,
+            } as CSSProperties
+          }
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            ref={imgRef}
+            src={PERSON.photo ?? ""}
+            alt={PERSON.name}
+            className="h-full w-full object-cover"
+          />
+
+          {/* เส้นสแกนตอนกำลังคิด — บอกว่ายังไม่ค้าง ไม่ได้เป็นตัวชี้วัดอะไร */}
+          {busy && (
+            <span className="scanline pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-yellow/90" />
+          )}
+
+          {/* กล่องผลตรวจจับ — วางด้วย % จากสัดส่วน 0..1 ที่ decode ไว้ */}
+          {dets.map((d, i) => (
+            <span
+              key={`${d.label}-${i}`}
+              className="detbox pointer-events-none absolute border-[1.5px]"
+              style={{
+                left: `${d.box[0] * 100}%`,
+                top: `${d.box[1] * 100}%`,
+                width: `${(d.box[2] - d.box[0]) * 100}%`,
+                height: `${(d.box[3] - d.box[1]) * 100}%`,
+                borderColor: d.label === HERO_LABEL ? "#F5B92E" : "#7BA0FF",
+                boxShadow: "0 0 0 1px rgba(0,0,0,0.35)",
+              }}
+            >
+              <span
+                className="absolute -top-[15px] left-[-1.5px] whitespace-nowrap px-1 py-px font-mono text-[8.5px] font-semibold leading-[1.35] text-bg"
+                style={{ background: d.label === HERO_LABEL ? "#F5B92E" : "#7BA0FF" }}
+              >
+                {d.label} {d.score.toFixed(2)}
+              </span>
+            </span>
+          ))}
+        </div>
+
+        <span
+          className={`mt-2 block truncate rounded-md border px-2 py-1 text-center font-mono text-[9.5px] uppercase tracking-[0.1em] transition-colors ${
+            showing
+              ? "border-yellow/45 bg-yellow/10 text-yellow"
+              : "border-line bg-surface2 text-muted group-hover:border-yellow/45 group-hover:text-yellow"
+          }`}
+        >
+          {chipText}
+        </span>
+      </button>
+    </div>
+  );
+}

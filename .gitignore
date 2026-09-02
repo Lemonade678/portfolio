@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+build/
+.env*
+!.env.example
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+.DS_Store
+Thumbs.db
+
+# lemon_detector — ของที่สร้างใหม่ได้ ไม่ต้องเก็บ
+lemon_detector/raw/
+lemon_detector/dataset/
+lemon_detector/review/
+lemon_detector/runs/
+lemon_detector/out/
+lemon_detector/data.yaml
+lemon_detector/.venv/
+__pycache__/
+*.pyc

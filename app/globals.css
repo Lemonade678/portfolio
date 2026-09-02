@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Tailwind v4 ใช้ config เป็น CSS ไม่มี tailwind.config.js แล้ว
+   ทุกตัวที่ประกาศใน @theme จะกลายเป็น utility class อัตโนมัติ
+   เช่น --color-ink  →  text-ink / bg-ink / border-ink
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* พื้นและตัวอักษร — โทนน้ำตาลเข้ม ไม่ใช่ดำ */
+  --color-bg: #1a1310;
+  --color-surface: #241b16;
+  --color-surface2: #2e231c;
+  --color-line: #3b2d24;
+  --color-ink: #f6eee6;
+  --color-ink2: #c3ae9c;
+  --color-muted: #8c7a6c;
+
+  /* สีสัญญาณ — แต่ละสีมีหน้าที่ ไม่ใช่ของตกแต่ง
+     yellow = ระบบที่ส่งมอบแล้ว + ปุ่ม/ลิงก์
+     pink   = การแข่งขัน
+     blue   = งานวิจัย + ข้อมูล
+     clay   = โปรเจกต์ส่วนตัว                        */
+  --color-yellow: #f5b92e;
+  --color-pink: #ff7e9d;
+  --color-blue: #7ba0ff;
+  --color-clay: #b98a5e;
+
+  --font-sans: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-yellow);
+  color: var(--color-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-yellow);
+  outline-offset: 3px;
+}
+
+/* ตัวเน้นใน Result ใช้สีประจำโปรเจกต์นั้น ๆ ที่ส่งมาทาง --c */
+.result strong {
+  color: var(--c, var(--color-yellow));
+  font-weight: 600;
+}
+
+/* เผยตัวตอนเลื่อนถึง */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* เส้นสแกนบนรูปโปรไฟล์ตอน YOLO กำลังคิด
+   หน้าที่เดียวคือบอกว่า "ยังไม่ค้าง" ไม่ได้สื่อความคืบหน้าจริง ๆ */
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--scan-h, 210px));
+    opacity: 0;
+  }
+}
+.scanline {
+  animation: scan 1.1s linear infinite;
+}
+
+/* กล่องผลตรวจจับค่อย ๆ ขึ้น ไม่ให้กระโดดใส่หน้า */
+@keyframes boxIn {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.detbox {
+  animation: boxIn 0.28s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
