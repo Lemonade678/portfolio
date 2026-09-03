@@ -55,6 +55,16 @@ body {
   font-weight: 600;
 }
 
+/* ชื่อไฟล์/พาธที่อ้างถึงในข้อความ — ให้ดูเป็นโค้ด ไม่ใช่คำธรรมดา */
+.result code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--color-surface2);
+  color: var(--color-ink2);
+}
+
 /* เผยตัวตอนเลื่อนถึง */
 .reveal {
   opacity: 0;

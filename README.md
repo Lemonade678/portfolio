@@ -69,7 +69,8 @@ npm i -g vercel && vercel
 | `app/globals.css` | ชุดสีและฟอนต์ (Tailwind v4 ใช้ `@theme` ไม่มี `tailwind.config.js` แล้ว) |
 | `components/CoverArt.tsx` | แบนเนอร์หัวเว็บ วาดด้วย SVG ไม่ใช้ไฟล์รูป |
 | `components/PhotoDetect.tsx` | รูปโปรไฟล์ + ปุ่มรัน YOLOv11 ตรวจจับจริงในเบราว์เซอร์ |
-| `public/` | `me.jpg` · `models/yolo11n.onnx` · `lane-change-presentation.pdf` · `lane-change-demo.webp` · `hackathon-certificate.jpg` / `.pdf` |
+| `public/` | `me.jpg` · `models/yolo11n.onnx` · `lane-change-presentation.pdf` · `lane-change-demo.webp` · `hackathon-certificate.jpg` / `.pdf` · `toeic-885-redacted.png` |
+| `tools/censor.py` | ปิดข้อมูลส่วนบุคคลบนเอกสารก่อนขึ้นเว็บ — ดูหัวข้อข้างล่าง |
 | `lemon_detector/` | โปรเจกต์ Python เทรน YOLOv11 ให้จับเฉพาะหน้าเรา — ไม่เกี่ยวกับ build ของเว็บ |
 | `portfolio-preview.html` | พรีวิวไฟล์เดียวจบ เปิดด้วยดับเบิลคลิก ไม่ต้อง Node |
 | `yolo11n.pt` | น้ำหนักตั้งต้นของ `lemon_detector` (5.4 MB) |
@@ -91,7 +92,7 @@ npm i -g vercel && vercel
 | **88%** ผ่านเกณฑ์ (จากเดิม 30%) · 100% เกณฑ์ข้อมูลต้องห้าม · เทรน 30 นาที → <5 นาที | `PROJECTS[trongpok].result` · `METRICS[1]` |
 | **3** โมเดลใน pipeline เปลี่ยนเลน | `METRICS[2]` |
 | อันดับ **6 / 137** (top 5%) | `METRICS[3]` · `PROJECTS[ktp]` · `TIMELINE` |
-| **TOEIC 885** · GPA 3.22 | `TIMELINE` |
+| **TOEIC 885** (L 480 + R 405 · CEFR B2 · สอบ 12 มิ.ย. 2026) · GPA 3.22 | `TIMELINE` · `CREDENTIALS[toeic]` |
 
 **ที่มาของ training data น้องตรงปก:** synthetic ทั้งหมด สร้างจากกติกาแพลตฟอร์ม
 โดยอิงโครงจากคลังเรซูเม่สาธารณะบน Kaggle — เหมือนหนัง based on a true story
@@ -112,6 +113,7 @@ npm i -g vercel && vercel
 | `PROJECTS[trongpok]` | HF Space `Lemonade44/nong-trongpok` · HF `nong-trongpok-lora` · Kaggle resume dataset |
 | `PROJECTS[balatro]` | `github.com/KatnaWB89/KMFusionJokers` |
 | `CREDENTIALS[hackathon]` | `/hackathon-certificate.pdf` |
+| `CREDENTIALS[toeic]` | `/toeic-885-redacted.png` (ไม่มีลิงก์ออกนอก — ใบต้นฉบับไม่ขึ้นเว็บ) |
 | `CREDENTIALS[internship]` | `/lane-change-presentation.pdf` · repo เดียวกับ `PROJECTS[lane]` |
 
 **path ของ PDF จงใจไม่เหมือนกันสองที่ อย่าไปแก้ให้ตรงกัน:**
@@ -182,8 +184,44 @@ npm i -g vercel && vercel
 ถ้าเพิ่มเอกสารใบใหม่ **แก้แค่ `CREDENTIALS` ใน `content.ts`** ตัว UI วนสร้างเองทั้งหมด
 (แล้วตามไปเพิ่มใน `portfolio-preview.html` ให้ตรงกันด้วย)
 
-**เอกสารที่ยังไม่ได้ใส่:** ใบคะแนน TOEIC 885 — ใส่ได้ถ้าอยาก แต่ในใบมีข้อมูลส่วนตัว
-(ชื่อเต็ม วันสอบ เลขอ้างอิง) ที่จะกลายเป็นของสาธารณะถาวร เลยไม่ใส่ให้เอง ต้องตัดสินใจก่อน
+---
+
+## `tools/censor.py` — ปิดข้อมูลส่วนบุคคลก่อนขึ้นเว็บ
+
+ใบ TOEIC มีชื่อ วันเกิด **เลขบัตรประชาชน 13 หลัก** เลขอ้างอิง และบาร์โค้ดอยู่บนใบ
+สคริปต์นี้ปิดให้ก่อนเอาขึ้นเว็บ ใช้ซ้ำกับเอกสารอื่นได้ ทำงานเป็นสามขั้น:
+
+```bash
+python tools/censor.py grid "C:/path/to/doc.jpg" -o grid.png        # 1. หาพิกัด
+python tools/censor.py apply tools/recipes/toeic-885.json --preview # 2. ลองวางกรอบ
+python tools/censor.py apply tools/recipes/toeic-885.json           # 3. ปิดจริง
+```
+
+พิกัดทั้งหมดเก็บใน recipe เป็น JSON ทำซ้ำได้ ไม่ต้องจำว่าเคยลากกรอบตรงไหน
+
+### สามข้อที่สคริปต์นี้ยึด และเหตุผล
+
+1. **แถบทึบ ไม่ใช่ blur** — เลขบัตรประชาชนมี 13 หลัก พิมพ์ด้วยฟอนต์ความกว้าง
+   เท่ากันทุกตัว หลักแรกกับหลักตรวจสอบมีกติกาตายตัว การเบลอเหลือ "เงา" ของ
+   ความเข้มกับความกว้างไว้พอที่จะไล่เดาทีละหลักหรือ deconvolve ย้อนกลับได้
+   แถบทึบเขียนทับพิกเซลจริง ไม่มีอะไรให้กู้
+
+2. **PDF ต้อง render เป็น bitmap ก่อนเสมอ** — วาดสี่เหลี่ยมทับบน PDF ตรง ๆ
+   ข้อความเดิมยังอยู่ใน content stream ใต้สี่เหลี่ยมนั้น **ก๊อปวางออกมาอ่านได้เลย**
+   เป็นวิธีที่หน่วยงานทำหลุดกันมาแล้วหลายครั้ง
+
+3. **crop ปลอดภัยกว่าทาทับ** — พิกเซลนอกกรอบไม่ได้ถูกเขียนลงไฟล์เลย
+   ใบ TOEIC จึงตัดเอาเฉพาะการ์ดคะแนนช่วงบน ซึ่งทิ้งทั้งลายมือชื่อไทยมุมขวาบน
+   และครึ่งล่างที่มี `Name:` กับบาร์โค้ดยาวอีกชุดไปพร้อมกัน
+
+เพิ่มเติม: เซฟเป็น PNG ผ่าน Pillow ซึ่งไม่พก EXIF ต่อ — รูปถ่ายจากมือถือ
+อาจมีพิกัด GPS ของบ้านติดมาด้วย
+
+> **ไฟล์ต้นฉบับที่ยังไม่ปิดข้อมูล ห้าม commit** `.gitignore` กัน `tools/source/`,
+> `*-original.*`, `*-raw.*`, `grid.png` และ `*-preview.png` ไว้แล้ว
+> ขึ้น git เฉพาะไฟล์ที่ผ่านสคริปต์แล้ว (ลงท้าย `-redacted.png`)
+
+**ตรวจด้วยตาทุกครั้งก่อนขึ้นเว็บ** แถบเลื่อนไปไม่กี่พิกเซลก็เหลือข้อมูลโผล่ขอบได้
 
 ---
 

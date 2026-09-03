@@ -607,6 +607,32 @@ export const CREDENTIALS: Credential[] = [
     ],
   },
   {
+    id: "toeic",
+    tab: { en: "TOEIC", th: "TOEIC" },
+    accent: "yellow",
+    title: {
+      en: "TOEIC Listening & Reading — 885 / 990",
+      th: "TOEIC Listening & Reading — 885 / 990",
+    },
+    issuer: {
+      en: "ETS · TOEIC Services Thailand · taken at KMUTT",
+      th: "ETS · TOEIC Services Thailand · สอบที่ มจธ.",
+    },
+    when: "12 Jun 2026",
+    image: {
+      src: "/toeic-885-redacted.png",
+      ratio: "1400 / 704",
+      alt: {
+        en: "Official TOEIC institutional score report: Listening 480, Reading 405, total 885, CEFR level B2, tested 12 June 2026 at King Mongkut's University of Technology Thonburi. Name, date of birth, ID number, reference number and barcode are blacked out.",
+        th: "ใบรายงานคะแนน TOEIC อย่างเป็นทางการ: Listening 480, Reading 405, รวม 885, CEFR ระดับ B2, สอบวันที่ 12 มิถุนายน 2026 ที่ มจธ. โดยปิดชื่อ วันเกิด เลขประจำตัวประชาชน เลขอ้างอิง และบาร์โค้ดไว้",
+      },
+    },
+    verifies: {
+      en: "<strong>Listening 480 + Reading 405 = 885, CEFR B2.</strong> Valid for two years from the test date, so through June 2028. The blacked-out fields are name, date of birth, national ID number, the report's reference number and the barcode — solid bars rather than blur, because a 13-digit number in a fixed-width font can be read back out of a blur. The script that did it is in the repo at <code>tools/censor.py</code>.",
+      th: "<strong>Listening 480 + Reading 405 = 885 · CEFR B2</strong> ใบมีอายุสองปีนับจากวันสอบ คือถึงมิถุนายน 2028 · ส่วนที่ปิดคือชื่อ วันเกิด เลขบัตรประชาชน เลขอ้างอิงใบ และบาร์โค้ด — ใช้แถบทึบไม่ใช่เบลอ เพราะเลข 13 หลักที่พิมพ์ด้วยฟอนต์ความกว้างเท่ากันทุกตัว ยังอ่านย้อนกลับออกจากภาพเบลอได้ · สคริปต์ที่ใช้ปิดอยู่ใน repo ที่ <code>tools/censor.py</code>",
+    },
+  },
+  {
     id: "internship",
     tab: { en: "Internship", th: "ฝึกงานวิจัย" },
     accent: "blue",
