@@ -28,12 +28,16 @@ npm run build
 
 **วิธีที่แนะนำ — ผูกกับ GitHub ให้ auto-deploy** (ไม่ต้องลง CLI ไม่ต้องยุ่งกับ token)
 
-1. สร้าง repo เปล่าบน GitHub (อย่าติ๊ก "Add a README")
-2. push โฟลเดอร์นี้ขึ้นไป:
+1. สร้าง repo เปล่าชื่อ `portfolio` บน GitHub — **อย่าติ๊ก "Add a README"
+   และอย่าเลือก .gitignore / license** ไม่งั้นจะมี commit ค้างอยู่แล้ว push ชนกัน
+2. push โฟลเดอร์นี้ขึ้นไป (PowerShell):
 
-   ```bash
-   git remote add origin https://github.com/Lemonade678/<ชื่อ-repo>.git && git push -u origin main
+   ```powershell
+   git remote add origin https://github.com/Lemonade678/portfolio.git; git push -u origin main
    ```
+
+   > PowerShell 5.1 **ไม่มี `&&`** ต้องใช้ `;` คั่นแทน ถ้าอยากให้คำสั่งหลังรัน
+   > เฉพาะตอนคำสั่งแรกสำเร็จ ใช้ `cmd1; if ($?) { cmd2 }`
 
 3. ไป [vercel.com/new](https://vercel.com/new) → **Import Git Repository** → เลือก repo นี้
 4. Vercel ตรวจเจอว่าเป็น Next.js เอง **ไม่ต้องตั้งค่าอะไรเลย** — ไม่มี env var ที่ต้องใส่
@@ -65,7 +69,7 @@ npm i -g vercel && vercel
 | `app/globals.css` | ชุดสีและฟอนต์ (Tailwind v4 ใช้ `@theme` ไม่มี `tailwind.config.js` แล้ว) |
 | `components/CoverArt.tsx` | แบนเนอร์หัวเว็บ วาดด้วย SVG ไม่ใช้ไฟล์รูป |
 | `components/PhotoDetect.tsx` | รูปโปรไฟล์ + ปุ่มรัน YOLOv11 ตรวจจับจริงในเบราว์เซอร์ |
-| `public/` | `me.jpg` · `models/yolo11n.onnx` · `lane-change-presentation.pdf` |
+| `public/` | `me.jpg` · `models/yolo11n.onnx` · `lane-change-presentation.pdf` · `lane-change-demo.webp` · `hackathon-certificate.jpg` / `.pdf` |
 | `lemon_detector/` | โปรเจกต์ Python เทรน YOLOv11 ให้จับเฉพาะหน้าเรา — ไม่เกี่ยวกับ build ของเว็บ |
 | `portfolio-preview.html` | พรีวิวไฟล์เดียวจบ เปิดด้วยดับเบิลคลิก ไม่ต้อง Node |
 | `yolo11n.pt` | น้ำหนักตั้งต้นของ `lemon_detector` (5.4 MB) |
@@ -103,10 +107,12 @@ npm i -g vercel && vercel
 | ที่ | ปลายทาง |
 |---|---|
 | `CONTACTS` | `mailto:nuttworkbhanidch@gmail.com` · `github.com/Lemonade678` · LinkedIn |
-| `PROJECTS[lane]` | `github.com/Lemonade678/lane-change-detection` · `/lane-change-presentation.pdf` |
+| `PROJECTS[lane]` | `github.com/Lemonade678/Video-based-lane-change-detection` · `/lane-change-presentation.pdf` |
 | `PROJECTS[ktp]` | `khon-tong-pok-demo.vercel.app` |
 | `PROJECTS[trongpok]` | HF Space `Lemonade44/nong-trongpok` · HF `nong-trongpok-lora` · Kaggle resume dataset |
 | `PROJECTS[balatro]` | `github.com/KatnaWB89/KMFusionJokers` |
+| `CREDENTIALS[hackathon]` | `/hackathon-certificate.pdf` |
+| `CREDENTIALS[internship]` | `/lane-change-presentation.pdf` · repo เดียวกับ `PROJECTS[lane]` |
 
 **path ของ PDF จงใจไม่เหมือนกันสองที่ อย่าไปแก้ให้ตรงกัน:**
 `content.ts` ใช้ `/lane-change-presentation.pdf` (absolute จาก web root)
@@ -148,6 +154,36 @@ npm i -g vercel && vercel
 ทุกข้อบังคับให้มีฟิลด์ `evidence` เป็นเหตุการณ์จริงที่ตรวจสอบได้จากที่อื่นในเว็บนี้
 (ไต้หวัน 3 เดือน / รายงาน Prof. Duan-Yu Chen ทุกสัปดาห์ / หน้าจอ IQC ที่ออกแบบตามพนักงานหน้าไลน์)
 จะเพิ่มข้อใหม่ ต้องหาหลักฐานมาก่อน ไม่ใช่หาคำสวย ๆ มาก่อน
+
+---
+
+## หลักฐาน (section 02) กับตัวแท็บ
+
+`CREDENTIALS` ใน `content.ts` เก็บเอกสารจริงที่ตรวจสอบได้ ตอนนี้มีสองใบ:
+ประกาศนียบัตรแฮกกาธอนจาก Generation Thailand และสไลด์ปิดโครงการฝึกงานที่ Yuan Ze
+
+**ฟิลด์ที่สำคัญที่สุดคือ `verifies`** เพราะมันบังคับให้เขียนว่าเอกสารนี้ยืนยันอะไร
+ตัวอย่างที่ชัดที่สุดคือใบ certificate — บนใบเขียนแค่ว่า "เข้าร่วมและทำจนจบ"
+ไม่ได้พิมพ์อันดับ 6/137 ไว้ (อันดับประกาศบนเวทีตอนปิดงาน)
+ถ้าเอามาแปะเฉย ๆ คนอ่านจะเข้าใจว่าใบนี้รับรองอันดับด้วย ซึ่งไม่ตรงกับเอกสาร
+และเป็นสิ่งที่ใครซูมดูก็จับได้ทันที — การ์ดเลยเขียนบอกไว้ตรง ๆ ว่าอันดับมาจากไหน
+
+**ทำไมต้องเป็นแท็บ:** ใบ cert สัดส่วน A4 แนวนอน (1755×1241) สูงมากเมื่อกางเต็มความกว้าง
+ถ้าเรียงเอกสารทุกใบต่อกัน คนต้องสกรอลผ่านรูปใหญ่ ๆ กว่าจะถึงส่วนถัดไป
+
+ตัวแท็บทำตาม [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) ทั้งสองไฟล์:
+
+| สิ่งที่ทำ | เพราะอะไร |
+|---|---|
+| `role="tablist"` / `role="tab"` / `role="tabpanel"` + `aria-controls` / `aria-labelledby` | screen reader อ่านออกว่าเป็นกลุ่มแท็บ ไม่ใช่ปุ่มลอย ๆ |
+| `tabIndex` เป็น `0` เฉพาะแท็บที่เลือก ที่เหลือ `-1` (roving tabindex) | กด Tab แล้วข้ามทั้งกลุ่มไปเลย ไม่ต้องกดผ่านทีละใบ |
+| ลูกศรซ้าย/ขวา + Home/End เลื่อนระหว่างแท็บ | เป็นวิธีที่คนใช้คีย์บอร์ดคาดหวังจากแท็บ |
+
+ถ้าเพิ่มเอกสารใบใหม่ **แก้แค่ `CREDENTIALS` ใน `content.ts`** ตัว UI วนสร้างเองทั้งหมด
+(แล้วตามไปเพิ่มใน `portfolio-preview.html` ให้ตรงกันด้วย)
+
+**เอกสารที่ยังไม่ได้ใส่:** ใบคะแนน TOEIC 885 — ใส่ได้ถ้าอยาก แต่ในใบมีข้อมูลส่วนตัว
+(ชื่อเต็ม วันสอบ เลขอ้างอิง) ที่จะกลายเป็นของสาธารณะถาวร เลยไม่ใส่ให้เอง ต้องตัดสินใจก่อน
 
 ---
 
@@ -214,30 +250,46 @@ COCO แล้วขึ้นว่า `person` ทั้งที่โมเ�
 
 ## สิ่งที่ยังเหลือ
 
-1. 🔴 **push repo `lane-change-detection` ขึ้น GitHub**
-   `PROJECTS[lane].links[0]` ชี้ไป `github.com/Lemonade678/lane-change-detection`
-   ซึ่งยังไม่มีอยู่จริง — ปล่อยเว็บตอนนี้จะเป็นลิงก์ตาย 404
-   repo เตรียมไว้แล้วที่ `../lane-change-detection` (commit แล้ว 12 MB)
-   ถ้าตั้งชื่ออื่น ต้องกลับมาแก้ URL ใน `content.ts` **และ** `portfolio-preview.html`
+1. 🔴 **push repo `Video-based-lane-change-detection`** — สำคัญที่สุด
+   ทั้ง `PROJECTS[lane]` และ `CREDENTIALS[internship]` ชี้ไป
+   `github.com/Lemonade678/Video-based-lane-change-detection`
+   repo นั้น**มีอยู่จริงแล้วบน GitHub แต่ยังมีแค่ `.gitignore` กับ `LICENSE`**
+   ปล่อยเว็บตอนนี้ ลิงก์จะพาไปเจอ repo เปล่า ๆ
+   ของทั้งหมดเตรียมไว้แล้วที่ `../Video-based-lane-change-detection` (commit แล้ว 60 MB)
+   ต่อยอดจาก commit แรกของ remote เรียบร้อย **push ได้เลยไม่ต้อง force**
 
-2. **คลิปสั้นของ lane change ในหน้าเว็บ**
-   ตอนนี้มีของที่ *แสดง* ได้แล้วสามอย่าง — ปุ่ม YOLO, HF Space ของน้องตรงปก,
-   และ repo lane change ที่มีรูปผลลัพธ์ 11 ใบ เหลือคลิปในหน้าเว็บเอง
-   ต้นทางคือ `demo_1.mp4` (~131 MB) ตัดให้เหลือ 6–10 วิ (ต้องลง ffmpeg ก่อน):
+2. ~~**คลิป lane change ในหน้าเว็บ**~~ ✅ ใส่แล้ว — `public/lane-change-demo.webp`
+   118 เฟรม 720×404 · 1.8 MB · โหลดแบบ lazy
 
-   ```bash
-   ffmpeg -ss 00:00:12 -t 8 -i demo_1.mp4 -vf "scale=720:-2,fps=20" -an -c:v libx264 -crf 30 -movflags +faststart public/lane-demo.mp4
+   **ทำไมเป็น WebP ไม่ใช่ .mp4:** ไฟล์เอาต์พุตจาก pipeline เข้ารหัสด้วย
+   MPEG-4 Part 2 (mp4v) ซึ่งเป็นค่าเริ่มต้นของ `cv2.VideoWriter` และ **เบราว์เซอร์เล่นไม่ได้**
+   ต้องแปลงเป็น H.264 ก่อน ซึ่งต้องมี ffmpeg (เครื่องนี้ยังไม่มี) และ OpenCV บนเครื่องนี้
+   ก็เขียน H.264 ไม่ได้เพราะ openh264 DLL เวอร์ชันไม่ตรง —
+   animated WebP เลยเลี่ยงปัญหา codec ทั้งหมด เรนเดอร์เป็น `<img>` ธรรมดา
+   และไม่ติดนโยบายบล็อก autoplay ของเบราว์เซอร์ด้วย
+
+   ถ้าวันหนึ่งลง ffmpeg แล้วอยากได้ `.mp4` จริง ๆ:
+
+   ```powershell
+   ffmpeg -i "D:\10-ไมเกี่ยวข้องงง\data6_new_output_good.mp4" -vf "scale=720:-2,fps=20" -an -c:v libx264 -crf 28 -movflags +faststart public/lane-demo.mp4
    ```
 
-   แล้วเพิ่มฟิลด์ `media?: string` ใน `interface Project` เรนเดอร์เป็น
-   `<video autoPlay muted loop playsInline>` (ต้องมี `muted` ไม่งั้น browser บล็อก
-   autoplay · ต้องมี `playsInline` ไม่งั้น iOS เปิดเต็มจอ)
+   แล้วเปลี่ยน `<img>` ใน `page.tsx` เป็น `<video autoPlay muted loop playsInline>`
+   (ต้องมี `muted` ไม่งั้น browser บล็อก autoplay · ต้องมี `playsInline` ไม่งั้น iOS เปิดเต็มจอ)
+
+   > ⚠️ **ไฟล์วิดีโอต้นทางบางไฟล์เสีย** — `data4_new_output_good.mp4`,
+   > `data3_new_output_good.mp4`, `data2_new.mp4`, `data3_new.mp4` เปิดไม่ได้เลย
+   > (header/mdat ถูกตัด) ตัวที่ใช้อยู่คือ `data6_new_output_good.mp4` ซึ่งอ่านได้ปกติ
 
 3. **IQC ยังมีแต่คำบรรยาย** — เป็นงานในโรงงาน อาจติดเรื่อง NDA
    ถ้าเปิดรูปไม่ได้ ใส่ภาพ mock-up ของหน้าจอผู้ปฏิบัติงานแทนก็ยังดีกว่าไม่มีอะไรเลย
 
 4. **เทรน `lemon_detector` ให้เสร็จ** — ต้องมีรูปใน `raw/me/` และ **`raw/not_me/`**
    ข้อหลังคือหัวใจ ไม่มีแล้วโมเดลจะจับหน้าใครก็ได้ ไม่ใช่แค่หน้าเรา
+
+5. **ไดรฟ์ C: เคยเต็ม 100%** ตอนหนึ่งระหว่างทำงานนี้ จน `next build` เขียน cache ไม่ได้
+   เคลียร์ไฟล์ชั่วคราวออกไปแล้วเหลือ ~1 GB ซึ่งยังตึงมาก — `node_modules` ของโปรเจกต์นี้
+   อย่างเดียว 383 MB ควรเคลียร์เพิ่มก่อนเจอปัญหาแปลก ๆ ที่หาสาเหตุยาก
 
 ---
 

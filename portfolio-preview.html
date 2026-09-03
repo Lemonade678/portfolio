@@ -125,11 +125,38 @@ section{padding-top:clamp(52px,8vw,86px)}
 .pa p{margin:0;font-size:14px;line-height:1.6;color:var(--ink2)}
 .pa p strong{color:var(--c,var(--yellow));font-weight:600}
 @media(max-width:820px){.pas{grid-template-columns:1fr;gap:15px}}
+/* ---- media เดโมในการ์ดโปรเจกต์ ----
+   aspect-ratio กันหน้ากระโดดตอนไฟล์ยังโหลดไม่เสร็จ */
+.pmedia{margin:0 0 20px}
+.pmedia img{width:100%;display:block;border-radius:12px;border:1px solid var(--line);background:var(--surface2)}
+.pmedia figcaption{margin-top:8px;font-size:12px;line-height:1.45;color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:6px;background:var(--surface2);border:1px solid var(--line);color:var(--ink2)}
 /* การ์ดเดียวมีลิงก์ได้หลายอัน (น้องตรงปกมีทั้ง Space / adapter / dataset) */
 .plinks{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:16px}
 .plink{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--c,var(--yellow));border-bottom:1px solid currentColor;padding-bottom:2px}
+
+/* ---- proof tabs ----
+   ใบ cert สัดส่วน A4 แนวนอน สูงมากเมื่อกางเต็มความกว้าง เลยซ่อนไว้ในแท็บ
+   จะได้ไม่ต้องสกรอลผ่านรูปใหญ่กว่าจะถึงส่วนถัดไป */
+.proofnote{margin:-8px 0 20px;max-width:62ch;font-size:13.5px;color:var(--ink2)}
+.tablist{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tb{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    padding:8px 14px;border-radius:8px;cursor:pointer;transition:.18s;
+    color:var(--c);background:color-mix(in srgb,var(--c) 10%,transparent);
+    border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.tb[aria-selected="true"]{color:#1A1310;background:var(--c);border-color:var(--c)}
+.tpanel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(20px,3vw,28px)}
+.tpanel[hidden]{display:none}
+.tpanel h3{margin:0 0 5px;font-size:clamp(17px,2.6vw,22px);font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.tpanel .issuer{margin:0;font-size:13px;color:var(--ink2)}
+.tpanel .issued{margin:3px 0 0;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tpanel .shot{display:block;margin-top:20px;border:1px solid var(--line);border-radius:12px;transition:.2s}
+.tpanel .shot:hover{transform:translateY(-2px)}
+.tpanel .shot img{width:100%;display:block;border-radius:11px;background:var(--surface2)}
+.tpanel h4{margin:20px 0 7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tpanel .vf{margin:0;max-width:70ch;font-size:14px;line-height:1.6;color:var(--ink2)}
+.tpanel .vf strong{color:var(--c);font-weight:600}
 
 /* ---- stack ---- */
 /* กลุ่ม core กินเต็มความกว้างและชิปตัวใหญ่กว่า เพื่อให้คนกวาดตาผ่านแล้วเห็นก่อนอย่างอื่น */
@@ -181,6 +208,7 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
   <div class="bar-r">
     <nav class="nav">
       <a href="#work" data-en="Work" data-th="ผลงาน">Work</a>
+      <a href="#proof" data-en="Proof" data-th="หลักฐาน">Proof</a>
       <a href="#stack" data-en="Stack" data-th="เครื่องมือ">Stack</a>
       <a href="#soft" data-en="People" data-th="การทำงาน">People</a>
       <a href="#path" data-en="Path" data-th="เส้นทาง">Path</a>
@@ -272,6 +300,13 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
       <div class="ptop"><span class="tag">research</span><span class="when">Jun — Aug 2025</span></div>
       <h3 data-en="Lane Change Detection from Video" data-th="ตรวจจับการเปลี่ยนเลนจากวิดีโอ">…</h3>
       <p class="org" data-en="Research internship · Multimedia Lab, Yuan Ze University, Taiwan · under Prof. Duan-Yu Chen" data-th="ฝึกงานวิจัย · Multimedia Lab, Yuan Ze University ไต้หวัน · ที่ปรึกษา Prof. Duan-Yu Chen">…</p>
+      <figure class="pmedia">
+        <img src="public/lane-change-demo.webp" width="720" height="404" loading="lazy" decoding="async"
+             data-alt-en="Dashcam footage with green lane boundaries drawn by CLRerNet, a tracked car in a cyan box with its ID, and a heads-up panel counting lane changes."
+             data-alt-th="ภาพจากกล้องหน้ารถ มีเส้นเลนสีเขียวจาก CLRerNet กล่องสีฟ้าจับรถพร้อม ID และแผงมุมขวาบนนับจำนวนการเปลี่ยนเลน"
+             alt="">
+        <figcaption data-en="Real output from the pipeline — lanes, tracked vehicles with stable IDs, and the lane-change counter, all on the same frame." data-th="เอาต์พุตจริงจาก pipeline — เลน รถที่ถูก track พร้อม ID ที่ไม่สลับ และตัวนับการเปลี่ยนเลน อยู่บนเฟรมเดียวกัน">…</figcaption>
+      </figure>
       <div class="pas">
         <div class="pa"><h4 data-en="Problem" data-th="ปัญหา">…</h4><p data-en="Knowing a car changed lanes needs two things at once — where the lanes are and where the cars are. Two models whose outputs disagree frame to frame." data-th="การรู้ว่ารถเปลี่ยนเลนต้องใช้สองอย่างพร้อมกัน คือเลนอยู่ไหนและรถอยู่ไหน ซึ่งมาจากคนละโมเดล และผลขัดกันเองในแต่ละเฟรม">…</p></div>
         <div class="pa"><h4 data-en="Approach" data-th="วิธีแก้">…</h4><p data-en="CLRerNet for lanes, YOLOv11-s for vehicles, and a StrongSORT-style tracker I wrote from scratch to hold identity across frames — keeping the association logic inspectable is what let me find that ID swaps between adjacent cars were causing most of the early false positives. On top, a temporal consistency rule so one noisy frame can't trigger a lane change." data-th="CLRerNet จับเลน YOLOv11-s จับรถ และ tracker สไตล์ StrongSORT ที่ผมเขียนขึ้นเองเพื่อรักษา identity ข้ามเฟรม — การเปิดตรรกะจับคู่ให้ตรวจสอบได้เองคือสิ่งที่ทำให้เจอว่า ID สลับกันระหว่างรถที่อยู่ติดกันคือต้นเหตุของ false positive ส่วนใหญ่ในช่วงแรก แล้วเขียนเงื่อนไขความต่อเนื่องเชิงเวลาทับ เพื่อไม่ให้เฟรมเดียวที่ผิดทำให้ตัดสินว่าเปลี่ยนเลน">…</p></div>
@@ -279,7 +314,7 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
       </div>
       <div class="chips"><span class="chip">CLRerNet</span><span class="chip">YOLOv11-s</span><span class="chip">PyTorch</span><span class="chip">Custom tracker</span><span class="chip">OpenCV</span></div>
       <div class="plinks">
-        <a class="plink" href="https://github.com/Lemonade678/lane-change-detection" target="_blank" rel="noopener" data-en="Code on GitHub →" data-th="โค้ดบน GitHub →">…</a>
+        <a class="plink" href="https://github.com/Lemonade678/Video-based-lane-change-detection" target="_blank" rel="noopener" data-en="Code on GitHub →" data-th="โค้ดบน GitHub →">…</a>
         <a class="plink" href="public/lane-change-presentation.pdf" target="_blank" rel="noopener" data-en="Presentation (PDF) →" data-th="สไลด์นำเสนอ (PDF) →">…</a>
       </div>
     </article>
@@ -332,9 +367,47 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
     </article>
   </section>
 
+  <!-- proof -->
+  <section id="proof">
+    <div class="eyebrow"><span class="k">02</span><h2 data-en="Proof you can check" data-th="หลักฐานที่ตรวจสอบได้">…</h2><span class="ln"></span></div>
+    <p class="proofnote" data-en="Every number on this page that can be backed by a document, is. Where a claim has no paper behind it, the card says so." data-th="ตัวเลขบนหน้านี้ที่มีเอกสารยืนยันได้ ผมเอามาแปะไว้หมด ส่วนข้อไหนที่ยังไม่มีกระดาษรองรับ ก็เขียนบอกไว้ตรง ๆ">…</p>
+
+    <div class="tablist" role="tablist" aria-label="Proof">
+      <button class="tb" role="tab" id="tb-hack" aria-selected="true" aria-controls="tp-hack" data-panel="tp-hack" style="--c:var(--pink)" data-en="Hackathon" data-th="แฮกกาธอน">Hackathon</button>
+      <button class="tb" role="tab" id="tb-intern" aria-selected="false" aria-controls="tp-intern" tabindex="-1" data-panel="tp-intern" style="--c:var(--blue)" data-en="Internship" data-th="ฝึกงานวิจัย">Internship</button>
+    </div>
+
+    <div class="tpanel" role="tabpanel" id="tp-hack" aria-labelledby="tb-hack" style="--c:var(--pink)">
+      <h3 data-en="Certificate of Completion" data-th="ประกาศนียบัตรผ่านการเข้าร่วม">…</h3>
+      <p class="issuer" data-en="Generation Thailand · signed by Phunyanuch Pattanotai, CEO" data-th="Generation Thailand · ลงนามโดย Phunyanuch Pattanotai (CEO)">…</p>
+      <p class="issued"><span data-en="Issued" data-th="ออกให้เมื่อ">Issued</span> · 28 — 30 Aug 2026</p>
+      <a class="shot" href="public/hackathon-certificate.pdf" target="_blank" rel="noopener">
+        <img src="public/hackathon-certificate.jpg" width="1755" height="1241" loading="lazy" decoding="async" alt=""
+             data-alt-en="Generation Thailand Certificate of Completion presented to Nutt Bhanidch for Generation Thailand's Hackathon, 28-30 August 2026, signed by the CEO." data-alt-th="ประกาศนียบัตรจาก Generation Thailand มอบให้ Nutt Bhanidch สำหรับ Generation Thailand's Hackathon วันที่ 28-30 สิงหาคม 2026 ลงนามโดย CEO">
+      </a>
+      <h4 data-en="What this document shows" data-th="เอกสารนี้บอกอะไร">…</h4>
+      <p class="vf" data-en="&lt;strong&gt;The 6th-of-137 placing is real&lt;/strong&gt; — it was announced on stage at the closing ceremony, which is why it appears in the project card rather than on this certificate. What this document certifies is taking part in the hackathon and completing it, signed by the CEO of Generation Thailand." data-th="&lt;strong&gt;อันดับ 6 จาก 137 เป็นเรื่องจริง&lt;/strong&gt; — ประกาศบนเวทีตอนปิดงาน เลยอยู่ในการ์ดโปรเจกต์แทนที่จะอยู่บนใบนี้ ส่วนสิ่งที่เอกสารนี้รับรองคือการเข้าร่วมแฮกกาธอนและทำจนจบ ลงนามโดย CEO ของ Generation Thailand">…</p>
+      <div class="plinks">
+        <a class="plink" href="public/hackathon-certificate.pdf" target="_blank" rel="noopener" data-en="Open original PDF →" data-th="เปิดไฟล์ PDF ต้นฉบับ →">…</a>
+      </div>
+    </div>
+
+    <div class="tpanel" role="tabpanel" id="tp-intern" aria-labelledby="tb-intern" style="--c:var(--blue)" hidden>
+      <h3 data-en="Lane-Change Detection — final presentation" data-th="ตรวจจับการเปลี่ยนเลน — สไลด์นำเสนอปิดโครงการ">…</h3>
+      <p class="issuer" data-en="Multimedia Lab, Yuan Ze University, Taiwan · Prof. Duan-Yu Chen" data-th="Multimedia Lab, Yuan Ze University ไต้หวัน · Prof. Duan-Yu Chen">…</p>
+      <p class="issued"><span data-en="Issued" data-th="ออกให้เมื่อ">Issued</span> · Aug 2025</p>
+      <h4 data-en="What this document shows" data-th="เอกสารนี้บอกอะไร">…</h4>
+      <p class="vf" data-en="&lt;strong&gt;The deck I actually defended at the lab&lt;/strong&gt; at the end of the internship — the architecture, each model, and the demo videos. No benchmark number in it, because the deliverable was a working pipeline rather than a leaderboard entry. The code is public too, so the claims are checkable line by line." data-th="&lt;strong&gt;สไลด์ที่ใช้นำเสนอปิดโครงการที่แล็บจริง&lt;/strong&gt; มีทั้งสถาปัตยกรรม โมเดลแต่ละตัว และวิดีโอเดโม ไม่มีตัวเลข benchmark เพราะสิ่งที่ต้องส่งมอบคือ pipeline ที่ทำงานได้ ไม่ใช่อันดับบนตาราง และโค้ดเปิดให้ดูทั้งหมด ตรวจสอบได้ทีละบรรทัด">…</p>
+      <div class="plinks">
+        <a class="plink" href="public/lane-change-presentation.pdf" target="_blank" rel="noopener" data-en="Open presentation →" data-th="เปิดสไลด์ →">…</a>
+        <a class="plink" href="https://github.com/Lemonade678/Video-based-lane-change-detection" target="_blank" rel="noopener" data-en="Code on GitHub →" data-th="โค้ดบน GitHub →">…</a>
+      </div>
+    </div>
+  </section>
+
   <!-- stack -->
   <section id="stack">
-    <div class="eyebrow"><span class="k">02</span><h2 data-en="What I actually use" data-th="เครื่องมือที่ใช้จริง">…</h2><span class="ln"></span></div>
+    <div class="eyebrow"><span class="k">03</span><h2 data-en="What I actually use" data-th="เครื่องมือที่ใช้จริง">…</h2><span class="ln"></span></div>
 
     <div class="core rv">
       <h3 data-en="Core — what I want to build in" data-th="เครื่องมือหลัก — สิ่งที่อยากทำงานด้วย">…</h3>
@@ -358,7 +431,7 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
 
   <!-- soft skills -->
   <section id="soft">
-    <div class="eyebrow"><span class="k">03</span><h2 data-en="How I work with people" data-th="วิธีทำงานร่วมกับคนอื่น">…</h2><span class="ln"></span></div>
+    <div class="eyebrow"><span class="k">04</span><h2 data-en="How I work with people" data-th="วิธีทำงานร่วมกับคนอื่น">…</h2><span class="ln"></span></div>
     <div class="soft">
       <div class="box rv" style="--c:var(--yellow)">
         <h3 data-en="Adaptability" data-th="การปรับตัว">…</h3>
@@ -377,7 +450,7 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
 
   <!-- path -->
   <section id="path">
-    <div class="eyebrow"><span class="k">04</span><h2 data-en="Path so far" data-th="เส้นทางที่ผ่านมา">…</h2><span class="ln"></span></div>
+    <div class="eyebrow"><span class="k">05</span><h2 data-en="Path so far" data-th="เส้นทางที่ผ่านมา">…</h2><span class="ln"></span></div>
     <div class="tl">
       <div class="row rv"><span class="y">2026</span><span class="w" data-en="Generation Thailand Hackathon — 6th of 137 teams (top 5%)" data-th="Generation Thailand Hackathon — อันดับ 6 จาก 137 ทีม (5% แรก)">…</span><span class="p" data-en="Bangkok" data-th="กรุงเทพฯ">…</span></div>
       <div class="row rv"><span class="y">2026</span><span class="w" data-en="B.Eng. Electronics &amp; Infocommunication · GPA 3.22" data-th="วศ.บ. อิเล็กทรอนิกส์และสื่อสารสารสนเทศ · เกรดเฉลี่ย 3.22">…</span><span class="p" data-en="KMUTT" data-th="มจธ.">…</span></div>
@@ -415,10 +488,38 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
       // ไม่ได้รับมาจากผู้ใช้ จึงไม่มีทาง inject อะไรเข้ามาได้
       if(v.indexOf('<strong>')!==-1){n.innerHTML=v;}else{n.textContent=v;}
     });
+    // alt ของรูปอยู่ใน attribute จะใช้ textContent เหมือน node อื่นไม่ได้ ต้องเซ็ตแยก
+    document.querySelectorAll('[data-alt-en]').forEach(function(n){
+      var a=n.getAttribute('data-alt-'+l); if(a!==null)n.setAttribute('alt',a);
+    });
     document.documentElement.lang=(l==='th')?'th':'en';
     bEN.setAttribute('aria-pressed',l==='en'); bTH.setAttribute('aria-pressed',l==='th');
   }
   bEN.onclick=function(){set('en')}; bTH.onclick=function(){set('th')}; set('en');
+  // ---- แท็บหลักฐาน ----
+  // roving tabindex: มีแค่แท็บที่เลือกอยู่ที่กด Tab ถึงได้ ที่เหลือใช้ลูกศรซ้าย/ขวาเลื่อน
+  var tabs=[].slice.call(document.querySelectorAll('.tb'));
+  function pick(i){
+    tabs.forEach(function(t,j){
+      var on=(i===j);
+      t.setAttribute('aria-selected',on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.dataset.panel).hidden = !on;
+    });
+  }
+  tabs.forEach(function(t,i){
+    t.onclick=function(){pick(i)};
+    t.onkeydown=function(e){
+      var n=i;
+      if(e.key==='ArrowRight')n=(i+1)%tabs.length;
+      else if(e.key==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')n=0;
+      else if(e.key==='End')n=tabs.length-1;
+      else return;
+      e.preventDefault(); pick(n); tabs[n].focus();
+    };
+  });
+
   var items=document.querySelectorAll('.rv');
   if(!('IntersectionObserver' in window)){items.forEach(function(e){e.classList.add('in')});}
   else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});

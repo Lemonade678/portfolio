@@ -6,6 +6,7 @@ import PhotoDetect from "@/components/PhotoDetect";
 import {
   ACCENT_HEX,
   CONTACTS,
+  CREDENTIALS,
   METRICS,
   PERSON,
   PROJECTS,
@@ -94,7 +95,7 @@ export default function Page() {
 
           <div className="flex items-center gap-5">
             <nav className="hidden gap-5 md:flex">
-              {(["work", "stack", "soft", "path", "contact"] as const).map((k) => (
+              {(["work", "proof", "stack", "soft", "path", "contact"] as const).map((k) => (
                 <a
                   key={k}
                   href={`#${k}`}
@@ -226,6 +227,31 @@ export default function Page() {
                 </h3>
                 <p className="mb-5 mt-1 text-[13px] text-ink2">{t(p.org, lang)}</p>
 
+                {/* คลิปเดโม — วางก่อนคำอธิบาย เพราะคนสาย CV ดูภาพสองวินาทีก็รู้แล้ว
+                    ว่าของจริงหรือเปล่า ส่วนตัวหนังสืออ่านทีหลังก็ได้
+
+                    ใช้ <img> ธรรมดาไม่ใช่ next/image ตั้งใจ — ไฟล์เป็น animated WebP
+                    ถ้าให้ next/image ไป optimize ต่อ ภาพเคลื่อนไหวจะหายกลายเป็นเฟรมเดียว
+                    loading="lazy" เพราะไฟล์ ~1.8 MB และการ์ดนี้อยู่ใต้ fold เสมอ
+                    aspectRatio กันหน้าเว็บกระโดดตอนไฟล์ยังโหลดไม่เสร็จ */}
+                {p.media && (
+                  <figure className="mb-5">
+                    <img
+                      src={p.media.src}
+                      alt={t(p.media.alt, lang)}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full rounded-xl border border-line bg-surface2"
+                      style={{ aspectRatio: p.media.ratio }}
+                    />
+                    {p.media.caption && (
+                      <figcaption className="mt-2 text-[12px] leading-snug text-muted">
+                        {t(p.media.caption, lang)}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
+
                 <div className="mb-4 grid gap-4 md:grid-cols-3 md:gap-5">
                   <Field label={t(UI.labels.problem, lang)}>
                     {t(p.problem, lang)}
@@ -267,9 +293,18 @@ export default function Page() {
           ))}
         </section>
 
+        {/* ───── หลักฐาน ───── */}
+        <section id="proof" className="pt-[clamp(52px,8vw,86px)]">
+          <SectionHead n="02" title={t(UI.sections.proof, lang)} />
+          <p className="mb-5 -mt-2 max-w-[62ch] text-[13.5px] text-ink2">
+            {t(UI.proofNote, lang)}
+          </p>
+          <Credentials lang={lang} />
+        </section>
+
         {/* ───── เครื่องมือ ───── */}
         <section id="stack" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="02" title={t(UI.sections.stack, lang)} />
+          <SectionHead n="03" title={t(UI.sections.stack, lang)} />
 
           {/* กลุ่ม core กินเต็มความกว้างและใช้ชิปสีเหลืองตัวใหญ่กว่า
               เพื่อให้คนกวาดตาผ่านแล้วเห็นหกอย่างนี้ก่อนอย่างอื่น */}
@@ -333,7 +368,7 @@ export default function Page() {
             แยกออกมาเป็น section ของตัวเอง ไม่ยัดเป็นชิปรวมกับข้างบน
             เพราะแต่ละข้อต้องมีที่ให้เขียนหลักฐานประกอบ ไม่งั้นเป็นแค่คำโฆษณา */}
         <section id="soft" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="03" title={t(UI.sections.soft, lang)} />
+          <SectionHead n="04" title={t(UI.sections.soft, lang)} />
           <div className="grid gap-4 md:grid-cols-3">
             {SOFT_SKILLS.map((s, i) => (
               <Reveal key={s.name.en}>
@@ -358,7 +393,7 @@ export default function Page() {
 
         {/* ───── เส้นทาง ───── */}
         <section id="path" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="04" title={t(UI.sections.path, lang)} />
+          <SectionHead n="05" title={t(UI.sections.path, lang)} />
           <div className="border-t border-line">
             {TIMELINE.map((r, i) => (
               <Reveal key={i}>
@@ -439,6 +474,139 @@ function Field({
       ) : (
         <p className="text-sm leading-relaxed text-ink2">{children}</p>
       )}
+    </div>
+  );
+}
+
+/**
+ * แท็บหลักฐาน
+ *
+ * ทำไมต้องเป็นแท็บ: ใบ certificate สัดส่วน A4 แนวนอน สูงมากเมื่อกางเต็มความกว้าง
+ * ถ้าเรียงเอกสารทุกใบลงมาต่อกัน คนต้องสกรอลผ่านรูปใหญ่ ๆ กว่าจะถึงส่วนถัดไป
+ * แท็บทำให้เห็นทีละใบ แต่รู้ตั้งแต่แรกว่ามีทั้งหมดกี่ใบ
+ *
+ * เรื่อง accessibility ที่ทำตาม WAI-ARIA tabs pattern:
+ *   - ปุ่มอยู่ใน role="tablist" · แต่ละปุ่มเป็น role="tab" + aria-selected
+ *   - แผงเนื้อหาเป็น role="tabpanel" ผูกกับปุ่มด้วย aria-controls / aria-labelledby
+ *   - แท็บที่ไม่ได้เลือกตั้ง tabIndex={-1} เพื่อให้ Tab กระโดดข้ามทั้งกลุ่มไปเลย
+ *     แล้วใช้ปุ่มลูกศรซ้าย/ขวาเลื่อนระหว่างแท็บแทน (roving tabindex)
+ */
+function Credentials({ lang }: { lang: Lang }) {
+  const [active, setActive] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const last = CREDENTIALS.length - 1;
+    let next = active;
+    if (e.key === "ArrowRight") next = active === last ? 0 : active + 1;
+    else if (e.key === "ArrowLeft") next = active === 0 ? last : active - 1;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = last;
+    else return;
+    e.preventDefault();
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  };
+
+  const c = CREDENTIALS[active];
+  const hex = ACCENT_HEX[c.accent];
+
+  return (
+    <div>
+      <div
+        role="tablist"
+        aria-label={t(UI.sections.proof, lang)}
+        onKeyDown={onKeyDown}
+        className="mb-4 flex flex-wrap gap-2"
+      >
+        {CREDENTIALS.map((cr, i) => {
+          const on = i === active;
+          const h = ACCENT_HEX[cr.accent];
+          return (
+            <button
+              key={cr.id}
+              ref={(el) => {
+                tabRefs.current[i] = el;
+              }}
+              role="tab"
+              id={`cred-tab-${cr.id}`}
+              aria-selected={on}
+              aria-controls={`cred-panel-${cr.id}`}
+              tabIndex={on ? 0 : -1}
+              onClick={() => setActive(i)}
+              className="rounded-lg border px-3.5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors"
+              style={{
+                color: on ? "#1A1310" : h,
+                background: on ? h : `${h}1A`,
+                borderColor: on ? h : `${h}4D`,
+              }}
+            >
+              {t(cr.tab, lang)}
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        role="tabpanel"
+        id={`cred-panel-${c.id}`}
+        aria-labelledby={`cred-tab-${c.id}`}
+        style={accentVar(c.accent)}
+        className="overflow-hidden rounded-2xl border border-line bg-surface p-5 sm:p-7"
+      >
+        <h3 className="text-[clamp(17px,2.6vw,22px)] font-bold leading-tight tracking-[-0.02em]">
+          {t(c.title, lang)}
+        </h3>
+        <p className="mt-1 text-[13px] text-ink2">{t(c.issuer, lang)}</p>
+        <p className="mt-0.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted">
+          {t(UI.labels.issued, lang)} · {c.when}
+        </p>
+
+        {/* รูปเอกสาร — บางใบมีแต่ PDF ก็ข้ามส่วนนี้ไป
+            กดที่รูปแล้วเปิดไฟล์เต็มในแท็บใหม่ เผื่อคนอยากซูมอ่านลายเซ็น */}
+        {c.image && (
+          <a
+            href={c.links?.[0]?.href ?? c.image.src}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 block rounded-xl border border-line transition-transform hover:-translate-y-0.5"
+          >
+            <img
+              src={c.image.src}
+              alt={t(c.image.alt, lang)}
+              loading="lazy"
+              decoding="async"
+              className="w-full rounded-[11px] bg-surface2"
+              style={{ aspectRatio: c.image.ratio }}
+            />
+          </a>
+        )}
+
+        <h4 className="mb-2 mt-5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-muted">
+          {t(UI.labels.verifies, lang)}
+        </h4>
+        <p
+          className="result max-w-[70ch] text-sm leading-relaxed text-ink2"
+          dangerouslySetInnerHTML={{ __html: t(c.verifies, lang) }}
+        />
+
+        {c.links && c.links.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+            {c.links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border-b pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.12em]"
+                style={{ color: hex }}
+              >
+                {t(l.label, lang)}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

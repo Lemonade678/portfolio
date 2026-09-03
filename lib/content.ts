@@ -31,10 +31,34 @@ export interface Project {
   approach: L10n;
   result: L10n;
   stack: string[];
+  /** คลิป/ภาพเดโมของโปรเจกต์ — วางไว้ใต้ชื่อโปรเจกต์ ก่อนคำอธิบาย
+   *  เพราะคนสาย CV ดูภาพ 2 วินาทีแล้วรู้เลยว่าของจริงหรือเปล่า อ่านทีหลังได้ */
+  media?: ProjectMedia;
   /** ลิงก์ท้ายการ์ด — เป็น array เพราะบางโปรเจกต์มีของให้ดูมากกว่าหนึ่งที่
    *  (เช่น น้องตรงปก มีทั้ง Space ที่เล่นได้จริง ตัว adapter และ dataset ต้นทาง)
    *  ลิงก์แรกคือลิงก์ "หลัก" ที่อยากให้คนกดที่สุด เรียงจากซ้ายไปขวา */
   links?: { href: string; label: L10n }[];
+}
+
+/**
+ * สื่อประกอบโปรเจกต์
+ *
+ * ทำไมเป็น animated WebP ไม่ใช่ .mp4:
+ *   ไฟล์เอาต์พุตจาก pipeline เข้ารหัสด้วย MPEG-4 Part 2 (mp4v) ซึ่ง Chrome/Firefox
+ *   เล่นไม่ได้ ต้องแปลงเป็น H.264 ก่อนซึ่งต้องมี ffmpeg — WebP เคลื่อนไหวเลี่ยงปัญหา
+ *   codec ทั้งหมด เบราว์เซอร์ทุกตัวรองรับ และเรนเดอร์เป็น <img> ธรรมดา
+ *   จึงไม่ติดนโยบายบล็อก autoplay ของเบราว์เซอร์ด้วย
+ *   (ถ้าวันหนึ่งลง ffmpeg แล้ว อยากเปลี่ยนเป็น .mp4 จริง ๆ ก็เปลี่ยนที่ตัว render ได้)
+ */
+export interface ProjectMedia {
+  /** ไฟล์ใน public/ */
+  src: string;
+  /** ข้อความแทนภาพ — จำเป็นจริง ๆ เพราะคลิปนี้คือหลักฐานหลักของโปรเจกต์ */
+  alt: L10n;
+  /** คำบรรยายใต้ภาพ บอกว่ากำลังดูอะไรอยู่ */
+  caption?: L10n;
+  /** สัดส่วนภาพ ใส่เพื่อกันหน้าเว็บกระโดดตอนไฟล์ยังโหลดไม่เสร็จ (CLS) */
+  ratio: string;
 }
 
 export interface Metric {
@@ -48,6 +72,30 @@ export interface TimelineItem {
   year: string;
   what: L10n;
   where: L10n;
+}
+
+/**
+ * หลักฐานยืนยัน — เอกสารจริงที่ตรวจสอบได้ ไม่ใช่คำกล่าวอ้าง
+ *
+ * ฟิลด์ที่สำคัญที่สุดคือ `verifies` เพราะมันบังคับให้เขียนว่าเอกสารนี้
+ * ยืนยันอะไร **และไม่ได้ยืนยันอะไร** — เช่นใบ certificate ของแฮกกาธอน
+ * เขียนแค่ว่าเข้าร่วมจนจบ ไม่ได้ระบุอันดับ 6/137 ไว้
+ * ถ้าเอามาแปะเฉย ๆ โดยไม่บอก คนอ่านจะเข้าใจว่าใบนี้ยืนยันอันดับด้วย
+ * ซึ่งไม่จริง และเป็นการโกงที่ตรวจสอบได้ง่ายมากถ้ามีคนซูมดู
+ */
+export interface Credential {
+  id: string;
+  /** ข้อความบนปุ่มแท็บ — สั้นที่สุดเท่าที่จะสั้นได้ */
+  tab: L10n;
+  accent: Accent;
+  title: L10n;
+  issuer: L10n;
+  when: string;
+  /** ภาพเอกสาร ถ้ามี — บางอย่างมีแต่ไฟล์ PDF ก็ปล่อยว่างได้ */
+  image?: { src: string; alt: L10n; ratio: string };
+  /** ยืนยันอะไร และไม่ได้ยืนยันอะไร */
+  verifies: L10n;
+  links?: { href: string; label: L10n }[];
 }
 
 export interface ContactLink {
@@ -261,9 +309,21 @@ export const PROJECTS: Project[] = [
       th: "<strong>ได้ pipeline ที่ทำงานครบวงจร</strong> รายงานอาจารย์ที่ปรึกษาทุกสัปดาห์ และนำเสนอปิดโครงการที่แล็บ · เปิดโค้ดและสไลด์ทั้งหมด รวมถึงข้อเท็จจริงที่ว่าไม่มีตัวเลข benchmark มาอ้าง เพราะสิ่งที่ต้องส่งมอบคือเดโมที่ทำงานได้ ไม่ใช่อันดับบนตาราง",
     },
     stack: ["CLRerNet", "YOLOv11-s", "PyTorch", "Custom tracker", "OpenCV"],
+    media: {
+      src: "/lane-change-demo.webp",
+      ratio: "720 / 404",
+      alt: {
+        en: "Dashcam footage with green lane boundaries drawn by CLRerNet, a tracked car in a cyan box with its ID, and a heads-up panel counting lane changes.",
+        th: "ภาพจากกล้องหน้ารถ มีเส้นเลนสีเขียวจาก CLRerNet กล่องสีฟ้าจับรถพร้อม ID และแผงมุมขวาบนนับจำนวนการเปลี่ยนเลน",
+      },
+      caption: {
+        en: "Real output from the pipeline — lanes, tracked vehicles with stable IDs, and the lane-change counter, all on the same frame.",
+        th: "เอาต์พุตจริงจาก pipeline — เลน รถที่ถูก track พร้อม ID ที่ไม่สลับ และตัวนับการเปลี่ยนเลน อยู่บนเฟรมเดียวกัน",
+      },
+    },
     links: [
       {
-        href: "https://github.com/Lemonade678/lane-change-detection",
+        href: "https://github.com/Lemonade678/Video-based-lane-change-detection",
         label: { en: "Code on GitHub →", th: "โค้ดบน GitHub →" },
       },
       {
@@ -455,6 +515,75 @@ export const SOFT_SKILLS: SoftSkill[] = [
   },
 ];
 
+// ── หลักฐาน ───────────────────────────────────────────────────
+//
+// ทำเป็นแท็บเพราะเอกสารพวกนี้กินพื้นที่แนวตั้งเยอะมาก (ใบ cert สัดส่วน A4 แนวนอน)
+// ถ้าเรียงลงมาต่อกันหมด คนจะต้องสกรอลผ่านรูปใหญ่ ๆ กว่าจะถึงส่วนถัดไป
+// แท็บทำให้เห็นทีละใบ แต่รู้ว่ามีกี่ใบตั้งแต่แรก
+
+export const CREDENTIALS: Credential[] = [
+  {
+    id: "hackathon",
+    tab: { en: "Hackathon", th: "แฮกกาธอน" },
+    accent: "pink",
+    title: {
+      en: "Certificate of Completion",
+      th: "ประกาศนียบัตรผ่านการเข้าร่วม",
+    },
+    issuer: {
+      en: "Generation Thailand · signed by Phunyanuch Pattanotai, CEO",
+      th: "Generation Thailand · ลงนามโดย Phunyanuch Pattanotai (CEO)",
+    },
+    when: "28 — 30 Aug 2026",
+    image: {
+      src: "/hackathon-certificate.jpg",
+      ratio: "1755 / 1241",
+      alt: {
+        en: "Generation Thailand Certificate of Completion presented to Nutt Bhanidch for Generation Thailand's Hackathon, 28–30 August 2026, signed by the CEO.",
+        th: "ประกาศนียบัตรจาก Generation Thailand มอบให้ Nutt Bhanidch สำหรับ Generation Thailand's Hackathon วันที่ 28–30 สิงหาคม 2026 ลงนามโดย CEO",
+      },
+    },
+    verifies: {
+      en: "<strong>The 6th-of-137 placing is real</strong> — it was announced on stage at the closing ceremony, which is why it appears in the project card rather than on this certificate. What this document certifies is taking part in the hackathon and completing it, signed by the CEO of Generation Thailand.",
+      th: "<strong>อันดับ 6 จาก 137 เป็นเรื่องจริง</strong> — ประกาศบนเวทีตอนปิดงาน เลยอยู่ในการ์ดโปรเจกต์แทนที่จะอยู่บนใบนี้ ส่วนสิ่งที่เอกสารนี้รับรองคือการเข้าร่วมแฮกกาธอนและทำจนจบ ลงนามโดย CEO ของ Generation Thailand",
+    },
+    links: [
+      {
+        href: "/hackathon-certificate.pdf",
+        label: { en: "Open original PDF →", th: "เปิดไฟล์ PDF ต้นฉบับ →" },
+      },
+    ],
+  },
+  {
+    id: "internship",
+    tab: { en: "Internship", th: "ฝึกงานวิจัย" },
+    accent: "blue",
+    title: {
+      en: "Lane-Change Detection — final presentation",
+      th: "ตรวจจับการเปลี่ยนเลน — สไลด์นำเสนอปิดโครงการ",
+    },
+    issuer: {
+      en: "Multimedia Lab, Yuan Ze University, Taiwan · Prof. Duan-Yu Chen",
+      th: "Multimedia Lab, Yuan Ze University ไต้หวัน · Prof. Duan-Yu Chen",
+    },
+    when: "Aug 2025",
+    verifies: {
+      en: "<strong>The deck I actually defended at the lab</strong> at the end of the internship — the architecture, each model, and the demo videos. No benchmark number in it, because the deliverable was a working pipeline rather than a leaderboard entry. The code is public too, so the claims are checkable line by line.",
+      th: "<strong>สไลด์ที่ใช้นำเสนอปิดโครงการที่แล็บจริง</strong> มีทั้งสถาปัตยกรรม โมเดลแต่ละตัว และวิดีโอเดโม ไม่มีตัวเลข benchmark เพราะสิ่งที่ต้องส่งมอบคือ pipeline ที่ทำงานได้ ไม่ใช่อันดับบนตาราง และโค้ดเปิดให้ดูทั้งหมด ตรวจสอบได้ทีละบรรทัด",
+    },
+    links: [
+      {
+        href: "/lane-change-presentation.pdf",
+        label: { en: "Open presentation →", th: "เปิดสไลด์ →" },
+      },
+      {
+        href: "https://github.com/Lemonade678/Video-based-lane-change-detection",
+        label: { en: "Code on GitHub →", th: "โค้ดบน GitHub →" },
+      },
+    ],
+  },
+];
+
 // ── เส้นทาง ───────────────────────────────────────────────────
 
 export const TIMELINE: TimelineItem[] = [
@@ -505,6 +634,7 @@ export const TIMELINE: TimelineItem[] = [
 export const UI = {
   nav: {
     work: { en: "Work", th: "ผลงาน" },
+    proof: { en: "Proof", th: "หลักฐาน" },
     stack: { en: "Stack", th: "เครื่องมือ" },
     soft: { en: "People", th: "การทำงาน" },
     path: { en: "Path", th: "เส้นทาง" },
@@ -512,6 +642,7 @@ export const UI = {
   },
   sections: {
     work: { en: "Selected work", th: "ผลงานที่เลือกมา" },
+    proof: { en: "Proof you can check", th: "หลักฐานที่ตรวจสอบได้" },
     stack: { en: "What I actually use", th: "เครื่องมือที่ใช้จริง" },
     soft: { en: "How I work with people", th: "วิธีทำงานร่วมกับคนอื่น" },
     path: { en: "Path so far", th: "เส้นทางที่ผ่านมา" },
@@ -520,6 +651,12 @@ export const UI = {
     problem: { en: "Problem", th: "ปัญหา" },
     approach: { en: "Approach", th: "วิธีแก้" },
     result: { en: "Result", th: "ผลลัพธ์" },
+    verifies: { en: "What this document shows", th: "เอกสารนี้บอกอะไร" },
+    issued: { en: "Issued", th: "ออกให้เมื่อ" },
+  },
+  proofNote: {
+    en: "Every number on this page that can be backed by a document, is. Where a claim has no paper behind it, the card says so.",
+    th: "ตัวเลขบนหน้านี้ที่มีเอกสารยืนยันได้ ผมเอามาแปะไว้หมด ส่วนข้อไหนที่ยังไม่มีกระดาษรองรับ ก็เขียนบอกไว้ตรง ๆ",
   },
   outro: {
     heading: {
