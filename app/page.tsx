@@ -7,6 +7,7 @@ import {
   ACCENT_HEX,
   CONTACTS,
   CREDENTIALS,
+  MENU,
   METRICS,
   PERSON,
   PROJECTS,
@@ -164,7 +165,39 @@ export default function Page() {
             </p>
           ))}
 
-          <ContactCards lang={lang} className="mt-8" />
+          {/* เมนูปลายทาง — สามปุ่มพอ แบบ 9arm.co
+              ปุ่มแรกทึบเพราะเป็นสิ่งที่อยากให้กดที่สุด ที่เหลือเป็นเส้นขอบ
+              คำอธิบายใต้ปุ่มจำเป็น เพราะคำว่า "Shop" ลอย ๆ บนพอร์ตวิศวะ
+              ไม่มีใครเดาถูกว่าขายอะไร */}
+          <nav aria-label="Main destinations" className="mt-8 grid gap-2.5 sm:grid-cols-3">
+            {MENU.map((m) => (
+              <a
+                key={m.href}
+                href={m.href}
+                target={m.external ? "_blank" : undefined}
+                rel={m.external ? "noopener noreferrer" : undefined}
+                className="group rounded-xl border px-4 py-3.5 transition-all hover:-translate-y-0.5"
+                style={{
+                  color: m.primary ? "#1A1310" : ACCENT_HEX.yellow,
+                  background: m.primary ? ACCENT_HEX.yellow : `${ACCENT_HEX.yellow}12`,
+                  borderColor: m.primary ? ACCENT_HEX.yellow : `${ACCENT_HEX.yellow}47`,
+                }}
+              >
+                <span className="block font-mono text-[12px] font-semibold uppercase tracking-[0.12em]">
+                  {t(m.label, lang)}
+                  {m.external ? " ↗" : " ↓"}
+                </span>
+                <span
+                  className="mt-1 block text-[11.5px] leading-snug"
+                  style={{ opacity: m.primary ? 0.72 : 0.78 }}
+                >
+                  {t(m.note, lang)}
+                </span>
+              </a>
+            ))}
+          </nav>
+
+          <ContactCards lang={lang} className="mt-3" />
 
           {/* ตัวเลขมี 4 ตัว → 1 / 2 / 4 คอลัมน์ ถ้าใช้ 3 คอลัมน์เหมือนเดิม
               ใบสุดท้ายจะเหลือค้างแถวล่างใบเดียว และบนมือถือยังเป็นคอลัมน์เดียว

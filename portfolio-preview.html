@@ -95,6 +95,20 @@ h1{margin:22px 0 0;font-size:clamp(38px,8vw,74px);line-height:1.02;font-weight:7
 .card .lbl i{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 @media(max-width:700px){.cards{grid-template-columns:1fr}}
 
+/* ---- เมนูปลายทาง (แบบ 9arm.co) ----
+   สามปุ่มพอ ถ้าใส่สี่ปุ่มขึ้นไปจะกลายเป็นแถบ nav อีกอันซึ่งมีอยู่แล้วข้างบน
+   ปุ่มแรกทึบเพราะเป็นสิ่งที่อยากให้กดที่สุด ที่เหลือเป็นเส้นขอบ */
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:30px}
+.mi{display:block;padding:14px 16px;border-radius:12px;text-decoration:none;transition:.2s;
+    color:var(--yellow);background:color-mix(in srgb,var(--yellow) 7%,transparent);
+    border:1px solid color-mix(in srgb,var(--yellow) 28%,transparent)}
+.mi:hover{transform:translateY(-2px)}
+.mi.pri{color:#1A1310;background:var(--yellow);border-color:var(--yellow)}
+.mi b{display:block;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.mi i{display:block;margin-top:4px;font-style:normal;font-size:11.5px;line-height:1.35;opacity:.78}
+.mi.pri i{opacity:.72}
+@media(max-width:700px){.menu{grid-template-columns:1fr}}
+
 /* ---- metrics ----
    มีสี่ใบ เลยเป็น 4 → 2 → 1 คอลัมน์ ถ้าคง 3 ไว้ ใบสุดท้ายจะเหลือค้างแถวล่างใบเดียว */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
@@ -257,7 +271,22 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
        data-en="I care about the part most demos skip: whether the thing still works on the ten thousandth image, and whether you can explain where a number came from."
        data-th="สิ่งที่ผมให้ความสำคัญคือส่วนที่เดโมส่วนใหญ่ข้ามไป — มันยังทำงานได้ไหมตอนภาพที่หนึ่งหมื่น และเราอธิบายได้ไหมว่าตัวเลขนั้นมาจากไหน">…</p>
 
-    <div class="cards">
+    <nav class="menu" aria-label="Main destinations">
+      <a class="mi pri" href="#work">
+        <b data-en="Selected work ↓" data-th="ผลงาน ↓">Selected work ↓</b>
+        <i data-en="Five projects, with the numbers and the limits of each" data-th="ห้าโปรเจกต์ พร้อมตัวเลขและข้อจำกัดของแต่ละอัน">…</i>
+      </a>
+      <a class="mi" href="https://huggingface.co/spaces/Lemonade44/nong-trongpok" target="_blank" rel="noopener">
+        <b data-en="Live demo ↗" data-th="ลองเล่น ↗">Live demo ↗</b>
+        <i data-en="Talk to the Thai interview LLM I fine-tuned" data-th="คุยกับ LLM สัมภาษณ์งานภาษาไทยที่ผม fine-tune เอง">…</i>
+      </a>
+      <a class="mi" href="https://www.instagram.com/buttertteok4u.by.remmie/" target="_blank" rel="noopener">
+        <b data-en="Shop ↗" data-th="ร้าน ↗">Shop ↗</b>
+        <i data-en="Kapimong — homemade butter tteok, pre-order Fridays" data-th="Kapimong — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์">…</i>
+      </a>
+    </nav>
+
+    <div class="cards" style="margin-top:10px">
       <a class="card" href="mailto:nuttworkbhanidch@gmail.com">
         <span class="ic" style="background:rgba(245,185,46,.16);color:var(--yellow)">@</span>
         <span class="lbl"><i data-en="Email" data-th="อีเมล">Email</i>nuttworkbhanidch@gmail.com</span>

@@ -106,6 +106,26 @@ export interface ContactLink {
   value: string;
 }
 
+/**
+ * เมนูปลายทางหลัก — แรงบันดาลใจจาก 9arm.co ที่หน้าแรกมีแค่ปุ่มไม่กี่ปุ่ม
+ * (Lab / Shop / YouTube) แล้วจบ ไม่มีอะไรให้หลง
+ *
+ * กติกาที่ยึด: **ไม่เกินสามปุ่ม** ถ้าใส่สี่ปุ่มขึ้นไปมันจะกลายเป็นแถบ nav อีกอัน
+ * ซึ่งเว็บนี้มีอยู่แล้วข้างบน — ประโยชน์ของแถวนี้คือ "เลือกให้แล้วว่าควรกดอะไร"
+ * ถ้าจะเพิ่มปุ่มใหม่ ต้องเอาปุ่มเดิมออกหนึ่งอัน
+ *
+ * ปุ่มแรกทึบ (primary) ที่เหลือเป็นเส้นขอบ แบบเดียวกับต้นแบบ
+ */
+export interface MenuItem {
+  href: string;
+  label: L10n;
+  /** คำอธิบายบรรทัดเดียวใต้ปุ่ม — "Shop" เปล่า ๆ บนพอร์ตวิศวะไม่มีใครเดาถูก */
+  note: L10n;
+  primary?: boolean;
+  /** ลิงก์ออกนอกเว็บ → เปิดแท็บใหม่ และต่อท้ายด้วย ↗ */
+  external?: boolean;
+}
+
 // ── ตัวตน ─────────────────────────────────────────────────────
 
 export const PERSON = {
@@ -210,6 +230,38 @@ export const CONTACTS: ContactLink[] = [
     accent: "blue",
     kind: { en: "Network", th: "เครือข่าย" },
     value: "LinkedIn",
+  },
+];
+
+// ── เมนู ──────────────────────────────────────────────────────
+
+export const MENU: MenuItem[] = [
+  {
+    href: "#work",
+    primary: true,
+    label: { en: "Selected work", th: "ผลงาน" },
+    note: {
+      en: "Five projects, with the numbers and the limits of each",
+      th: "ห้าโปรเจกต์ พร้อมตัวเลขและข้อจำกัดของแต่ละอัน",
+    },
+  },
+  {
+    href: "https://huggingface.co/spaces/Lemonade44/nong-trongpok",
+    external: true,
+    label: { en: "Live demo", th: "ลองเล่น" },
+    note: {
+      en: "Talk to the Thai interview LLM I fine-tuned",
+      th: "คุยกับ LLM สัมภาษณ์งานภาษาไทยที่ผม fine-tune เอง",
+    },
+  },
+  {
+    href: "https://www.instagram.com/buttertteok4u.by.remmie/",
+    external: true,
+    label: { en: "Shop", th: "ร้าน" },
+    note: {
+      en: "Kapimong — homemade butter tteok, pre-order Fridays",
+      th: "Kapimong — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์",
+    },
   },
 ];
 
