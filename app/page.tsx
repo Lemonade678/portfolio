@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import CoverArt from "@/components/CoverArt";
 import PhotoDetect from "@/components/PhotoDetect";
+import BrandIcon, { brandOf, hostOf } from "@/components/BrandIcon";
 import {
   ACCENT_HEX,
   CONTACTS,
@@ -75,6 +76,58 @@ const CHIP =
 /** สีหัวข้อของการ์ด soft skill — วนตามลำดับ ไม่ได้ผูกกับความหมายเหมือนสีโปรเจกต์
  *  ใช้แค่ให้สามใบไม่กลืนกันเป็นบล็อกเทาก้อนเดียว */
 const SOFT_ACCENTS: Accent[] = ["yellow", "pink", "blue"];
+
+/**
+ * ลิงก์ท้ายการ์ด — มีโลโก้ของปลายทาง และป็อปอัพบอกว่ากดแล้วไปไหน
+ *
+ * ทำไมต้องมีป็อปอัพ: ข้อความอย่าง "Code on GitHub →" บอกแค่ว่าไป GitHub
+ * แต่ไม่ได้บอกว่า repo ไหน คนที่กำลังจะกดลิงก์ออกนอกเว็บควรเห็น host + path
+ * ก่อนกด เป็นมารยาทพื้นฐานและช่วยให้ดูน่าเชื่อถือขึ้นด้วย
+ *
+ * ทำด้วย CSS ล้วน (group-hover / group-focus-within) ไม่มี JS ไม่มี state
+ * และใส่ focus-within ด้วย เพราะคนที่ใช้คีย์บอร์ดก็ต้องเห็นป็อปอัพเหมือนกัน
+ */
+function CardLink({
+  href,
+  children,
+  color,
+}: {
+  href: string;
+  children: React.ReactNode;
+  color: string;
+}) {
+  // ลิงก์ที่ขึ้นต้นด้วย / คือไฟล์ในเว็บเราเอง ไม่ใช่การออกนอกเว็บ
+  // ไม่ต้องมีโลโก้บริการ และไม่ต้องเตือนว่าจะไปไหน
+  const internal = href.startsWith("/");
+  const brand = brandOf(href);
+
+  return (
+    <span className="group relative inline-flex">
+      <a
+        href={href}
+        target={internal ? undefined : "_blank"}
+        rel={internal ? undefined : "noopener noreferrer"}
+        className="inline-flex items-center gap-1.5 border-b pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.12em]"
+        style={{ color }}
+      >
+        {!internal && <BrandIcon brand={brand} size={13} />}
+        {children}
+      </a>
+
+      {!internal && (
+        <span
+          role="tooltip"
+          className="pointer-events-none absolute bottom-full left-0 z-30 mb-2 flex translate-y-1 items-center gap-2 whitespace-nowrap rounded-lg border border-line bg-surface2 px-2.5 py-2 opacity-0 shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
+        >
+          <BrandIcon brand={brand} size={20} className="flex-none" style={{ color }} />
+          <span className="font-mono text-[10.5px] normal-case tracking-normal text-ink2">
+            {hostOf(href)}
+          </span>
+        </span>
+      )}
+    </span>
+  );
+}
 
 // ── หน้าเว็บ ──────────────────────────────────────────────────
 
@@ -183,7 +236,8 @@ export default function Page() {
                   borderColor: m.primary ? ACCENT_HEX.yellow : `${ACCENT_HEX.yellow}47`,
                 }}
               >
-                <span className="block font-mono text-[12px] font-semibold uppercase tracking-[0.12em]">
+                <span className="flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em]">
+                  {m.external && <BrandIcon brand={brandOf(m.href)} size={14} />}
                   {t(m.label, lang)}
                   {m.external ? " ↗" : " ↓"}
                 </span>
@@ -306,18 +360,11 @@ export default function Page() {
                 {/* ลิงก์เป็น array แล้ว — วางเรียงกันแบบ wrap ได้ เผื่อการ์ดไหน
                     มีของให้ดูหลายที่ (น้องตรงปกมีทั้ง Space, adapter, dataset) */}
                 {p.links && p.links.length > 0 && (
-                  <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                  <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
                     {p.links.map((l) => (
-                      <a
-                        key={l.href}
-                        href={l.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 border-b pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.12em]"
-                        style={{ color: ACCENT_HEX[p.accent] }}
-                      >
+                      <CardLink key={l.href} href={l.href} color={ACCENT_HEX[p.accent]}>
                         {t(l.label, lang)}
-                      </a>
+                      </CardLink>
                     ))}
                   </div>
                 )}
@@ -624,18 +671,11 @@ function Credentials({ lang }: { lang: Lang }) {
         />
 
         {c.links && c.links.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
             {c.links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border-b pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.12em]"
-                style={{ color: hex }}
-              >
+              <CardLink key={l.href} href={l.href} color={hex}>
                 {t(l.label, lang)}
-              </a>
+              </CardLink>
             ))}
           </div>
         )}
@@ -661,14 +701,15 @@ function ContactCards({
           rel="noopener noreferrer"
           className="flex items-center gap-3 rounded-xl border border-line bg-surface px-4 py-4 transition-all hover:-translate-y-0.5 hover:border-yellow hover:bg-surface2"
         >
+          {/* โลโก้เดาจาก href ไม่ได้เก็บแยกใน content.ts — กัน href กับไอคอนหลุดจากกัน */}
           <span
-            className="grid h-7 w-7 flex-none place-items-center rounded-md font-mono text-[11px] font-semibold"
+            className="grid h-7 w-7 flex-none place-items-center rounded-md"
             style={{
               color: ACCENT_HEX[c.accent],
               background: `${ACCENT_HEX[c.accent]}29`,
             }}
           >
-            {c.icon}
+            <BrandIcon brand={brandOf(c.href)} size={15} />
           </span>
           <span className="min-w-0">
             <span className="block font-mono text-[9.5px] uppercase tracking-[0.14em] text-muted">

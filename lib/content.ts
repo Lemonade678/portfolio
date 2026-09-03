@@ -100,11 +100,13 @@ export interface Credential {
 
 export interface ContactLink {
   href: string;
-  icon: string;
   accent: Accent;
   kind: L10n;
   value: string;
 }
+// หมายเหตุ: ไม่มีฟิลด์ไอคอนแล้ว — โลโก้เดาจาก href เอาเองด้วย brandOf()
+// ใน components/BrandIcon.tsx เพราะถ้าเก็บไอคอนแยกไว้ วันหนึ่งจะมีคนแก้ href
+// แล้วลืมแก้ไอคอน กลายเป็นลิงก์ไป LinkedIn แต่ขึ้นโลโก้ GitHub
 
 /**
  * เมนูปลายทางหลัก — แรงบันดาลใจจาก 9arm.co ที่หน้าแรกมีแค่ปุ่มไม่กี่ปุ่ม
@@ -212,21 +214,18 @@ export const DETECTOR = {
 export const CONTACTS: ContactLink[] = [
   {
     href: "mailto:nuttworkbhanidch@gmail.com",
-    icon: "@",
     accent: "yellow",
     kind: { en: "Email", th: "อีเมล" },
     value: "nuttworkbhanidch@gmail.com",
   },
   {
     href: "https://github.com/Lemonade678",
-    icon: "</>",
     accent: "pink",
     kind: { en: "Code", th: "โค้ด" },
     value: "GitHub",
   },
   {
     href: "https://www.linkedin.com/in/nutt-bhanidch-b1b3161a5/",
-    icon: "in",
     accent: "blue",
     kind: { en: "Network", th: "เครือข่าย" },
     value: "LinkedIn",
