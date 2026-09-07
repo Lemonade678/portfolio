@@ -24,12 +24,27 @@ npm run build
 
 ---
 
+## เว็บสองตัว แยกหน้าที่กัน
+
+| | นามบัตร | **พอร์ตเต็ม (repo นี้)** |
+|---|---|---|
+| URL | `lemonade678.github.io` | Vercel |
+| ซอร์ส | [`Lemonade678.github.io`](https://github.com/Lemonade678/Lemonade678.github.io) · `index.html` ไฟล์เดียว | repo นี้ |
+| เนื้อหา | ชื่อ + repo ที่เลือกมา + ช่องทางติดต่อ | โปรเจกต์เต็ม ตัวเลข หลักฐาน เดโมที่รันได้จริง |
+| กลุ่มเป้าหมาย | dev ที่กดมาจากโปรไฟล์ GitHub | คนที่จะจ้าง / แล็บที่รับเรียนต่อ |
+
+**เนื้อหาสองเว็บนี้ทับกันบางส่วน** (ชื่อ · ตำแหน่ง · bio · ลิงก์ติดต่อ) และ
+**ไม่มีอะไรบังคับให้ตรงกัน** — ถ้าแก้ที่นี่แล้วไม่ตามไปแก้อีกที่ มันจะเพี้ยนเงียบ ๆ
+เป็นราคาที่ต้องจ่ายจากการแยกสองเว็บ รู้ไว้ก่อนดีกว่ามาเจอทีหลัง
+
+---
+
 ## Deploy ขึ้น Vercel
 
 **วิธีที่แนะนำ — ผูกกับ GitHub ให้ auto-deploy** (ไม่ต้องลง CLI ไม่ต้องยุ่งกับ token)
 
-1. สร้าง repo เปล่าชื่อ `portfolio` บน GitHub — **อย่าติ๊ก "Add a README"
-   และอย่าเลือก .gitignore / license** ไม่งั้นจะมี commit ค้างอยู่แล้ว push ชนกัน
+1. ~~สร้าง repo~~ ✅ [`Lemonade678/portfolio`](https://github.com/Lemonade678/portfolio)
+   สร้างไว้แล้วและยังว่างสนิท → push ตรง ๆ ได้ ไม่ต้อง rebase ไม่ต้อง force
 2. push โฟลเดอร์นี้ขึ้นไป (PowerShell):
 
    ```powershell
@@ -288,13 +303,25 @@ COCO แล้วขึ้นว่า `person` ทั้งที่โมเ�
 
 ## สิ่งที่ยังเหลือ
 
-1. 🔴 **push repo `Video-based-lane-change-detection`** — สำคัญที่สุด
-   ทั้ง `PROJECTS[lane]` และ `CREDENTIALS[internship]` ชี้ไป
-   `github.com/Lemonade678/Video-based-lane-change-detection`
-   repo นั้น**มีอยู่จริงแล้วบน GitHub แต่ยังมีแค่ `.gitignore` กับ `LICENSE`**
-   ปล่อยเว็บตอนนี้ ลิงก์จะพาไปเจอ repo เปล่า ๆ
-   ของทั้งหมดเตรียมไว้แล้วที่ `../Video-based-lane-change-detection` (commit แล้ว 60 MB)
-   ต่อยอดจาก commit แรกของ remote เรียบร้อย **push ได้เลยไม่ต้อง force**
+1. ~~**push repo `Video-based-lane-change-detection`**~~ ✅ ขึ้นไปแล้ว
+   ตรวจกับ GitHub ตรง ๆ แล้ว `main` อยู่ที่ commit เดียวกับในเครื่อง
+   ลิงก์ `PROJECTS[lane]` และ `CREDENTIALS[internship]` ใช้งานได้จริง
+
+   🔴 **ยังเหลือ: push repo นี้ขึ้น `Lemonade678/portfolio` แล้ว import เข้า Vercel**
+   ดูขั้นตอนในหัวข้อ "Deploy ขึ้น Vercel" ข้างบน
+
+   🔴 **แล้วเอา URL จริงจาก Vercel ไปแก้ปุ่มบนนามบัตรด้วย** —
+   `Lemonade678.github.io/index.html` ตรง `class="cta"` ยังชี้ไป URL ที่เดาไว้
+   ถ้าไม่แก้ ปุ่มที่เด่นที่สุดบนนามบัตรจะพาไป 404
+
+2. **โปรเจกต์ที่มีบน GitHub แต่ยังไม่อยู่บนพอร์ตเต็ม**
+   [`shopee-sales-dashboard`](https://github.com/Lemonade678/shopee-sales-dashboard)
+   (Next.js + Supabase + Python time-series · ★1) —
+   อยู่บนนามบัตรแล้วแต่ยังไม่มีการ์ดในพอร์ตเต็ม
+   ถ้าอยากใส่ ต้องมีตัวเลข/ผลลัพธ์มาประกอบตามมาตรฐานการ์ดอื่น ๆ
+
+3. **`CLRerNet_with_video_demo` ยังไม่ได้ลบ** — งานทั้งหมดย้ายเข้า
+   `Video-based-lane-change-detection/third_party/CLRerNet/` แล้ว ลบทิ้งได้
 
 2. ~~**คลิป lane change ในหน้าเว็บ**~~ ✅ ใส่แล้ว — `public/lane-change-demo.webp`
    118 เฟรม 720×404 · 1.8 MB · โหลดแบบ lazy
