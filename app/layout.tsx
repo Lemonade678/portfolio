@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anuphan, IBM_Plex_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 // Anuphan รองรับทั้งไทยและละติน เลยใช้ตัวเดียวได้ทั้งเว็บ
@@ -34,7 +35,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${anuphan.variable} ${plexMono.variable}`}>
-      <body className="font-sans text-base leading-relaxed">{children}</body>
+      <body className="font-sans text-base leading-relaxed">
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
