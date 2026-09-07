@@ -142,12 +142,18 @@ export const PERSON = {
     { text: "Data Pipelines", accent: "blue" as Accent },
   ],
   intro: [
-    // เขียนใหม่ทั้งย่อหน้า — ของเดิมภาษาอังกฤษพัง ("I am french" อ่านเป็นสัญชาติฝรั่งเศส
-    // ทั้งที่ "เฟรน" คือชื่อเล่น) และประโยคซ้ำคำว่า graduate สองรอบ
-    // ตอนนี้เล่าครบสามเส้น: CV ในโรงงาน → งานวิจัยที่ไต้หวัน → LLM ที่เทรนเอง
+    // ประโยคเปิด "I'm French" ตั้งใจตามที่เจ้าตัวขอ — French เป็นชื่อเล่น ไม่ใช่สัญชาติ
+    //
+    // แต่ในภาษาอังกฤษ "I'm French" อ่านยังไงก็แปลว่า "ผมเป็นคนฝรั่งเศส" ก่อนเสมอ
+    // เลยต้องมีประโยค "Both are nicknames." ต่อท้ายทันที ไม่ใช่เพื่อความสวยงาม
+    // แต่เพราะทั้งหน้าเขียนว่าอยู่กรุงเทพฯ จบ มจธ. ถ้าไม่เคลียร์ตรงนี้
+    // คนอ่านจะสะดุดตั้งแต่บรรทัดแรก แล้วสงสัยไปทั้งหน้าว่าตกลงเป็นใครกันแน่
+    //
+    // ส่วน "Lemon" ผูกกับ GitHub handle (Lemonade678) พอดี เลยบอกที่มาไว้ด้วย
+    // คนที่กดมาจาก GitHub จะได้เชื่อมได้ทันทีว่าเป็นคนเดียวกัน
     {
-      en: "I'm Fren — Nutt Bhanidch, 23, a B.Eng. graduate in Electronics and Infocommunication Engineering from King Mongkut's University of Technology Thonburi (KMUTT). I build AI systems that have to run in a real workplace: chip anomaly detection on a production line, lane change detection from road video, and a Thai interview LLM I fine-tuned myself.",
-      th: "ผมเฟร้น อายุ 23 ปี จบวิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ จาก มจธ. ทำระบบ AI ที่ต้องใช้งานได้จริงในหน้างาน ทั้งการตรวจจับความผิดปกติของชิปในสายการผลิต การตรวจจับการเปลี่ยนเลนจากวิดีโอบนถนน และ LLM สัมภาษณ์งานภาษาไทยที่ผม fine-tune เอง",
+      en: "I'm French — or you can call me Lemon, which is where the GitHub handle comes from. Both are nicknames. I'm 23, a B.Eng. graduate in Electronics and Infocommunication Engineering from King Mongkut's University of Technology Thonburi (KMUTT), building AI systems that have to run in a real workplace: chip anomaly detection on a production line, lane change detection from road video, and a Thai interview LLM I fine-tuned myself.",
+      th: "ผมชื่อเฟรนช์ หรือจะเรียกเลม่อนก็ได้ — ชื่อเล่นทั้งคู่ อายุ 23 ปี จบวิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ จาก มจธ. ทำระบบ AI ที่ต้องใช้งานได้จริงในหน้างาน ทั้งการตรวจจับความผิดปกติของชิปในสายการผลิต การตรวจจับการเปลี่ยนเลนจากวิดีโอบนถนน และ LLM สัมภาษณ์งานภาษาไทยที่ผม fine-tune เอง",
     },
     {
       en: "I care about the part most demos skip: whether the thing still works on the ten thousandth image, and whether you can explain where a number came from.",

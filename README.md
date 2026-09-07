@@ -1,6 +1,6 @@
 # Portfolio — Nutt Bhanidch
 
-🌐 **เปิดใช้งานแล้วที่ <https://lemonade976portfolio.vercel.app/>**
+🌐 **เปิดใช้งานแล้วที่ <https://lemonade976.vercel.app/>**
 (นามบัตรฉบับย่ออยู่ที่ [`lemonade678.github.io`](https://lemonade678.github.io/))
 
 Personal portfolio site. Next.js (App Router) · TypeScript · Tailwind CSS v4.
