@@ -152,7 +152,7 @@ export const PERSON = {
     // ส่วน "Lemon" ผูกกับ GitHub handle (Lemonade678) พอดี เลยบอกที่มาไว้ด้วย
     // คนที่กดมาจาก GitHub จะได้เชื่อมได้ทันทีว่าเป็นคนเดียวกัน
     {
-      en: "I'm French — or you can call me Lemon, which is where the GitHub handle comes from. Both are nicknames. I'm 23, a B.Eng. graduate in Electronics and Infocommunication Engineering from King Mongkut's University of Technology Thonburi (KMUTT), building AI systems that have to run in a real workplace: chip anomaly detection on a production line, lane change detection from road video, and a Thai interview LLM I fine-tuned myself.",
+      en: "I'm French — or you can call me Lemon, which is where the GitHub handle comes from. Both are nicknames. I'm 23, a B.Eng. graduate in Electronic and Infocommunication Engineering from King Mongkut's University of Technology Thonburi (KMUTT), building AI systems that have to run in a real workplace: chip anomaly detection on a production line, lane change detection from road video, and a Thai interview LLM I fine-tuned myself.",
       th: "ผมชื่อเฟรนช์ หรือจะเรียกเลม่อนก็ได้ — ชื่อเล่นทั้งคู่ อายุ 23 ปี จบวิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ จาก มจธ. ทำระบบ AI ที่ต้องใช้งานได้จริงในหน้างาน ทั้งการตรวจจับความผิดปกติของชิปในสายการผลิต การตรวจจับการเปลี่ยนเลนจากวิดีโอบนถนน และ LLM สัมภาษณ์งานภาษาไทยที่ผม fine-tune เอง",
     },
     {
@@ -579,6 +579,41 @@ export const SOFT_SKILLS: SoftSkill[] = [
 // แท็บทำให้เห็นทีละใบ แต่รู้ว่ามีกี่ใบตั้งแต่แรก
 
 export const CREDENTIALS: Credential[] = [
+  // ปริญญาวางเป็นแท็บแรก เพราะเป็นสิ่งแรกที่ HR เช็คก่อนดูอย่างอื่นทั้งหมด
+  //
+  // ⚠️ เอกสารนี้ยังไม่ใช่ใบปริญญาบัตร — เป็นหนังสือรับรองว่าเรียนครบ รอสภามหาวิทยาลัยอนุมัติ
+  //    และตัวหนังสือเขียนไว้เองว่ามีอายุ 3 เดือนนับจากวันออก (15 ก.ค. → ราว 15 ต.ค. 2026)
+  //    verifies เลยต้องบอกตรง ๆ ไม่งั้นคนที่อ่านบรรทัด "waiting the approval" บนภาพ
+  //    จะรู้สึกว่าเราเอาของที่ยังไม่เสร็จมาเคลม — เหมือนกรณีอันดับ 6/137 บนใบแฮกกาธอน
+  //    พอได้ใบปริญญาจริงแล้ว เปลี่ยนภาพ + verifies ตรงนี้ที่เดียว
+  //
+  // transcript ไม่ได้เอามาแปะ — มีวันเกิดกับเกรดทุกวิชา เอาแค่ GPA มาอ้างพอ
+  {
+    id: "degree",
+    tab: { en: "Degree", th: "ปริญญา" },
+    accent: "clay",
+    title: {
+      en: "B.Eng. — Electronic and Infocommunication Engineering (International Program)",
+      th: "วศ.บ. — วิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ (หลักสูตรนานาชาติ)",
+    },
+    issuer: {
+      en: "Registrar's Office, King Mongkut's University of Technology Thonburi",
+      th: "สำนักงานทะเบียน มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี",
+    },
+    when: "15 Jul 2026",
+    image: {
+      src: "/degree-2026-redacted.png",
+      ratio: "1000 / 1103",
+      alt: {
+        en: "Letter from the KMUTT Registrar's Office certifying that the holder completed all requirements for the Bachelor of Engineering in Electronic and Infocommunication Engineering (International Program) on 14 July 2026, pending University Council approval. Issued 15 July 2026 and signed by the Director of the Registrar's Office. Name, student ID and document reference number are blacked out.",
+        th: "หนังสือรับรองจากสำนักงานทะเบียน มจธ. ว่าผู้ถือสำเร็จการศึกษาครบทุกข้อกำหนดของหลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ (หลักสูตรนานาชาติ) เมื่อ 14 กรกฎาคม 2026 รอการอนุมัติจากสภามหาวิทยาลัย ออกเมื่อ 15 กรกฎาคม 2026 ลงนามโดยผู้อำนวยการสำนักงานทะเบียน ปิดชื่อ รหัสนักศึกษา และเลขอ้างอิงเอกสารไว้",
+      },
+    },
+    verifies: {
+      en: "<strong>All requirements for the degree completed on 14 July 2026, with a GPA of 3.19.</strong> This is the registrar's letter certifying that — not the degree certificate itself. Conferral is pending University Council approval, and the letter says it is valid for three months from issue, so the formal certificate will replace it. The GPA is from the official transcript, which is not published here because it lists date of birth and every course grade. Name, student ID and the document reference number are blacked out.",
+      th: "<strong>สำเร็จการศึกษาครบทุกข้อกำหนดเมื่อ 14 ก.ค. 2026 · เกรดเฉลี่ย 3.19</strong> เอกสารนี้คือหนังสือรับรองจากสำนักงานทะเบียน ยังไม่ใช่ใบปริญญาบัตร — การอนุมัติปริญญารอสภามหาวิทยาลัย และตัวหนังสือระบุว่ามีอายุสามเดือนนับจากวันออก ใบปริญญาจะมาแทนเมื่อออกแล้ว · เกรดเฉลี่ยมาจาก transcript ทางการ ซึ่งไม่ได้เอามาแปะเพราะมีวันเกิดและเกรดทุกวิชา · ปิดชื่อ รหัสนักศึกษา และเลขอ้างอิงเอกสารไว้",
+    },
+  },
   {
     id: "hackathon",
     tab: { en: "Hackathon", th: "แฮกกาธอน" },
@@ -681,8 +716,8 @@ export const TIMELINE: TimelineItem[] = [
   {
     year: "2026",
     what: {
-      en: "B.Eng. Electronics & Infocommunication · GPA 3.22",
-      th: "วศ.บ. อิเล็กทรอนิกส์และสื่อสารสารสนเทศ · เกรดเฉลี่ย 3.22",
+      en: "B.Eng. Electronic & Infocommunication Engineering (International Program) · GPA 3.19",
+      th: "วศ.บ. วิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ (หลักสูตรนานาชาติ) · เกรดเฉลี่ย 3.19",
     },
     where: { en: "KMUTT", th: "มจธ." },
   },
