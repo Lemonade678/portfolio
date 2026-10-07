@@ -19,6 +19,8 @@ export type Brand =
   | "huggingface"
   | "instagram"
   | "kaggle"
+  | "youtube"
+  | "facebook"
   | "external";
 
 /** viewBox 24×24 ทุกตัว เพื่อให้สลับไอคอนได้โดยไม่ต้องแก้ขนาด */
@@ -57,6 +59,17 @@ const PATHS: Record<Brand, string> = {
   // Hugging Face กับ Kaggle ไม่ได้ใส่ path จริง — ดูหมายเหตุข้างล่าง
   huggingface: "",
   kaggle: "",
+  // YouTube — ใช้กับลิงก์ช่องของ TheOzzy ในหน้า /next (path จาก simple-icons เหมือนตัวอื่น)
+  youtube:
+    "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505" +
+    "A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136" +
+    "c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 " +
+    "24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+  // Facebook — ลิงก์เพจของ TheOzzy ในหน้า /next (path จาก simple-icons)
+  facebook:
+    "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43" +
+    "c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328" +
+    "l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z",
   // ลูกศรออกนอกเว็บ — ใช้เป็นตัวสำรองของบริการที่ไม่มีโลโก้
   external:
     "M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5h5V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5h-2v5H5V5z",
@@ -83,6 +96,8 @@ export function brandOf(href: string): Brand {
   if (href.includes("huggingface.co")) return "huggingface";
   if (href.includes("instagram.com")) return "instagram";
   if (href.includes("kaggle.com")) return "kaggle";
+  if (href.includes("youtube.com") || href.includes("youtu.be")) return "youtube";
+  if (href.includes("facebook.com")) return "facebook";
   return "external";
 }
 

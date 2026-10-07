@@ -146,6 +146,360 @@ body {
   text-shadow: 0 0 10px rgba(245, 185, 46, 0.7);
 }
 
+/* ลายเซ็นท้ายหน้า — เผยจากซ้ายไปขวาตอนเลื่อนมาถึง เหมือนกำลังเซ็นอยู่ตรงหน้า
+   ใช้ clip-path ค่อย ๆ เปิด ไม่ใช้ fade เพราะ fade ดูเหมือนรูปเพิ่งโหลดเสร็จ ไม่เหมือนการเขียน
+   inset ติดลบ 12px เผื่อแสงเรืองที่ล้นออกนอกกรอบรูป ไม่งั้นแสงตรงขอบจะโดนตัดเป็นเส้นตรง
+   แสงเรือง (drop-shadow) เลียนรูปต้นฉบับที่เจ้าตัววาดเส้นสว่างบนพื้นดำ
+   clip-path อยู่ที่ตัวรูป ส่วน data-shown อยู่ที่กล่องครอบ — ดูเหตุผลที่คอมเมนต์ใน Signature (app/page.tsx) */
+.signature img {
+  clip-path: inset(-12px 100% -12px -12px);
+  filter: drop-shadow(0 0 6px rgba(239, 245, 115, 0.35));
+}
+.signature[data-shown="true"] img {
+  clip-path: inset(-12px -12px -12px -12px);
+  transition: clip-path 1.6s cubic-bezier(0.55, 0, 0.35, 1) 0.2s;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Teaser งานถัดไป — เว็บไซต์สำหรับ TheOzzy (การ์ดท้าย section 05 + หน้า /next)
+
+   สีชุดนี้ "ไม่ใช่" สีของเว็บนี้ — ดูดมาจากรูปบนช่อง YouTube ของเขา
+   (ที่มาแต่ละสีอยู่ใน NEXT_RUN.palette ใน content.ts และโชว์บนหน้า /next ด้วย)
+
+   จงใจไม่ใส่ไว้ใน @theme ข้างบน: ถ้าใส่ Tailwind จะสร้าง utility ให้ใช้ได้ทั้งเว็บ
+   แล้ววันหนึ่งจะมีคนเผลอเอา text-oz-blue ไปใช้ในการ์ดโปรเจกต์ ระบบสี 4 สีที่แต่ละสีมีหน้าที่จะเละ
+   ขังไว้ใต้ .oz แทน → ตัวแปรพวกนี้มีค่าเฉพาะข้างในกล่องที่ติดคลาสนี้เท่านั้น
+   ───────────────────────────────────────────────────────────── */
+.oz {
+  /* ห้าสีที่ดูดมาตรง ๆ */
+  --oz-blue: #1ea8f8; /* แสงจากแว่นในแบนเนอร์ */
+  --oz-yellow: #fec501; /* สายฟ้าในแบนเนอร์ */
+  --oz-violet: #5454c1; /* พื้นหลังรูปโปรไฟล์ */
+  --oz-teal: #4c8199; /* เสื้อในรูปโปรไฟล์ */
+  --oz-ink: #131014; /* เส้นตัดขอบตัวการ์ตูน */
+  /* สีที่ต่อยอดจากข้างบน ไม่ได้ดูดมาตรง ๆ */
+  --oz-night: #12112c; /* ครามหรี่ลงจนเป็นกลางคืน — เป็นพื้น ตัวหนังสือขาวจะอ่านง่าย */
+  --oz-surface: #1d1b48;
+  --oz-sky: #a8dcff; /* น้ำเงินไฟฟ้าผสมขาว — ตัวหนังสือรอง อ่านบนพื้นครามได้ */
+  color: #fff;
+}
+
+/* ตารางเส้นบางสีน้ำเงิน — มาจากเลนส์แว่นในแบนเนอร์ที่เป็นตารางเรืองแสง */
+.oz-grid {
+  background-color: var(--oz-night);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(30, 168, 248, 0.28), transparent 70%),
+    linear-gradient(rgba(30, 168, 248, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 168, 248, 0.08) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    28px 28px,
+    28px 28px;
+}
+
+/* ตัวหนังสือสไตล์การ์ตูน: เงาทึบสีหมึกเยื้องลงขวา + เรืองแสง
+   เลียนเส้นขอบหนา ๆ ในรูปการ์ตูนของเขา */
+.oz-title {
+  text-shadow:
+    3px 3px 0 var(--oz-ink),
+    0 0 28px rgba(30, 168, 248, 0.5);
+}
+.oz-glow {
+  color: var(--oz-blue);
+  text-shadow:
+    3px 3px 0 var(--oz-ink),
+    0 0 20px rgba(30, 168, 248, 0.85);
+}
+.oz-glow-yellow {
+  color: var(--oz-yellow);
+  text-shadow:
+    3px 3px 0 var(--oz-ink),
+    0 0 22px rgba(254, 197, 1, 0.7);
+}
+
+/* หลังการ์ด — ใช้ทั้งการ์ดที่พลิกได้บนหน้า /next และพัดการ์ดบนหน้าหลัก
+   ลายตารางซ้ำกับพื้นหน้า แต่ถี่กว่า ให้ดูเป็นลายหลังไพ่ */
+.oz-cardback {
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--oz-ink);
+  border-radius: 12px;
+  color: var(--oz-yellow);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(30, 168, 248, 0.45), transparent 65%),
+    linear-gradient(rgba(168, 220, 255, 0.14) 1px, transparent 1px) 0 0 / 11px 11px,
+    linear-gradient(90deg, rgba(168, 220, 255, 0.14) 1px, transparent 1px) 0 0 / 11px 11px,
+    var(--oz-violet);
+  box-shadow: 4px 4px 0 var(--oz-ink);
+}
+
+/* การ์ดพลิกได้ — หลังคราม หน้าทอง (ทอง = การ์ดหายาก = ไฮโรล)
+   ขนาดการ์ดมาจากความกว้าง + aspect-ratio ของ .oz-card ล้วน ๆ
+   ข้างในเลยวางแบบ absolute เต็มกรอบ ไม่ต้องพึ่ง height: 100% */
+.oz-card {
+  position: relative;
+  perspective: 900px;
+}
+.oz-card-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.oz-card[data-flipped] .oz-card-inner {
+  transform: rotateY(180deg);
+}
+.oz-back,
+.oz-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.oz-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transform: rotateY(180deg);
+  border: 3px solid var(--oz-ink);
+  border-radius: 12px;
+  color: var(--oz-ink);
+  background: linear-gradient(160deg, #fff3b0 0%, var(--oz-yellow) 48%, #e2a400 100%);
+  box-shadow:
+    4px 4px 0 var(--oz-ink),
+    0 0 28px rgba(254, 197, 1, 0.45);
+}
+
+/* สั่นการ์ดตอนกำลังสับ — สองรอบพอ นานกว่านี้คนเริ่มรำคาญ */
+@keyframes oz-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: rotate(-5deg) translateY(-3px);
+  }
+  75% {
+    transform: rotate(5deg) translateY(-3px);
+  }
+}
+.oz-card[data-shaking] {
+  animation: oz-shake 0.32s ease-in-out 2;
+}
+
+/* ป้าย "ไฮโรล!" เด้งขึ้นมา — ใช้ cubic-bezier ที่เกิน 1 นิดหน่อยให้เด้งเลยแล้วหดกลับ */
+@keyframes oz-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.oz-pop {
+  animation: oz-pop 0.35s cubic-bezier(0.2, 0.7, 0.3, 1.4) both;
+}
+
+/* ปุ่มสุ่ม — ปุ่มการ์ตูน กดแล้วยุบลงไปทับเงาของตัวเอง */
+.oz-button {
+  border: 3px solid var(--oz-ink);
+  background: var(--oz-yellow);
+  color: var(--oz-ink);
+  box-shadow: 4px 4px 0 var(--oz-ink);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+.oz-button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--oz-ink);
+}
+.oz-button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--oz-ink);
+}
+.oz-button:disabled {
+  opacity: 0.75;
+  cursor: progress;
+  transform: none;
+  box-shadow: 4px 4px 0 var(--oz-ink);
+}
+
+/* การ์ด teaser บนหน้าหลัก — กรอบหมึก + แสงเรืองน้ำเงิน ยกขึ้นนิดหนึ่งตอน hover */
+.oz-teaser {
+  border: 2px solid var(--oz-ink);
+  box-shadow:
+    0 0 0 1px rgba(30, 168, 248, 0.35),
+    0 18px 50px -22px rgba(30, 168, 248, 0.6);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.oz-teaser:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1px rgba(30, 168, 248, 0.65),
+    0 24px 60px -20px rgba(30, 168, 248, 0.8);
+}
+
+/* พัดการ์ดสามใบมุมขวาของการ์ด teaser — กางออกตอน hover เหมือนกำลังจะจั่ว */
+/* ใบกลางอยู่บนสุดแบบไพ่ในมือ — ถ้าปล่อยตามลำดับ DOM ใบขวาจะทับใบกลางจนมองเห็นแค่สองใบ */
+.oz-fan > * {
+  transform-origin: 50% 140%;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.oz-fan > :nth-child(1) {
+  transform: translateX(-18px) rotate(-16deg);
+}
+.oz-fan > :nth-child(2) {
+  z-index: 1;
+  transform: translateY(-8px);
+}
+.oz-fan > :nth-child(3) {
+  transform: translateX(18px) rotate(16deg);
+}
+.oz-teaser:hover .oz-fan > :nth-child(1) {
+  transform: translateX(-26px) rotate(-26deg);
+}
+.oz-teaser:hover .oz-fan > :nth-child(2) {
+  transform: translateY(-18px);
+}
+.oz-teaser:hover .oz-fan > :nth-child(3) {
+  transform: translateX(26px) rotate(26deg);
+}
+
+/* กล่องหลักของหน้า /next — กรอบหมึกหนา + เงาทึบ แบบกล่องในเกมลายเส้นการ์ตูน */
+.oz-panel {
+  border: 3px solid var(--oz-ink);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--oz-surface) 88%, transparent);
+  box-shadow: 6px 6px 0 var(--oz-ink);
+}
+
+/* การ์ดเลือกฮีโร่ — ตัวที่เลือกอยู่มีวงทองล้อมและลอยขึ้น เหมือนการ์ดที่ถูกหยิบขึ้นมาจากมือ */
+.oz-hero {
+  border: 3px solid var(--oz-ink);
+  background: var(--oz-surface);
+  box-shadow: 4px 4px 0 var(--oz-ink);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.oz-hero:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    4px 6px 0 var(--oz-ink),
+    0 0 24px rgba(30, 168, 248, 0.35);
+}
+.oz-hero[aria-pressed="true"] {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 3px var(--oz-yellow),
+    6px 8px 0 var(--oz-ink),
+    0 0 34px rgba(254, 197, 1, 0.4);
+}
+
+/* ลูกเต๋า d20 — ตัวครามขอบหมึก · ผ่าน = ทอง · พลาด = ครามเข้ม · กำลังทอย = หมุนติ้ว */
+.oz-dice-body {
+  fill: var(--oz-violet);
+  stroke: var(--oz-ink);
+  stroke-width: 5;
+  stroke-linejoin: round;
+  transition: fill 0.2s ease;
+}
+.oz-dice-facet {
+  fill: none;
+  stroke: rgba(168, 220, 255, 0.35);
+  stroke-width: 2;
+}
+.oz-dice-num {
+  fill: #fff;
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 700;
+}
+.oz-dice[data-tone="hit"] {
+  filter: drop-shadow(0 0 18px rgba(254, 197, 1, 0.55));
+}
+.oz-dice[data-tone="hit"] .oz-dice-body {
+  fill: var(--oz-yellow);
+}
+.oz-dice[data-tone="hit"] .oz-dice-num {
+  fill: var(--oz-ink);
+}
+.oz-dice[data-tone="miss"] .oz-dice-body {
+  fill: #2a2763;
+}
+@keyframes oz-dice {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.oz-dice[data-rolling] {
+  animation: oz-dice 0.4s linear infinite;
+}
+
+/* วงล้อ — หมุนด้วย transition ยาว ๆ ช่วงท้ายค่อย ๆ ช้าลงให้ลุ้น (ต้องตรงกับ SPIN_MS ใน Wheel.tsx) */
+.oz-wheel {
+  transition: transform 4.2s cubic-bezier(0.12, 0.66, 0.1, 1);
+}
+
+/* ทาแป้ง — ดู app/next/Powder.tsx
+   ชั้นที่ 1: ทั้งหน้าซีดลงเหมือนโดนแป้งโปะ (filter ที่ <main>)
+   ชั้นที่ 2: แผ่นแป้งลอยทับจอ = ฝุ่นแป้งเม็ดเล็ก (SVG noise ที่บังคับเป็นสีขาว) + คราบแป้งก้อนใหญ่
+   แผ่นแป้ง fixed กับหน้าจอ เลื่อนหน้าแล้วแป้งไม่เลื่อนตาม — เหมือนแป้งติดหน้า ไม่ได้ติดเว็บ */
+.oz-main {
+  transition: filter 0.6s ease;
+}
+.oz-powdered {
+  filter: saturate(0.35) brightness(1.06);
+}
+.oz-powder {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  /* เม็ดฝุ่นต้องโปร่งและห่าง (alpha = 1.5·noise − 0.62) ถ้าถี่กว่านี้จะดูเป็นจอทีวีซ่าแทนแป้ง
+     ส่วนที่ทำให้ "ดูเป็นแป้ง" จริง ๆ คือคราบก้อนใหญ่ขอบนุ่ม (ellipse) เหมือนโดนพัฟตบเป็นจุด ๆ */
+  background-color: rgba(255, 255, 255, 0.12);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.45' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -0.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 34% 26% at 22% 30%, rgba(255, 255, 255, 0.72), transparent 70%),
+    radial-gradient(ellipse 28% 22% at 76% 22%, rgba(255, 255, 255, 0.62), transparent 70%),
+    radial-gradient(ellipse 36% 30% at 60% 74%, rgba(255, 255, 255, 0.64), transparent 72%),
+    radial-gradient(ellipse 26% 22% at 12% 84%, rgba(255, 255, 255, 0.52), transparent 70%),
+    radial-gradient(ellipse 22% 18% at 92% 86%, rgba(255, 255, 255, 0.48), transparent 70%);
+  animation: oz-puff 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+/* ตบแป้ง: ฟุ้งเข้ามาจากข้างนอกแล้วค่อย ๆ เกาะ */
+@keyframes oz-puff {
+  from {
+    opacity: 0;
+    transform: scale(1.25);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+/* ล้างหน้า: แป้งจางหายไป (ต้องตรงกับ WASH_MS ใน Powder.tsx) */
+.oz-washing {
+  animation: oz-wash 0.45s ease forwards;
+}
+@keyframes oz-wash {
+  to {
+    opacity: 0;
+    transform: scale(1.05);
+    filter: blur(6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -159,5 +513,9 @@ body {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+  /* ลายเซ็นโชว์เต็มทันที ไม่ต้องรอ IntersectionObserver */
+  .signature img {
+    clip-path: none;
   }
 }

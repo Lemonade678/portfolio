@@ -219,6 +219,20 @@ section{padding-top:clamp(52px,8vw,86px)}
 .row .p{font-size:12.5px;color:var(--muted);text-align:right}
 @media(max-width:700px){.row{grid-template-columns:64px 1fr}.row .p{grid-column:2;text-align:left;margin-top:-8px}}
 
+/* ---- การ์ด Next run (teaser งานถัดไป) ----
+   สีชุดนี้มาจากช่องของ TheOzzy ไม่ใช่สีของเว็บนี้ — ต้องตรงกับ .oz ใน app/globals.css */
+.oz-teaser{display:block;margin-top:32px;padding:clamp(20px,3vw,28px);border:2px solid #131014;border-radius:16px;text-decoration:none;color:#fff;
+  background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(30,168,248,.28),transparent 70%),linear-gradient(rgba(30,168,248,.08) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,rgba(30,168,248,.08) 1px,transparent 1px) 0 0/28px 28px,#12112c;
+  box-shadow:0 0 0 1px rgba(30,168,248,.35),0 18px 50px -22px rgba(30,168,248,.6);transition:transform .2s,box-shadow .2s}
+.oz-teaser:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(30,168,248,.65),0 24px 60px -20px rgba(30,168,248,.8)}
+.oz-teaser>span{display:block}
+.oz-teaser .oz-eb{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#fec501}
+.oz-teaser .oz-t{margin-top:10px;font-size:clamp(22px,3.6vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.2;text-shadow:3px 3px 0 #131014,0 0 28px rgba(30,168,248,.5)}
+.oz-teaser .oz-b{margin-top:8px;max-width:54ch;font-size:13.5px;line-height:1.6;color:#a8dcff}
+.oz-teaser .oz-c{display:inline-block;margin-top:16px;padding-bottom:2px;border-bottom:1px solid #1ea8f8;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#1ea8f8}
+/* ลายเซ็นท้ายหน้า — ไฟล์เดียวกับเว็บจริง (tools/signature.py) */
+.outro .sig{display:block;width:clamp(150px,24vw,220px);height:auto;margin:-4px 0 28px;filter:drop-shadow(0 0 6px rgba(239,245,115,.35))}
+
 /* ---- outro ---- */
 .outro{padding:clamp(52px,8vw,86px) 0 0}
 .outro h2{margin:0 0 12px;font-size:clamp(24px,5vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.1;max-width:20ch;color:var(--yellow)}
@@ -538,12 +552,20 @@ footer{margin-top:clamp(48px,7vw,72px);border-top:1px solid var(--line);padding:
       <div class="row rv"><span class="y">2023</span><span class="w" data-en="Software development intern — Python OCR" data-th="ฝึกงานพัฒนาซอฟต์แวร์ — Python OCR">…</span><span class="p">Fling Co., Ltd.</span></div>
       <div class="row rv"><span class="y">—</span><span class="w" data-en="English · TOEIC 885" data-th="ภาษาอังกฤษ · TOEIC 885">…</span><span class="p" data-en="Thai (native)" data-th="ภาษาไทย (เจ้าของภาษา)">…</span></div>
     </div>
+    <a class="oz-teaser rv" href="https://lemonade976.vercel.app/next" target="_blank" rel="noopener">
+      <span class="oz-eb">⚡ <i data-en="Next run · in progress" data-th="รันถัดไป · กำลังทำ" style="font-style:normal">…</i></span>
+      <span class="oz-t" data-en="A website for TheOzzy" data-th="เว็บไซต์สำหรับ TheOzzy">…</span>
+      <span class="oz-b" data-en="A Thai streamer who plays card games and roguelikes, and always plays for the high roll. Building him a website is my next project." data-th="สตรีมเมอร์สายเกมการ์ดกับ roguelike ที่เล่นแบบลุ้นไฮโรลเสมอ งานชิ้นถัดไปของผมคือทำเว็บไซต์ให้เขา">…</span>
+      <span class="oz-c"><i data-en="Pick a hero, start a run" data-th="เลือกฮีโร่ แล้วเริ่มรัน" style="font-style:normal">…</i> →</span>
+    </a>
   </section>
 
   <!-- outro -->
   <section id="contact" class="outro">
     <h2 data-en="Looking for computer vision and applied ML work — and a graduate lab." data-th="กำลังมองหางานด้าน computer vision และ applied ML รวมถึงแล็บสำหรับเรียนต่อ">…</h2>
     <p data-en="If you have a model that has to survive contact with the real world, I'd like to hear about it." data-th="ถ้ามีโมเดลที่ต้องเอาไปใช้งานจริงให้รอด ผมอยากฟังครับ">…</p>
+    <img class="sig rv" src="public/signature.png" width="762" height="449" alt=""
+         data-alt-en="Signature of Nutt Bhanidch" data-alt-th="ลายเซ็นของ Nutt Bhanidch">
     <div class="cards">
       <a class="card" href="mailto:nuttworkbhanidch@gmail.com"><span class="ic" style="background:rgba(245,185,46,.16);color:var(--yellow)">@</span><span class="lbl"><i data-en="Email" data-th="อีเมล">…</i>nuttworkbhanidch@gmail.com</span></a>
       <a class="card" href="https://github.com/Lemonade678" target="_blank" rel="noopener"><span class="ic" style="background:rgba(255,126,157,.16);color:var(--pink)">&lt;/&gt;</span><span class="lbl"><i data-en="Code" data-th="โค้ด">…</i>GitHub</span></a>

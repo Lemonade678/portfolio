@@ -5,6 +5,7 @@ import CoverArt from "@/components/CoverArt";
 import PhotoDetect from "@/components/PhotoDetect";
 import BrandIcon, { brandOf, hostOf } from "@/components/BrandIcon";
 import { SecretLetter, SecretProvider } from "@/components/SecretCode";
+import NextRunCard from "@/components/NextRun";
 import {
   ACCENT_HEX,
   CONTACTS,
@@ -13,6 +14,7 @@ import {
   METRICS,
   PERSON,
   PROJECTS,
+  SIGNATURE,
   SOFT_SKILLS,
   STACK,
   TIMELINE,
@@ -503,6 +505,11 @@ export default function Page() {
               </Reveal>
             ))}
           </div>
+
+          {/* รันถัดไป — ไทม์ไลน์เล่าว่าผ่านอะไรมา การ์ดนี้คือก้าวต่อไป (ดู components/NextRun.tsx) */}
+          <Reveal>
+            <NextRunCard lang={lang} />
+          </Reveal>
         </section>
 
         {/* ───── ปิดท้าย ───── */}
@@ -510,7 +517,8 @@ export default function Page() {
           <h2 className="max-w-[20ch] text-[clamp(24px,5vw,42px)] font-bold leading-[1.1] tracking-[-0.03em] text-yellow">
             {t(UI.outro.heading, lang)}
           </h2>
-          <p className="mb-6 mt-3 max-w-[48ch] text-ink2">{t(UI.outro.body, lang)}</p>
+          <p className="mt-3 max-w-[48ch] text-ink2">{t(UI.outro.body, lang)}</p>
+          <Signature lang={lang} />
           <ContactCards lang={lang} />
         </section>
 
@@ -704,6 +712,34 @@ function Credentials({ lang }: { lang: Lang }) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/**
+ * ลายเซ็นท้ายจดหมาย — วางต่อจากข้อความปิดท้าย ก่อนช่องทางติดต่อ
+ *
+ * เผยจากซ้ายไปขวาตอนเลื่อนมาถึง (ดู .signature ใน globals.css) ใช้ useReveal ตัวเดียวกับ
+ * การ์ดอื่น ๆ ในหน้า ไม่ต้องมี observer แยก
+ * ใส่ width/height จริงของไฟล์ไว้ เบราว์เซอร์จะกันที่ให้ก่อนรูปโหลดเสร็จ หน้าเลยไม่กระโดด
+ *
+ * ทำไม observer จับที่กล่องครอบ ไม่ใช่ที่ตัวรูป: ตอนเริ่ม รูปโดน clip-path บังจนกว้างเหลือ 0
+ * และ Chrome เอา clip-path ของตัวรูปไปคิดตอนเช็กว่า "เห็นหรือยัง" — ถ้าจับที่รูปตรง ๆ
+ * มันจะไม่เคยนับว่าเห็น ลายเซ็นเลยไม่เคยโผล่ (เคยพลาดมาแล้วรอบแรก)
+ */
+function Signature({ lang }: { lang: Lang }) {
+  const ref = useReveal<HTMLDivElement>();
+  return (
+    <div ref={ref} className="signature mb-8 mt-5 w-[clamp(150px,24vw,220px)]">
+      <img
+        src={SIGNATURE.src}
+        alt={t(SIGNATURE.alt, lang)}
+        width={SIGNATURE.width}
+        height={SIGNATURE.height}
+        loading="lazy"
+        decoding="async"
+        className="block h-auto w-full"
+      />
     </div>
   );
 }
