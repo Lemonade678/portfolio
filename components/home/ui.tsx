@@ -5,7 +5,6 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 import BrandIcon, { brandOf, hostOf } from "@/components/BrandIcon";
-import { SecretLetter } from "@/components/SecretCode";
 import { ACCENT_HEX, type Accent, type L10n, type Lang } from "@/lib/content";
 
 // ── ตัวช่วยเล็ก ๆ ─────────────────────────────────────────────
@@ -113,30 +112,6 @@ export function CardLink({
         </span>
       )}
     </span>
-  );
-}
-
-export function SectionHead({
-  n,
-  title,
-  secret,
-}: {
-  n: string;
-  title: string;
-  /** index ของตัวอักษรรหัสลับที่จะวางไว้ปลายเส้นคั่น (ดู SecretCode.tsx) */
-  secret?: number;
-}) {
-  return (
-    <div className="mb-6 flex items-center gap-3">
-      <span className="font-mono text-[10.5px] tracking-[0.16em] text-yellow">
-        {n}
-      </span>
-      <h2 className="text-[clamp(22px,3.6vw,30px)] font-bold tracking-[-0.02em]">
-        {title}
-      </h2>
-      <span className="h-px flex-1 bg-line" />
-      {secret !== undefined && <SecretLetter index={secret} />}
-    </div>
   );
 }
 
