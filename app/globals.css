@@ -684,6 +684,17 @@ body {
   transform: translateY(-3px) rotate(-1deg);
 }
 
+/* ช่องของในร้าน (ร้านแต้ม + พ่อค้ากลางทาง) — หน้าตาแบบหน้า Channel Points ของช่อง */
+.oz-tile {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 3px solid var(--oz-ink);
+  border-radius: 12px;
+  background: var(--oz-surface);
+  box-shadow: 4px 4px 0 var(--oz-ink);
+}
+
 /* emote ตัดจากภาพหน้าจอ ตัวเล็ก — ขยายแบบบล็อก ไม่ให้เบลอ */
 .oz-pixel {
   image-rendering: pixelated;
