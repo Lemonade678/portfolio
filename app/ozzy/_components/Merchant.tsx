@@ -38,7 +38,7 @@ export default function Merchant() {
               base={item.price}
               state={state}
               lang={lang}
-              onBuy={() => dispatch({ type: "buyRelic", id })}
+              onBuy={() => dispatch({ type: "buyRelic", id, at: "merchant" })}
             />
           );
         })}

@@ -21,7 +21,7 @@ const start = (hero: OzHeroId, points = 1000): RunState =>
 const roll = (s: RunState, kind: RollKind, d20: number, reroll = 1, offer?: RelicId[]) =>
   runReducer(s, { type: "roll", result: resolveRoll(s, kind, d20, reroll), offer });
 
-const buy = (s: RunState, id: RelicId) => runReducer(s, { type: "buyRelic", id });
+const buy = (s: RunState, id: RelicId, at: "shop" | "merchant" = "shop") => runReducer(s, { type: "buyRelic", id, at });
 
 /** เดินถึงห้องบอส: ผ่านห้อง 0, 1 (เข้าพ่อค้าแล้วออก), 2 ด้วยทางเซฟ */
 const toBoss = (s: RunState) => {
@@ -186,10 +186,19 @@ describe("merchant", () => {
     let s = roll(start("pepe", 1000), "safe", 15);
     s = roll(s, "safe", 15, 1, ["heart", "pma", "sek"]);
     const wallet = s.points;
-    s = buy(s, "heart");
+    s = buy(s, "heart", "merchant");
     expect(s.points).toBe(wallet - 160);
-    s = buy(s, "glasses");
+    s = buy(s, "glasses", "merchant");
     expect(s.points).toBe(wallet - 160 - 150);
+  });
+
+  it("the points shop charges full price even while the merchant is open", () => {
+    // ร้านแต้มโชว์ราคาเต็มเสมอ — ถ้า reducer คิดส่วนลดให้ของที่พ่อค้าเสนอ ราคาที่เห็นกับที่โดนหักจะไม่ตรงกัน
+    let s = roll(start("pepe", 1000), "safe", 15);
+    s = roll(s, "safe", 15, 1, ["heart", "pma", "sek"]);
+    const wallet = s.points;
+    s = runReducer(s, { type: "buyRelic", id: "heart", at: "shop" });
+    expect(s.points).toBe(wallet - 200);
   });
 });
 

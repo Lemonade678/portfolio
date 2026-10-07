@@ -198,7 +198,8 @@ export type RunAction =
   | { type: "pick"; hero: OzHeroId }
   | { type: "roll"; result: RollResult; offer?: RelicId[] }
   | { type: "useBan"; offer?: RelicId[] }
-  | { type: "buyRelic"; id: RelicId }
+  /** at = ซื้อจากไหน — ส่วนลดมีเฉพาะที่พ่อค้า ร้านแต้มคิดราคาเต็มเสมอ (ราคาที่โชว์ต้องตรงกับที่หัก) */
+  | { type: "buyRelic"; id: RelicId; at: "shop" | "merchant" }
   | { type: "leaveMerchant" }
   | { type: "earn"; amount: number }
   | { type: "spend"; amount: number }
@@ -297,7 +298,8 @@ export function runReducer(s: RunState, a: RunAction): RunState {
     case "buyRelic": {
       if (s.status !== "playing" && s.status !== "merchant") return s;
       if (s.relics.length >= MAX_RELICS || s.relics.some((r) => r.id === a.id)) return s;
-      const price = priceOf(a.id, s.status === "merchant" && s.merchantOffer.includes(a.id));
+      // ลดราคาเฉพาะ "ซื้อจากพ่อค้า ตอนพ่อค้าเปิดอยู่ และเป็นของที่เขาเสนอ" — ร้านแต้มเปิดคู่กันได้แต่ราคาเต็ม
+      const price = priceOf(a.id, a.at === "merchant" && s.status === "merchant" && s.merchantOffer.includes(a.id));
       if (s.points < price) return s;
       const heart = a.id === "heart" ? 1 : 0;
       return {

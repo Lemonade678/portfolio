@@ -65,7 +65,7 @@ export default function ShopWindow() {
                     ? "short"
                     : "buy";
             return (
-              <ShopTile key={r.id} item={r} price={price} state={state} lang={lang} onBuy={() => dispatch({ type: "buyRelic", id: r.id })} />
+              <ShopTile key={r.id} item={r} price={price} state={state} lang={lang} onBuy={() => dispatch({ type: "buyRelic", id: r.id, at: "shop" })} />
             );
           })}
         </div>
