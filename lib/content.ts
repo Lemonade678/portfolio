@@ -605,13 +605,13 @@ export const CREDENTIALS: Credential[] = [
       src: "/degree-2026-redacted.png",
       ratio: "1000 / 1103",
       alt: {
-        en: "Letter from the KMUTT Registrar's Office certifying that the holder completed all requirements for the Bachelor of Engineering in Electronic and Infocommunication Engineering (International Program) on 14 July 2026, pending University Council approval. Issued 15 July 2026 and signed by the Director of the Registrar's Office. Name, student ID and document reference number are blacked out.",
-        th: "หนังสือรับรองจากสำนักงานทะเบียน มจธ. ว่าผู้ถือสำเร็จการศึกษาครบทุกข้อกำหนดของหลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ (หลักสูตรนานาชาติ) เมื่อ 14 กรกฎาคม 2026 รอการอนุมัติจากสภามหาวิทยาลัย ออกเมื่อ 15 กรกฎาคม 2026 ลงนามโดยผู้อำนวยการสำนักงานทะเบียน ปิดชื่อ รหัสนักศึกษา และเลขอ้างอิงเอกสารไว้",
+        en: "Letter from the KMUTT Registrar's Office certifying that the holder completed all requirements for the Bachelor of Engineering in Electronic and Infocommunication Engineering (International Program) on 14 July 2026, pending University Council approval. Issued 15 July 2026 and signed by the Director of the Registrar's Office. The document reference number is blacked out.",
+        th: "หนังสือรับรองจากสำนักงานทะเบียน มจธ. ว่าผู้ถือสำเร็จการศึกษาครบทุกข้อกำหนดของหลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิศวกรรมอิเล็กทรอนิกส์และสื่อสารสารสนเทศ (หลักสูตรนานาชาติ) เมื่อ 14 กรกฎาคม 2026 รอการอนุมัติจากสภามหาวิทยาลัย ออกเมื่อ 15 กรกฎาคม 2026 ลงนามโดยผู้อำนวยการสำนักงานทะเบียน ปิดไว้แค่เลขอ้างอิงเอกสาร",
       },
     },
     verifies: {
-      en: "<strong>All requirements for the degree completed on 14 July 2026, with a GPA of 3.19.</strong> This is the registrar's letter certifying that — not the degree certificate itself. Conferral is pending University Council approval, and the letter says it is valid for three months from issue, so the formal certificate will replace it. The GPA is from the official transcript, which is not published here because it lists date of birth and every course grade. Name, student ID and the document reference number are blacked out.",
-      th: "<strong>สำเร็จการศึกษาครบทุกข้อกำหนดเมื่อ 14 ก.ค. 2026 · เกรดเฉลี่ย 3.19</strong> เอกสารนี้คือหนังสือรับรองจากสำนักงานทะเบียน ยังไม่ใช่ใบปริญญาบัตร — การอนุมัติปริญญารอสภามหาวิทยาลัย และตัวหนังสือระบุว่ามีอายุสามเดือนนับจากวันออก ใบปริญญาจะมาแทนเมื่อออกแล้ว · เกรดเฉลี่ยมาจาก transcript ทางการ ซึ่งไม่ได้เอามาแปะเพราะมีวันเกิดและเกรดทุกวิชา · ปิดชื่อ รหัสนักศึกษา และเลขอ้างอิงเอกสารไว้",
+      en: "<strong>All requirements for the degree completed on 14 July 2026, with a GPA of 3.19.</strong> This is the registrar's letter certifying that — not the degree certificate itself. Conferral is pending University Council approval, and the letter says it is valid for three months from issue, so the formal certificate will replace it. The GPA is from the official transcript, which is not published here because it lists date of birth and every course grade. Only the document reference number is blacked out.",
+      th: "<strong>สำเร็จการศึกษาครบทุกข้อกำหนดเมื่อ 14 ก.ค. 2026 · เกรดเฉลี่ย 3.19</strong> เอกสารนี้คือหนังสือรับรองจากสำนักงานทะเบียน ยังไม่ใช่ใบปริญญาบัตร — การอนุมัติปริญญารอสภามหาวิทยาลัย และตัวหนังสือระบุว่ามีอายุสามเดือนนับจากวันออก ใบปริญญาจะมาแทนเมื่อออกแล้ว · เกรดเฉลี่ยมาจาก transcript ทางการ ซึ่งไม่ได้เอามาแปะเพราะมีวันเกิดและเกรดทุกวิชา · ปิดไว้แค่เลขอ้างอิงเอกสาร",
     },
   },
   {
@@ -661,15 +661,15 @@ export const CREDENTIALS: Credential[] = [
     when: "12 Jun 2026",
     image: {
       src: "/toeic-885-redacted.png",
-      ratio: "1400 / 704",
+      ratio: "1400 / 903",
       alt: {
-        en: "Official TOEIC institutional score report: Listening 480, Reading 405, total 885, CEFR level B2, tested 12 June 2026 at King Mongkut's University of Technology Thonburi. Name, date of birth, ID number, reference number and barcode are blacked out.",
-        th: "ใบรายงานคะแนน TOEIC อย่างเป็นทางการ: Listening 480, Reading 405, รวม 885, CEFR ระดับ B2, สอบวันที่ 12 มิถุนายน 2026 ที่ มจธ. โดยปิดชื่อ วันเกิด เลขประจำตัวประชาชน เลขอ้างอิง และบาร์โค้ดไว้",
+        en: "Official TOEIC institutional score report: Listening 480, Reading 405, total 885, CEFR level B2, tested 12 June 2026 at King Mongkut's University of Technology Thonburi. Date of birth, national ID number, reference number and barcode are blacked out.",
+        th: "ใบรายงานคะแนน TOEIC อย่างเป็นทางการ: Listening 480, Reading 405, รวม 885, CEFR ระดับ B2, สอบวันที่ 12 มิถุนายน 2026 ที่ มจธ. โดยปิดวันเกิด เลขประจำตัวประชาชน เลขอ้างอิง และบาร์โค้ดไว้",
       },
     },
     verifies: {
-      en: "<strong>Listening 480 + Reading 405 = 885, CEFR B2.</strong> Valid for two years from the test date, so through June 2028. The blacked-out fields are name, date of birth, national ID number, the report's reference number and the barcode — solid bars rather than blur, because a 13-digit number in a fixed-width font can be read back out of a blur. The script that did it is in the repo at <code>tools/censor.py</code>.",
-      th: "<strong>Listening 480 + Reading 405 = 885 · CEFR B2</strong> ใบมีอายุสองปีนับจากวันสอบ คือถึงมิถุนายน 2028 · ส่วนที่ปิดคือชื่อ วันเกิด เลขบัตรประชาชน เลขอ้างอิงใบ และบาร์โค้ด — ใช้แถบทึบไม่ใช่เบลอ เพราะเลข 13 หลักที่พิมพ์ด้วยฟอนต์ความกว้างเท่ากันทุกตัว ยังอ่านย้อนกลับออกจากภาพเบลอได้ · สคริปต์ที่ใช้ปิดอยู่ใน repo ที่ <code>tools/censor.py</code>",
+      en: "<strong>Listening 480 + Reading 405 = 885, CEFR B2.</strong> Valid for two years from the test date, so through June 2028. The blacked-out fields are date of birth, national ID number, the report's reference number and the barcode — solid bars rather than blur, because a 13-digit number in a fixed-width font can be read back out of a blur. The script that did it is in the repo at <code>tools/censor.py</code>.",
+      th: "<strong>Listening 480 + Reading 405 = 885 · CEFR B2</strong> ใบมีอายุสองปีนับจากวันสอบ คือถึงมิถุนายน 2028 · ส่วนที่ปิดคือวันเกิด เลขบัตรประชาชน เลขอ้างอิงใบ และบาร์โค้ด — ใช้แถบทึบไม่ใช่เบลอ เพราะเลข 13 หลักที่พิมพ์ด้วยฟอนต์ความกว้างเท่ากันทุกตัว ยังอ่านย้อนกลับออกจากภาพเบลอได้ · สคริปต์ที่ใช้ปิดอยู่ใน repo ที่ <code>tools/censor.py</code>",
     },
   },
   {
@@ -788,3 +788,92 @@ export const UI = {
   },
   updated: { en: "Updated 2026", th: "อัปเดต 2026" },
 } satisfies Record<string, unknown>;
+
+// ── หน้า playground (ไข่อีสเตอร์) ─────────────────────────────
+//
+// เข้าได้เฉพาะคนที่กด L E M O N A D E ครบในหน้าหลัก — ดู components/SecretCode.tsx
+// เนื้อหาเป็นมุกล้วน ๆ แยกออกจากหน้าหลักโดยตั้งใจ หน้าหลักคุยเรื่องงาน หน้านี้ไม่
+//
+// เรื่อง xenogender: เป็นตัวตนจริงของคนกลุ่มหนึ่ง และก็เป็น meme ที่ถูกเอาไปใช้ล้อเลียน
+// คนกลุ่มนั้นบ่อย มุกนี้ตั้งใจให้ "เล่นกับตัวเอง" ไม่ใช่ "เล่นกับคนอื่น" — ทุกบรรทัดเป็นเรื่อง
+// ของเจ้าตัว (ชื่อ GitHub, ร้านต๊อก, YOLO, badge บน GitHub) ไม่มีบรรทัดไหนบอกว่าแนวคิด
+// นี้ไร้สาระ และ footnote ท้ายหน้าบอกตรง ๆ ว่ามุกนี้ทำด้วยความรัก
+// ถ้าจะเพิ่มมุกใหม่ ยึดหลักเดียวกัน: ล้อตัวเองได้ ห้ามล้อคนอื่น
+//
+// ทำไม floralgender ถึงยังเป็นเรื่อง "มะนาว": มะนาวทุกลูกเริ่มจากดอก — ดอกมะนาว
+// กลีบขาว ดอกตูมด้านนอกอมม่วง เกสรเหลือง เลยเลือกดอกนี้โดยเฉพาะ ไม่ใช่ดอกไม้ทั่วไป
+// หน้านี้จะได้ยังต่อกับรหัส LEMONADE ที่ใช้เปิด และกับชื่อเล่น Lemon
+//
+// ธงข้างล่างเป็นธงของ "ดอกมะนาว" ที่ตั้งขึ้นเองสำหรับมุกนี้ ไม่ได้อ้างว่าเป็นธง
+// floralgender ทางการของชุมชนไหน — ถ้าจะใช้ธงจริงของชุมชน ต้องไปหาที่มาให้ถูกก่อน
+
+export const PLAYGROUND = {
+  back: { en: "← back to the serious website", th: "← กลับไปเว็บจริงจัง" },
+  unlocked: { en: "8 / 8 · unlocked", th: "8 / 8 · ปลดล็อกแล้ว" },
+  eyebrow: { en: "Which xenogender are you?", th: "คุณเป็น xenogender แบบไหน?" },
+  eyebrowNote: {
+    en: "result computed by a model nobody should trust",
+    th: "ผลลัพธ์จากโมเดลที่ไม่ควรมีใครเชื่อ",
+  },
+
+  result: {
+    name: "Floralgender",
+    variant: { en: "lemon blossom", th: "ดอกมะนาว" },
+    emoji: "🌼",
+    emojiLabel: { en: "blossom", th: "ดอกไม้" },
+    pronunciation: "/ˈflɔːr.əl.dʒɛn.dər/",
+    pos: { en: "noun · self-assigned", th: "คำนาม · ตั้งเองกับมือ" },
+    definition: {
+      en: "A gender experienced through flowers — in this case the lemon blossom: white petals, a purple blush on the bud, and a scent that arrives before you notice the tree. Every lemon starts as one.",
+      th: "เพศที่สัมผัสผ่านดอกไม้ — ในกรณีนี้คือดอกมะนาว กลีบขาว ดอกตูมอมม่วง กลิ่นมาถึงก่อนจะทันสังเกตเห็นต้น มะนาวทุกลูกเริ่มจากดอกแบบนี้",
+    },
+    /** ป้ายบนกล่องตรวจจับรอบดอกไม้ — ตั้งใจให้เหมือนกล่องบนรูปโปรไฟล์หน้าหลักเป๊ะ
+     *  มุกคือโมเดลมองดอกไม้แล้วเห็นเป็นมะนาว (เพราะเดี๋ยวมันก็กลายเป็นมะนาวอยู่ดี) */
+    detection: "Lemon(me):3 0.99",
+  },
+
+  flagTitle: { en: "The flag", th: "ความหมายของธง" },
+  /** ธงห้าแถบเรียงบนลงล่าง ไล่จากดอกตูมลงไปถึงใบแก่ เหมือนมองดอกจากปลายกิ่งลงมา */
+  flag: [
+    { color: "#D9C2E8", label: { en: "Lilac — the bud, purple on the outside before it opens", th: "ม่วงอ่อน — ดอกตูม ด้านนอกอมม่วงก่อนจะบาน" } },
+    { color: "#FFFFFF", label: { en: "White — the petals, once it does", th: "ขาว — กลีบดอก ตอนบานแล้ว" } },
+    { color: "#F6D930", label: { en: "Lemon yellow — the stamens, and the lemon this eventually becomes", th: "เหลืองมะนาว — เกสร และมะนาวที่ดอกนี้จะกลายเป็นในที่สุด" } },
+    { color: "#A8D17A", label: { en: "Spring green — new leaves", th: "เขียวอ่อน — ใบอ่อน" } },
+    { color: "#5E8F3A", label: { en: "Leaf green — old leaves. The tree was here first.", th: "เขียวเข้ม — ใบแก่ ต้นไม้อยู่ตรงนี้มาก่อนแล้ว" } },
+  ],
+
+  traitsTitle: { en: "Known traits", th: "ลักษณะเด่น" },
+  traits: [
+    { en: "Arrives as a scent before anyone sees it", th: "กลิ่นมาถึงก่อนตัว" },
+    { en: "Quietly turning into a lemon", th: "กำลังค่อย ๆ กลายเป็นมะนาวแบบเงียบ ๆ" },
+    { en: "Pairs well with butter tteok (pre-order Fridays)", th: "เข้ากันดีกับบัตเตอร์ต๊อก (พรีออเดอร์ทุกวันศุกร์)" },
+    { en: "Refactors your code without being asked", th: "รีแฟกเตอร์โค้ดคุณโดยไม่มีใครขอ" },
+    { en: "Detected by YOLOv11 as Lemon(me):3", th: "YOLOv11 ตรวจจับได้ในชื่อ Lemon(me):3" },
+  ] satisfies L10n[],
+
+  detectionsTitle: { en: "Raw detections, before NMS", th: "ผลตรวจจับดิบ ก่อนผ่าน NMS" },
+  detections: [
+    { label: "floralgender", score: 0.97, note: { en: "The winner. See above.", th: "ผู้ชนะ ดูข้างบน" } },
+    { label: "lemonadegender", score: 0.93, note: { en: "Close second — what the blossom turns into, after some sugar and a lot of water.", th: "อันดับสองแบบหายใจรดต้นคอ — สิ่งที่ดอกนี้จะกลายเป็น หลังเติมน้ำตาลนิดหน่อยกับน้ำอีกเยอะ" } },
+    { label: "yologender", score: 0.88, note: { en: "You Only Look Once. Also You Only Live Once. Also merged a pull request without review.", th: "You Only Look Once และ You Only Live Once และเคย merge PR โดยไม่ให้ใครรีวิว" } },
+    { label: "boundingboxgender", score: 0.71, note: { en: "Exists only inside a rectangle, with a confidence score attached.", th: "มีตัวตนอยู่แค่ในกรอบสี่เหลี่ยม พร้อมค่าความมั่นใจแปะไว้" } },
+    { label: "tteokgender", score: 0.54, note: { en: "Chewy, soft, straight from the oven.", th: "หนึบ นุ่ม ออกจากเตาใหม่ ๆ" } },
+  ],
+  nmsNote: {
+    en: "Non-max suppression keeps only the top box. The rest are shown anyway — every other number on this site comes with its working, so this one does too.",
+    th: "NMS เก็บไว้แค่กล่องที่คะแนนสูงสุด แต่ที่เหลือก็โชว์ไว้ด้วย — ตัวเลขทุกตัวในเว็บนี้มีที่มาให้ดู อันนี้ก็เหมือนกัน",
+  },
+
+  footnote: {
+    en: "Made with love for everyone whose xenogender is real. Mine is mostly a pun on my GitHub handle.",
+    th: "ทำด้วยความรักถึงทุกคนที่ xenogender เป็นตัวตนจริง ๆ — ของผมส่วนใหญ่เป็นแค่การเล่นคำกับชื่อ GitHub",
+  },
+
+  locked: {
+    title: { en: "This page is locked.", th: "หน้านี้ล็อกอยู่" },
+    body: {
+      en: "Eight letters are hidden on the main page. Press them in order, top to bottom.",
+      th: "มีตัวอักษร 8 ตัวซ่อนอยู่ในหน้าหลัก กดให้ครบตามลำดับ จากบนลงล่าง",
+    },
+  },
+};

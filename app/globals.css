@@ -115,6 +115,37 @@ body {
   animation: boxIn 0.28s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
 
+/* ตัวอักษรรหัสลับ L E M O N A D E — ดู components/SecretCode.tsx
+   จางจนดูเหมือนลายประดับ แต่ไม่ถึงกับมองไม่เห็น เพราะไข่อีสเตอร์ที่ไม่มีใครเจอก็เท่ากับไม่มี
+   ตัวปุ่มกว้าง 24×24 ตามเกณฑ์ WCAG ทั้งที่ตัวอักษรเล็กนิดเดียว ไม่งั้นนิ้วกดไม่โดน */
+.secret-letter {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-muted);
+  opacity: 0.45;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease,
+    text-shadow 0.2s ease;
+}
+.secret-letter:hover {
+  opacity: 0.85;
+}
+.secret-letter[data-lit] {
+  color: var(--color-yellow);
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(245, 185, 46, 0.7);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

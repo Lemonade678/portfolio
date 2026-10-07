@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import CoverArt from "@/components/CoverArt";
 import PhotoDetect from "@/components/PhotoDetect";
 import BrandIcon, { brandOf, hostOf } from "@/components/BrandIcon";
+import { SecretLetter, SecretProvider } from "@/components/SecretCode";
 import {
   ACCENT_HEX,
   CONTACTS,
@@ -139,7 +140,9 @@ export default function Page() {
   }, [lang]);
 
   return (
-    <>
+    // SecretProvider ครอบทั้งหน้า เพราะตัวอักษร 8 ตัวกระจายอยู่ทั้งใน header และ main
+    // ต้องแชร์ตัวนับเดียวกันว่ากดถูกมาถึงตัวไหนแล้ว
+    <SecretProvider lang={lang}>
       {/* ───── แถบบน ───── */}
       <header className="sticky top-0 z-50 border-b border-line bg-bg/85 backdrop-blur-md">
         <div className="mx-auto flex h-[54px] max-w-[1120px] items-center justify-between px-5 sm:px-8 lg:px-16">
@@ -148,6 +151,9 @@ export default function Page() {
           </span>
 
           <div className="flex items-center gap-5">
+            {/* ตัวที่ 1 — L อยู่ใน header ที่ sticky เลยมองเห็นและกดได้ตลอด
+                ไม่ว่าจะเลื่อนไปถึงไหน ซึ่งเหมาะกับตัวแรกของรหัสพอดี */}
+            <SecretLetter index={0} />
             <nav className="hidden gap-5 md:flex">
               {(["work", "proof", "stack", "soft", "path", "contact"] as const).map((k) => (
                 <a
@@ -196,9 +202,13 @@ export default function Page() {
             </div>
           )}
 
-          <h1 className="mt-6 text-[clamp(38px,8vw,74px)] font-bold leading-[1.02] tracking-[-0.03em]">
-            {PERSON.name}
-          </h1>
+          <div className="mt-6 flex items-start justify-between gap-4">
+            <h1 className="text-[clamp(38px,8vw,74px)] font-bold leading-[1.02] tracking-[-0.03em]">
+              {PERSON.name}
+            </h1>
+            {/* ตัวที่ 2 — E ปลายบรรทัดชื่อ */}
+            <SecretLetter index={1} className="mt-2" />
+          </div>
 
           <p className="mt-3 text-[clamp(17px,3.2vw,26px)] font-semibold tracking-[-0.01em]">
             {PERSON.roles.map((r, i) => (
@@ -256,7 +266,11 @@ export default function Page() {
           {/* ตัวเลขมี 4 ตัว → 1 / 2 / 4 คอลัมน์ ถ้าใช้ 3 คอลัมน์เหมือนเดิม
               ใบสุดท้ายจะเหลือค้างแถวล่างใบเดียว และบนมือถือยังเป็นคอลัมน์เดียว
               เพราะคำบรรยายยาวเกินกว่าจะบีบสองใบต่อแถวได้ */}
-          <div className="mt-3.5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {/* ตัวที่ 3 — M แถวบาง ๆ เหนือตัวเลข ชิดขวาให้ตรงแนวกับตัวอื่น */}
+          <div className="mt-2 flex justify-end">
+            <SecretLetter index={2} />
+          </div>
+          <div className="mt-1 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {METRICS.map((m) => (
               <Reveal key={m.value + m.accent}>
                 <div className="rounded-xl border border-line bg-surface p-[18px]">
@@ -280,7 +294,7 @@ export default function Page() {
 
         {/* ───── ผลงาน ───── */}
         <section id="work" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="01" title={t(UI.sections.work, lang)} />
+          <SectionHead n="01" secret={3} title={t(UI.sections.work, lang)} />
 
           {PROJECTS.map((p) => (
             <Reveal key={p.id}>
@@ -375,7 +389,7 @@ export default function Page() {
 
         {/* ───── หลักฐาน ───── */}
         <section id="proof" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="02" title={t(UI.sections.proof, lang)} />
+          <SectionHead n="02" secret={4} title={t(UI.sections.proof, lang)} />
           <p className="mb-5 -mt-2 max-w-[62ch] text-[13.5px] text-ink2">
             {t(UI.proofNote, lang)}
           </p>
@@ -384,7 +398,7 @@ export default function Page() {
 
         {/* ───── เครื่องมือ ───── */}
         <section id="stack" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="03" title={t(UI.sections.stack, lang)} />
+          <SectionHead n="03" secret={5} title={t(UI.sections.stack, lang)} />
 
           {/* กลุ่ม core กินเต็มความกว้างและใช้ชิปสีเหลืองตัวใหญ่กว่า
               เพื่อให้คนกวาดตาผ่านแล้วเห็นหกอย่างนี้ก่อนอย่างอื่น */}
@@ -448,7 +462,7 @@ export default function Page() {
             แยกออกมาเป็น section ของตัวเอง ไม่ยัดเป็นชิปรวมกับข้างบน
             เพราะแต่ละข้อต้องมีที่ให้เขียนหลักฐานประกอบ ไม่งั้นเป็นแค่คำโฆษณา */}
         <section id="soft" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="04" title={t(UI.sections.soft, lang)} />
+          <SectionHead n="04" secret={6} title={t(UI.sections.soft, lang)} />
           <div className="grid gap-4 md:grid-cols-3">
             {SOFT_SKILLS.map((s, i) => (
               <Reveal key={s.name.en}>
@@ -473,7 +487,7 @@ export default function Page() {
 
         {/* ───── เส้นทาง ───── */}
         <section id="path" className="pt-[clamp(52px,8vw,86px)]">
-          <SectionHead n="05" title={t(UI.sections.path, lang)} />
+          <SectionHead n="05" secret={7} title={t(UI.sections.path, lang)} />
           <div className="border-t border-line">
             {TIMELINE.map((r, i) => (
               <Reveal key={i}>
@@ -507,13 +521,22 @@ export default function Page() {
           <span>{t(UI.updated, lang)}</span>
         </footer>
       </main>
-    </>
+    </SecretProvider>
   );
 }
 
 // ── ชิ้นส่วนย่อย ──────────────────────────────────────────────
 
-function SectionHead({ n, title }: { n: string; title: string }) {
+function SectionHead({
+  n,
+  title,
+  secret,
+}: {
+  n: string;
+  title: string;
+  /** index ของตัวอักษรรหัสลับที่จะวางไว้ปลายเส้นคั่น (ดู SecretCode.tsx) */
+  secret?: number;
+}) {
   return (
     <div className="mb-6 flex items-center gap-3">
       <span className="font-mono text-[10.5px] tracking-[0.16em] text-yellow">
@@ -523,6 +546,7 @@ function SectionHead({ n, title }: { n: string; title: string }) {
         {title}
       </h2>
       <span className="h-px flex-1 bg-line" />
+      {secret !== undefined && <SecretLetter index={secret} />}
     </div>
   );
 }
