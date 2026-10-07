@@ -1,6 +1,6 @@
 "use client";
 
-// ── เลือกฮีโร่ ── (ย้ายมาจาก app/next/Heroes.tsx)
+// ── เลือกฮีโร่ ── (เดิมอยู่หน้า teaser /next)
 //
 // สามตัวโปรดของ TheOzzy: Pepe (อีโมตประจำช่อง) · Dooley (The Bazaar) · M'Baku (Marvel Snap)
 // การ์ดแต่ละใบเป็น <button aria-pressed> — กดแล้วเริ่มรันใหม่ด้วยฮีโร่ตัวนั้นทันที
