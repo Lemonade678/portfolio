@@ -3,14 +3,24 @@
 // หัวเว็บ: รูป (กดรัน YOLO ได้) · ชื่อ · บทบาท · แนะนำตัว · ปุ่มปลายทาง · ช่องทางติดต่อ · ตัวเลขสี่ตัว
 // ย้ายมาจาก app/page.tsx ไม่แก้ markup — ตัวอักษรลับ E กับ M อยู่ในนี้
 
+import { useRouter } from "next/navigation";
 import PhotoDetect from "@/components/PhotoDetect";
 import BrandIcon, { brandOf } from "@/components/BrandIcon";
 import { SecretLetter } from "@/components/SecretCode";
 import ContactCards from "@/components/home/ContactCards";
 import { ACCENT_HEX, MENU, METRICS, PERSON, type Lang } from "@/lib/content";
+import { windowFromHash, type WindowId } from "@/lib/home";
 import { Reveal, t } from "@/components/home/ui";
 
-export default function Hero({ lang }: { lang: Lang }) {
+export default function Hero({
+  lang,
+  windowHref,
+}: {
+  lang: Lang;
+  /** ปุ่มที่ชี้ไป #หัวข้อ (เช่น "ผลงาน" → #work) เปิดเป็นหน้าต่างแทนการเลื่อนลง — ไม่ส่งมา = ใช้ลิงก์ # เดิม */
+  windowHref?: (id: WindowId) => string;
+}) {
+  const router = useRouter();
   return (
     <section className="-mt-14">
       {/* มีรูป → ใช้กรอบที่กดรัน YOLO ได้ / ไม่มีรูป → กลับไปเป็นวงกลมอักษรย่อเหมือนเดิม */}
@@ -53,10 +63,19 @@ export default function Hero({ lang }: { lang: Lang }) {
           คำอธิบายใต้ปุ่มจำเป็น เพราะคำว่า "Shop" ลอย ๆ บนพอร์ตวิศวะ
           ไม่มีใครเดาถูกว่าขายอะไร */}
       <nav aria-label="Main destinations" className="mt-8 grid gap-2.5 sm:grid-cols-3">
-        {MENU.map((m) => (
+        {MENU.map((m) => {
+          const win = windowHref && windowFromHash(m.href);
+          return (
           <a
             key={m.href}
-            href={m.href}
+            href={win ? windowHref(win) : m.href}
+            onClick={win ? (e) => {
+              // ลิงก์ภายใน: ให้ router เปลี่ยนหน้าต่างแบบไม่โหลดหน้าใหม่ (state ของ shell ไม่หาย)
+              // กดพร้อม Ctrl/⌘/Shift หรือคลิกกลาง = อยากเปิดแท็บใหม่ ปล่อยให้เบราว์เซอร์ทำตามปกติ
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+              e.preventDefault();
+              router.push(windowHref(win));
+            } : undefined}
             target={m.external ? "_blank" : undefined}
             rel={m.external ? "noopener noreferrer" : undefined}
             className="group rounded-xl border px-4 py-3.5 transition-all hover:-translate-y-0.5"
@@ -69,7 +88,7 @@ export default function Hero({ lang }: { lang: Lang }) {
             <span className="flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em]">
               {m.external && <BrandIcon brand={brandOf(m.href)} size={14} />}
               {t(m.label, lang)}
-              {m.external ? " ↗" : " ↓"}
+              {m.external ? " ↗" : win ? " →" : " ↓"}
             </span>
             <span
               className="mt-1 block text-[11.5px] leading-snug"
@@ -78,7 +97,8 @@ export default function Hero({ lang }: { lang: Lang }) {
               {t(m.note, lang)}
             </span>
           </a>
-        ))}
+          );
+        })}
       </nav>
 
       <ContactCards lang={lang} className="mt-3" />

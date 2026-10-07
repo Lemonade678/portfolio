@@ -733,3 +733,101 @@ body {
     clip-path: none;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   หน้าหลักแบบ hub — หน้าต่างลอย (components/home/HomeWindow.tsx)
+   โครงเดียวกับหน้าต่างของ /ozzy (หน้าต่างสูงไม่เกินจอ แถบชื่ออยู่กับที่ เลื่อนเฉพาะเนื้อหา)
+   แต่ใช้ชุดสีของพอร์ต — น้ำตาลเข้ม + เส้นบาง ไม่ใช่ขอบหมึกหนาแบบการ์ตูน
+   ───────────────────────────────────────────────────────────── */
+.home-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40; /* ใต้แถบบน (z-50) — สลับภาษา/กดเมนูบนได้ระหว่างเปิดหน้าต่าง */
+  display: grid;
+  place-items: start center;
+  padding: 70px 16px 16px;
+  background: rgba(16, 11, 8, 0.7);
+  backdrop-filter: blur(4px);
+}
+.home-window {
+  display: flex;
+  flex-direction: column;
+  width: min(920px, 100%);
+  max-height: calc(100dvh - 86px);
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 20px;
+  background: var(--color-bg);
+  box-shadow: 0 30px 90px -20px rgba(0, 0, 0, 0.75);
+  animation: home-win-in 0.22s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes home-win-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.home-win-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.home-win-x {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  color: var(--color-ink2);
+  transition: color 0.15s, border-color 0.15s;
+}
+.home-win-x:hover {
+  border-color: var(--color-yellow);
+  color: var(--color-yellow);
+}
+.home-win-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 24px clamp(16px, 4vw, 32px) 28px;
+}
+.home-win-nav {
+  display: block;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.home-win-nav:hover {
+  border-color: var(--color-yellow);
+  transform: translateY(-2px);
+}
+/* มือถือ: หน้าต่างเต็มจอใต้แถบบน — กรอบลอยบนจอแคบเสียที่เปล่า ๆ */
+@media (max-width: 639px) {
+  .home-backdrop {
+    padding: 55px 0 0;
+  }
+  .home-window {
+    max-height: calc(100dvh - 55px);
+    height: calc(100dvh - 55px);
+    border-radius: 0;
+    border-width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-window {
+    animation: none;
+  }
+}
