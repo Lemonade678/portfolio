@@ -919,3 +919,178 @@ export const NEXT_RUN = {
     cta: { en: "Take a seat at the table", th: "นั่งลงที่โต๊ะ" },
   },
 };
+
+// ── หน้าหลักแบบ hub: "ตู้ขนมของเลม่อน" ─────────────────────────
+//
+// หน้าแรกเหลือแค่หัวเว็บ + ตัวเลข + ตู้ขนม 6 ชั้น · แต่ละชั้นเปิดหน้าต่างของตัวเอง (/work, /proof, …)
+// ตัวช่วยเรื่องเส้นทาง (ลำดับหน้าต่าง · แปลง #anchor เก่า · นับจำนวน) อยู่ใน lib/home.ts
+//
+// ธีม "ขนม + YOLO" มาจากสองอย่างที่มีอยู่แล้วในเว็บ:
+//   ขนม = ร้าน Kapimong (บัตเตอร์ต๊อกโฮมเมด) ที่อยู่ในปุ่ม Shop
+//   YOLO = งาน computer vision — ขนมแต่ละชิ้นในตู้ถูก "ตีกล่อง" เหมือนชุดข้อมูลเทรนโมเดล
+// กล่องพวกนั้นตีเองด้วยมือ ไม่ได้มาจากโมเดล — หน้าเว็บเขียนบอกตรง ๆ (counter.honesty)
+// โมเดลจริงยังรันบนรูปโปรไฟล์เหมือนเดิม
+//
+// ขนมแต่ละชิ้นเป็นมุกกับชื่อหัวข้อ: Proof = แป้งขนมปังที่ "proof" (พักให้ขึ้นฟู) · Stack = แพนเค้กซ้อน
+// Soft = โมจิ (นุ่ม) · Path = โรลเค้ก (ทางวน) · ผลงาน = บัตเตอร์ต๊อก ของขึ้นชื่อของร้าน · แพชชั่น = น้ำเลมอน
+//
+// ตัวอักษรลับ O N A D E ย้ายจากหัวข้อ 01–05 มาอยู่ปลายขวาของชั้น 01–05 — ยังอ่านไล่ขอบขวาลงมาได้เหมือนเดิม
+
+export type WindowId = "work" | "proof" | "stack" | "soft" | "path" | "passions";
+export type SnackId = "tteok" | "bread" | "pancakes" | "dango" | "roll" | "lemonade";
+
+export interface HomeWindowCopy {
+  /** เลขหัวข้อ 01–06 */
+  n: string;
+  /** ชื่อสั้นบนแถบบน */
+  nav: L10n;
+  /** ชื่อเต็มบนหัวหน้าต่าง (01–05 ใช้ชื่อหัวข้อเดิม) */
+  title: L10n;
+  /** บรรทัดเดียวใต้ชื่อบนชั้นขนม */
+  note: L10n;
+  /** หน่วยของตัวเลขบนชั้น เช่น "5 projects" — ตัวเลขนับจากข้อมูลจริงใน lib/home.ts */
+  unit: L10n;
+  snack: SnackId;
+  /** index ของตัวอักษรลับใน LEMONADE (ชั้น 01–05 เท่านั้น) */
+  secret?: number;
+}
+
+export interface PassionCard {
+  id: "language" | "food" | "tech";
+  title: L10n;
+  body: L10n;
+  /** ลิงก์ที่ขึ้นต้นด้วย / คือหน้าต่างในเว็บนี้ (แนบ ?lang ให้เอง) · ที่เหลือเปิดแท็บใหม่ */
+  links: { href: string; label: L10n }[];
+}
+
+/** แยกเป็นตัวแปรมี type ชัด (ไม่ใช่ satisfies) — ให้ทุกหน้าต่างมี secret?: number เหมือนกัน
+ *  ไม่งั้น TypeScript จะจำว่าหน้าต่าง passions "ไม่มี" ช่อง secret แล้วอ่านแบบรวม ๆ ไม่ได้ */
+const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
+  work: {
+    n: "01",
+    nav: UI.nav.work,
+    title: UI.sections.work,
+    note: { en: "The numbers, and the limits of each", th: "พร้อมตัวเลขและข้อจำกัดของแต่ละอัน" },
+    unit: { en: "projects", th: "โปรเจกต์" },
+    snack: "tteok",
+    secret: 3,
+  },
+  proof: {
+    n: "02",
+    nav: UI.nav.proof,
+    title: UI.sections.proof,
+    note: { en: "The documents behind the numbers — open them yourself", th: "เอกสารที่อยู่เบื้องหลังตัวเลข เปิดดูเองได้" },
+    unit: { en: "documents", th: "เอกสาร" },
+    snack: "bread",
+    secret: 4,
+  },
+  stack: {
+    n: "03",
+    nav: UI.nav.stack,
+    title: UI.sections.stack,
+    note: { en: "Grouped by how well I actually know them", th: "แบ่งตามว่ารู้จริงแค่ไหน" },
+    unit: { en: "tools", th: "เครื่องมือ" },
+    snack: "pancakes",
+    secret: 5,
+  },
+  soft: {
+    n: "04",
+    nav: UI.nav.soft,
+    title: UI.sections.soft,
+    note: { en: "Each one with a real story behind it", th: "ทุกข้อมีเรื่องจริงรองรับ" },
+    unit: { en: "stories", th: "เรื่อง" },
+    snack: "dango",
+    secret: 6,
+  },
+  path: {
+    n: "05",
+    nav: UI.nav.path,
+    title: UI.sections.path,
+    note: { en: "Degree, internships, and the next run", th: "ปริญญา ฝึกงาน และรันถัดไป" },
+    unit: { en: "stops", th: "จุด" },
+    snack: "roll",
+    secret: 7,
+  },
+  passions: {
+    n: "06",
+    nav: { en: "Passions", th: "แพชชั่น" },
+    title: { en: "Passions", th: "สิ่งที่ผมหลงใหล" },
+    note: { en: "Language · food & drinks · tech", th: "ภาษา · อาหารและเครื่องดื่ม · เทค" },
+    unit: { en: "passions", th: "อย่าง" },
+    snack: "lemonade",
+  },
+};
+
+export const HOME = {
+  windows: HOME_WINDOW_COPY,
+
+  counter: {
+    title: { en: "The counter", th: "ตู้ขนม" },
+    kicker: { en: "Pick something from the case", th: "เลือกจากในตู้ได้เลย" },
+    detecting: { en: "detecting…", th: "กำลังตรวจจับ…" },
+    /** ต่อท้ายจำนวนชิ้น เช่น "6 items · hand-labelled" */
+    labelled: { en: "items · hand-labelled", th: "ชิ้น · ตีกล่องเอง" },
+    honesty: {
+      en: "These boxes are hand-labelled, like a training set. The real model runs on my photo up top.",
+      th: "กล่องพวกนี้ผมตีเองแบบ label ชุดเทรน — โมเดลจริงรันบนรูปผมข้างบน",
+    },
+  },
+
+  window: {
+    close: { en: "Close", th: "ปิด" },
+    prev: { en: "Previous", th: "ก่อนหน้า" },
+    next: { en: "Next", th: "ถัดไป" },
+    back: { en: "Back to the counter", th: "กลับไปที่ตู้ขนม" },
+  },
+
+  // แพชชั่นสามอย่างที่เจ้าของเว็บบอกมา: ภาษา · อาหารและเครื่องดื่ม · เทค
+  // ทุกประโยคประกอบจากข้อเท็จจริงที่มีอยู่แล้วในเว็บ (TOEIC 885 · ร้าน Kapimong · สามบทบาทบนหัวเว็บ)
+  // ไม่แต่งความรู้สึกหรืองานอดิเรกที่เจ้าตัวไม่ได้พูด — อยากเล่าเพิ่มด้วยคำของตัวเอง แก้ตรงนี้ได้เลย
+  passions: {
+    intro: {
+      en: "Three things I keep coming back to, outside and inside work.",
+      th: "สามอย่างที่ผมวนกลับมาหาเสมอ ทั้งในงานและนอกงาน",
+    },
+    cards: [
+      {
+        id: "language",
+        title: { en: "Language", th: "ภาษา" },
+        body: {
+          en: "Thai is my first language, English my second (TOEIC 885). Every line of this site exists in both, and the LLM I fine-tuned interviews people in Thai.",
+          th: "ภาษาไทยเป็นภาษาแม่ ภาษาอังกฤษเป็นภาษาที่สอง (TOEIC 885) ทุกบรรทัดในเว็บนี้มีทั้งสองภาษา และ LLM ที่ผม fine-tune ก็สัมภาษณ์งานเป็นภาษาไทย",
+        },
+        links: [
+          { href: "/proof", label: { en: "TOEIC certificate", th: "ใบ TOEIC" } },
+          { href: "https://huggingface.co/spaces/Lemonade44/nong-trongpok", label: { en: "Talk to the LLM", th: "ลองคุยกับ LLM" } },
+        ],
+      },
+      {
+        id: "food",
+        title: { en: "Food & drinks", th: "อาหารและเครื่องดื่ม" },
+        body: {
+          en: "Kapimong — homemade butter tteok, pre-order Fridays. And yes, the nickname is Lemon.",
+          th: "Kapimong — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์ และใช่ ชื่อเล่นผมคือเลม่อน",
+        },
+        links: [
+          { href: "https://www.instagram.com/buttertteok4u.by.remmie/", label: { en: "Kapimong on Instagram", th: "Kapimong บน Instagram" } },
+        ],
+      },
+      {
+        id: "tech",
+        title: { en: "Tech", th: "เทค" },
+        body: {
+          en: "Computer vision, LLM fine-tuning and data pipelines — the three roles at the top of the page, each with a real project behind it.",
+          th: "Computer vision, การ fine-tune LLM และ data pipeline — สามบทบาทบนหัวเว็บ ทุกอันมีโปรเจกต์จริงรองรับ",
+        },
+        links: [
+          { href: "/work", label: { en: "Selected work", th: "ผลงาน" } },
+          { href: "/stack", label: { en: "Tools I use", th: "เครื่องมือที่ใช้" } },
+        ],
+      },
+    ] satisfies PassionCard[],
+    outro: {
+      en: "Where the three meet: a bilingual site, built like a snack counter, labelled like a dataset.",
+      th: "จุดที่สามอย่างมาเจอกัน: เว็บสองภาษา หน้าตาเป็นตู้ขนม ตีกล่องเหมือนชุดข้อมูล",
+    },
+  },
+};
