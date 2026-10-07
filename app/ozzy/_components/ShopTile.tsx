@@ -30,7 +30,15 @@ export default function ShopTile({
 }) {
   const S = OZZY.shop;
   const label =
-    state === "owned" ? S.owned : state === "short" ? S.short : state === "full" ? S.full : S.buy;
+    state === "owned"
+      ? S.owned
+      : state === "short"
+        ? S.short
+        : state === "full"
+          ? S.full
+          : state === "locked"
+            ? S.runOnly
+            : S.buy;
 
   return (
     <div className={`oz-tile ${state === "owned" ? "opacity-70" : ""}`}>

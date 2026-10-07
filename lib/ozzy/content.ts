@@ -355,6 +355,7 @@ export const OZZY = {
     buy: { en: "Buy", th: "ซื้อ" },
     short: { en: "Not enough", th: "แต้มไม่พอ" },
     full: { en: "Slots full", th: "ช่องเต็ม" },
+    runOnly: { en: "Run only", th: "เฉพาะในรัน" },
     startRun: { en: "Start a run to buy relics.", th: "เริ่มรันก่อนถึงซื้อรีลิคได้" },
     goRun: { en: "Go to the dungeon →", th: "ไปดันเจี้ยน →" },
     vipBadge: { en: "VIP", th: "VIP" },
