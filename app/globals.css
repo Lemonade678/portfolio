@@ -695,6 +695,20 @@ body {
   box-shadow: 4px 4px 0 var(--oz-ink);
 }
 
+/* การ์ดคลิปในหน้าต่างคลิป */
+.oz-clip {
+  overflow: hidden;
+  border: 3px solid var(--oz-ink);
+  border-radius: 12px;
+  background: var(--oz-night);
+  box-shadow: 4px 4px 0 var(--oz-ink);
+  transition: transform 0.15s ease;
+}
+.oz-clip:hover,
+.oz-clip:focus-visible {
+  transform: translateY(-3px);
+}
+
 /* emote ตัดจากภาพหน้าจอ ตัวเล็ก — ขยายแบบบล็อก ไม่ให้เบลอ */
 .oz-pixel {
   image-rendering: pixelated;
