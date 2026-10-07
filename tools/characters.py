@@ -1,9 +1,9 @@
-"""ทำรูปประจำตัวละคร 3 ตัวของหน้า /next (Pepe · Dooley · M'Baku) จากรูปต้นฉบับ
+"""ทำรูปประจำตัวละคร 3 ตัวของเว็บ /ozzy (Pepe · Dooley · M'Baku) จากรูปต้นฉบับ
 
     python tools/characters.py
 
 อ่านจาก tools/source/next/{pepe,dooley,mbaku}.jpg  (gitignore ไว้ — ไฟล์ต้นทางไม่ขึ้น git)
-เขียนไปที่ public/next/{pepe,dooley,mbaku}.webp  สี่เหลี่ยมจัตุรัส 320×320
+เขียนไปที่ public/ozzy/characters/{pepe,dooley,mbaku}.webp  สี่เหลี่ยมจัตุรัส 320×320
 
 ทำไมต้องผ่านสคริปต์ ไม่เอารูปที่โหลดมาใส่ตรง ๆ:
   1. รูปต้นฉบับขนาดไม่เท่ากันเลย (593×517, 320², 554²) — บนหน้าเว็บวางในกรอบจัตุรัส
@@ -19,7 +19,7 @@ from pathlib import Path
 from PIL import Image
 
 SRC = Path("tools/source/next")
-OUT = Path("public/next")
+OUT = Path("public/ozzy/characters")
 SIZE = 320
 
 # กรอบครอป (ซ้าย, บน, ขวา, ล่าง) ในพิกัดของรูปต้นฉบับ — ต้องเป็นสี่เหลี่ยมจัตุรัส

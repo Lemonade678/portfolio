@@ -464,10 +464,56 @@ export const OZZY = {
     },
   },
 
-  /** รูปถ่าย — เติมใน Task 4 (tools/ozzy_assets.py) */
-  photos: [] as OzPhoto[],
-  /** emote ของช่อง (เฉพาะที่ไม่ล็อกให้สมาชิก) — เติมใน Task 4 */
-  emotes: [] as OzEmote[],
+  /** รูปถ่ายของเขา — ทำด้วย tools/ozzy_assets.py · ขนาดต้องตรงกับไฟล์จริง (กันหน้ากระโดด) */
+  photos: [
+    {
+      id: "selfie",
+      src: "/ozzy/photos/selfie.webp",
+      w: 675,
+      h: 900,
+      alt: { en: "TheOzzy in a selfie at home, silver hair and glasses", th: "TheOzzy เซลฟี่ที่บ้าน ผมสีเงิน ใส่แว่น" },
+    },
+    {
+      id: "giraffe",
+      src: "/ozzy/photos/giraffe.webp",
+      w: 900,
+      h: 1200,
+      alt: {
+        en: "TheOzzy pointing at a giant giraffe head in a purple-lit museum, on a trip",
+        th: "TheOzzy ชี้หัวยีราฟยักษ์ในพิพิธภัณฑ์แสงม่วง ระหว่างทริป",
+      },
+    },
+    {
+      id: "stream",
+      src: "/ozzy/photos/stream.webp",
+      w: 640,
+      h: 360,
+      alt: { en: "TheOzzy live on stream, laughing at the mic", th: "TheOzzy ระหว่างไลฟ์ หัวเราะหน้าไมค์" },
+    },
+  ] satisfies OzPhoto[],
+  /** emote ของช่อง (เฉพาะที่ไม่ล็อกให้สมาชิก) ตัดจากภาพหน้าจอด้วย tools/ozzy_assets.py
+   *  ชื่อเป็นคำบนอีโมต หรือคำบรรยายถ้าเป็นรูป — ชื่อเรียกจริงในช่องเป็นอะไร แก้ที่นี่ได้เลย */
+  emotes: [
+    { id: "e01", src: "/ozzy/emotes/e01.png", name: { en: "Believe", th: "เชื่อ" } },
+    { id: "e02", src: "/ozzy/emotes/e02.png", name: { en: "Spin", th: "หมุน" } },
+    { id: "e03", src: "/ozzy/emotes/e03.png", name: { en: "Conjure", th: "เสก" } },
+    { id: "e04", src: "/ozzy/emotes/e04.png", name: { en: "Please", th: "ขอ" } },
+    { id: "e05", src: "/ozzy/emotes/e05.png", name: { en: "No", th: "ไม่" } },
+    { id: "e06", src: "/ozzy/emotes/e06.png", name: { en: "PMA", th: "PMA" } },
+    { id: "e07", src: "/ozzy/emotes/e07.png", name: { en: "Nope", th: "โน้" } },
+    { id: "e08", src: "/ozzy/emotes/e08.png", name: { en: "6 7", th: "6 7" } },
+    { id: "e09", src: "/ozzy/emotes/e09.png", name: { en: "BAN hammer", th: "ค้อน BAN" } },
+    { id: "e10", src: "/ozzy/emotes/e10.png", name: { en: "Black & white", th: "ขาวดำ" } },
+    { id: "e11", src: "/ozzy/emotes/e11.png", name: { en: "Dooley", th: "Dooley" } },
+    { id: "e12", src: "/ozzy/emotes/e12.png", name: { en: "Dooley close-up", th: "Dooley ซูม" } },
+    { id: "e13", src: "/ozzy/emotes/e13.png", name: { en: "Dooley pat", th: "ลูบหัว Dooley" } },
+    { id: "e14", src: "/ozzy/emotes/e14.png", name: { en: "Cheeky cat", th: "แมวแลบลิ้น" } },
+    { id: "e15", src: "/ozzy/emotes/e15.png", name: { en: "Pepe GG", th: "Pepe GG" } },
+    { id: "e16", src: "/ozzy/emotes/e16.png", name: { en: "Pepe heart", th: "Pepe ให้ใจ" } },
+    { id: "e17", src: "/ozzy/emotes/e17.png", name: { en: "Big eyes", th: "ตาโต" } },
+    { id: "e18", src: "/ozzy/emotes/e18.png", name: { en: "Dancing hamster", th: "แฮมสเตอร์เต้น" } },
+    { id: "e19", src: "/ozzy/emotes/e19.png", name: { en: "Pepe nerd", th: "Pepe แว่น" } },
+  ] satisfies OzEmote[],
 
   /** ห้าสีที่ดูดมาจากรูปบนช่อง — ต้องตรงกับตัวแปร --oz-* ใน globals.css */
   palette: [
