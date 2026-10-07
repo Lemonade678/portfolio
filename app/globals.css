@@ -500,6 +500,195 @@ body {
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   โต๊ะไพ่ /ozzy (แบบ B — หน้าจัดเด็ค) และหน้าต่างที่ลอยทับ
+   ───────────────────────────────────────────────────────────── */
+
+/* การ์ดฮีโร่ — รูปหน้า Ozzy ในกรอบไพ่ ขอบทองแบบไพ่ที่ถูกเลือก */
+.oz-herocard {
+  overflow: hidden;
+  border: 3px solid var(--oz-ink);
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 3px var(--oz-yellow),
+    7px 9px 0 var(--oz-ink),
+    0 0 36px rgba(254, 197, 1, 0.35);
+}
+
+/* ไพ่ในเด็ค — ชี้แล้วยกขึ้น + ขอบทอง เหมือนไพ่ที่กำลังจะลง */
+.oz-deck-card {
+  position: relative;
+  display: block;
+  border: 3px solid var(--oz-ink);
+  border-radius: 14px;
+  background: var(--oz-surface);
+  box-shadow: 4px 4px 0 var(--oz-ink);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.oz-deck-card:hover,
+.oz-deck-card:focus-visible {
+  transform: translateY(-8px) rotate(-1deg);
+  box-shadow:
+    0 0 0 3px var(--oz-yellow),
+    4px 8px 0 var(--oz-ink),
+    0 0 28px rgba(254, 197, 1, 0.45);
+}
+.oz-deck-art {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 11px 11px 0 0;
+  border-bottom: 3px solid var(--oz-ink);
+  background: #2a2763;
+  font-size: 30px;
+}
+/* มุมไพ่แบบ Marvel Snap: วงฟ้า (ลำดับ) กับหกเหลี่ยมส้ม (ตัวเลขจริง) — ยื่นออกนอกกรอบนิดหนึ่ง */
+.oz-cost,
+.oz-power {
+  position: absolute;
+  top: -12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  text-shadow: 1px 1px 0 var(--oz-ink);
+}
+.oz-cost {
+  left: -12px;
+  border: 2px solid var(--oz-ink);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #7cc9ff, #1e6fd9);
+}
+.oz-power {
+  right: -12px;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  background: linear-gradient(160deg, #ffb347, #e86a10);
+}
+
+/* พื้นมืดหลังหน้าต่าง — อยู่ใต้แถบบน (z-40) แถบบนเลยยังเห็นหัวใจกับแต้มตลอด */
+.oz-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: start center;
+  padding: 72px 16px 24px;
+  background: rgba(10, 9, 28, 0.62);
+  backdrop-filter: blur(3px);
+}
+/* หน้าต่างสูงไม่เกินจอ แถบชื่ออยู่กับที่ เลื่อนเฉพาะเนื้อหาข้างใน
+   (เคยลองแถบชื่อแบบ sticky ในพื้นที่เลื่อนได้ทั้งก้อน แล้วตำแหน่งเพี้ยน — แบบนี้ง่ายและนิ่งกว่า) */
+.oz-window {
+  display: flex;
+  flex-direction: column;
+  width: min(860px, 100%);
+  max-height: calc(100dvh - 96px);
+  overflow: hidden;
+  border: 3px solid var(--oz-ink);
+  border-radius: 18px;
+  background: #1a1840;
+  box-shadow:
+    8px 10px 0 var(--oz-ink),
+    0 0 0 1px rgba(30, 168, 248, 0.45),
+    0 30px 80px -20px rgba(30, 168, 248, 0.6);
+  animation: oz-win-in 0.25s cubic-bezier(0.2, 0.7, 0.3, 1.2) both;
+}
+/* ไพ่ "กาง" ออกเป็นหน้าต่าง: ขยายจากเล็กนิดหนึ่ง + จางเข้า */
+@keyframes oz-win-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.oz-win-bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 3px solid var(--oz-ink);
+  background: linear-gradient(90deg, #2a2763, #1d1b48);
+}
+.oz-win-art {
+  width: 30px;
+  height: 38px;
+  flex: none;
+  overflow: hidden;
+  border: 2px solid var(--oz-ink);
+  border-radius: 6px;
+  background: #2a2763;
+  font-size: 15px;
+}
+.oz-win-x {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border: 2px solid var(--oz-ink);
+  border-radius: 9px;
+  background: var(--oz-night);
+  font-weight: 800;
+  color: var(--oz-sky);
+}
+.oz-win-x:hover {
+  color: var(--oz-yellow);
+}
+.oz-win-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 16px 22px;
+}
+@media (min-width: 640px) {
+  .oz-win-body {
+    padding: 22px 26px 28px;
+  }
+}
+/* มือถือ: หน้าต่างเต็มจอใต้แถบบน */
+@media (max-width: 639px) {
+  .oz-backdrop {
+    padding: 56px 0 0;
+  }
+  .oz-window {
+    height: calc(100dvh - 56px);
+    max-height: none;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+}
+
+/* รูปในหน้าต่างโปรไฟล์ — กดแล้วขยาย */
+.oz-photo {
+  overflow: hidden;
+  border: 3px solid var(--oz-ink);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--oz-ink);
+  transition: transform 0.15s ease;
+}
+.oz-photo:hover {
+  transform: translateY(-3px) rotate(-1deg);
+}
+
+/* emote ตัดจากภาพหน้าจอ ตัวเล็ก — ขยายแบบบล็อก ไม่ให้เบลอ */
+.oz-pixel {
+  image-rendering: pixelated;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
