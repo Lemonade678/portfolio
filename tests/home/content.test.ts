@@ -93,3 +93,23 @@ describe("brand: site icon + shop logo", () => {
     expect(HOME.passions.cards.find((c) => c.id === "food")?.logo).toBe(true);
   });
 });
+
+describe("shop name vs mascot", () => {
+  // ร้านชื่อ Buttertteok 4U · Kapimong คือชื่อน้องคาปิบาร่า (มาสคอต) — เจ้าของเว็บยืนยัน 8 ต.ค. 2026
+  const shop = MENU.find((m) => m.href.includes("buttertteok4u"))!;
+  const food = HOME.passions.cards.find((c) => c.id === "food")!;
+
+  it("calls the shop Buttertteok 4U everywhere it is named", () => {
+    for (const s of [shop.note, food.body, food.links[0].label, SHOP_LOGO.alt]) {
+      expect(s.en).toContain("Buttertteok 4U");
+      expect(s.th).toContain("Buttertteok 4U");
+    }
+  });
+
+  it("only uses Kapimong as the capybara's name", () => {
+    expect(shop.note.en).not.toContain("Kapimong");
+    expect(food.links[0].label.en).not.toContain("Kapimong");
+    expect(food.body.en).toMatch(/Kapimong the capybara/);
+    expect(SHOP_LOGO.alt.en).toMatch(/Kapimong/);
+  });
+});

@@ -269,8 +269,8 @@ export const MENU: MenuItem[] = [
     logo: true,
     label: { en: "Shop", th: "ร้าน" },
     note: {
-      en: "Kapimong — homemade butter tteok, pre-order Fridays",
-      th: "Kapimong — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์",
+      en: "Buttertteok 4U — homemade butter tteok, pre-order Fridays",
+      th: "Buttertteok 4U — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์",
     },
   },
 ];
@@ -962,7 +962,7 @@ export const NEXT_RUN = {
 // ตัวช่วยเรื่องเส้นทาง (ลำดับหน้าต่าง · แปลง #anchor เก่า · นับจำนวน) อยู่ใน lib/home.ts
 //
 // ธีม "ขนม + YOLO" มาจากสองอย่างที่มีอยู่แล้วในเว็บ:
-//   ขนม = ร้าน Kapimong (บัตเตอร์ต๊อกโฮมเมด) ที่อยู่ในปุ่ม Shop
+//   ขนม = ร้าน Buttertteok 4U (บัตเตอร์ต๊อกโฮมเมด มาสคอตคือน้องคาปิบาร่าชื่อ Kapimong) ที่อยู่ในปุ่ม Shop
 //   YOLO = งาน computer vision — ขนมแต่ละชิ้นในตู้ถูก "ตีกล่อง" เหมือนชุดข้อมูลเทรนโมเดล
 // กล่องพวกนั้นตีเองด้วยมือ ไม่ได้มาจากโมเดล — หน้าเว็บเขียนบอกตรง ๆ (counter.honesty)
 // โมเดลจริงยังรันบนรูปโปรไฟล์เหมือนเดิม
@@ -1073,7 +1073,7 @@ export const HOME = {
   },
 
   // แพชชั่นสามอย่างที่เจ้าของเว็บบอกมา: ภาษา · อาหารและเครื่องดื่ม · เทค
-  // ทุกประโยคประกอบจากข้อเท็จจริงที่มีอยู่แล้วในเว็บ (TOEIC 885 · ร้าน Kapimong · สามบทบาทบนหัวเว็บ)
+  // ทุกประโยคประกอบจากข้อเท็จจริงที่มีอยู่แล้วในเว็บ (TOEIC 885 · ร้าน Buttertteok 4U · สามบทบาทบนหัวเว็บ)
   // ไม่แต่งความรู้สึกหรืองานอดิเรกที่เจ้าตัวไม่ได้พูด — อยากเล่าเพิ่มด้วยคำของตัวเอง แก้ตรงนี้ได้เลย
   passions: {
     intro: {
@@ -1098,11 +1098,11 @@ export const HOME = {
         logo: true,
         title: { en: "Food & drinks", th: "อาหารและเครื่องดื่ม" },
         body: {
-          en: "Kapimong — homemade butter tteok, pre-order Fridays. And yes, the nickname is Lemon.",
-          th: "Kapimong — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์ และใช่ ชื่อเล่นผมคือเลม่อน",
+          en: "Buttertteok 4U — homemade butter tteok, pre-order Fridays, with Kapimong the capybara as mascot. And yes, the nickname is Lemon.",
+          th: "Buttertteok 4U — บัตเตอร์ต๊อกโฮมเมด พรีออเดอร์ทุกวันศุกร์ มีน้องคาปิบาร่าชื่อ Kapimong เป็นมาสคอต และใช่ ชื่อเล่นผมคือเลม่อน",
         },
         links: [
-          { href: "https://www.instagram.com/buttertteok4u.by.remmie/", label: { en: "Kapimong on Instagram", th: "Kapimong บน Instagram" } },
+          { href: "https://www.instagram.com/buttertteok4u.by.remmie/", label: { en: "Buttertteok 4U on Instagram", th: "Buttertteok 4U บน Instagram" } },
         ],
       },
       {
@@ -1366,7 +1366,7 @@ export const NOW = {
 
 // ── โลโก้ร้านบัตเตอร์ต๊อก ─────────────────────────────────────
 //
-// โลโก้ "Buttertteok 4U" ที่เจ้าของเว็บให้มา — โชว์บนปุ่ม Shop ในหัวเว็บ และการ์ด "อาหารและเครื่องดื่ม" ในหน้าต่างแพชชั่น
+// โลโก้ร้าน "Buttertteok 4U" ที่เจ้าของเว็บให้มา (ร้านชื่อ Buttertteok 4U · Kapimong คือชื่อน้องคาปิบาร่าในโลโก้) — โชว์บนปุ่ม Shop ในหัวเว็บ และการ์ด "อาหารและเครื่องดื่ม" ในหน้าต่างแพชชั่น
 // ไฟล์ทำด้วย tools/brand_assets.py (ลบพื้นขาวด้านนอกให้ใส เพราะเว็บพื้นน้ำตาลเข้ม) · w/h ต้องตรงกับไฟล์จริง
 // ไอคอนเว็บ (คาปิบาร่าในแก้วชามะนาว) อยู่ที่ app/icon.png กับ app/apple-icon.png — Next.js ใส่ <link rel="icon"> ให้เอง
 
@@ -1375,7 +1375,7 @@ export const SHOP_LOGO = {
   w: 480,
   h: 451,
   alt: {
-    en: "Buttertteok 4U logo — a capybara with a lemon on its head, eating a butter tteok",
-    th: "โลโก้ร้าน Buttertteok 4U — คาปิบาร่ามีมะนาวบนหัว กำลังกินบัตเตอร์ต๊อก",
+    en: "Buttertteok 4U logo — Kapimong the capybara, a lemon on its head, eating a butter tteok",
+    th: "โลโก้ร้าน Buttertteok 4U — น้องคาปิบาร่า Kapimong มีมะนาวบนหัว กำลังกินบัตเตอร์ต๊อก",
   },
 };
