@@ -1190,8 +1190,15 @@ export const PEOPLE = {
       caption: { en: "A concert with friends, 2026", th: "ไปคอนเสิร์ตกับเพื่อน ๆ 2026" },
     },
   ] satisfies PeoplePhoto[],
-  /** บรรทัดนำก่อนการ์ด TheOzzy */
-  next: { en: "Who I'm building for next", th: "คนที่ผมกำลังทำงานให้ต่อไป" },
+  /** บรรทัดนำก่อนการ์ด TheOzzy (เจ้าของเว็บขอคำนี้) */
+  next: { en: "My favourite streamer", th: "สตรีมเมอร์คนโปรดของผม" },
+  /** คลิปสั้นของเขาที่เจ้าของเว็บเลือกเป็นไฮไลต์ — โหลดตัวเล่น YouTube ตอนกดเท่านั้น
+   *  ชื่อคลิป/ช่องตรวจกับ YouTube oEmbed แล้ว (ช่อง @TheOzzy213) */
+  fav: {
+    videoId: "byii5bL3ogc",
+    title: "ผมไม่ใช่หุ่นยนต์ครับ Pt.1 - I'm not a Robot",
+    play: { en: "Play his Short", th: "เปิดดูคลิปสั้นของเขา" },
+  },
   /** ปุ่มปิดกล่องดูรูปขยาย */
   close: { en: "Close photo", th: "ปิดรูป" },
 };
@@ -1324,4 +1331,29 @@ export const YOLO_MUSEUM = {
     { href: "https://en.wikipedia.org/wiki/You_Only_Look_Once", label: { en: "Wikipedia — You Only Look Once", th: "Wikipedia — You Only Look Once" } },
     { href: "https://docs.ultralytics.com/models/", label: { en: "Ultralytics docs — models", th: "เอกสาร Ultralytics — โมเดล" } },
   ],
+};
+
+// ── ตอนนี้: โปรเจกต์ใหม่ + ชวนทำแบบสอบถาม (บนสุดของหน้าต่าง 01 ผลงาน) ──
+//
+// โปรเจกต์ยังไม่มีชื่อ — เจ้าของเว็บเรียกว่า "untitled Gen Z traditional medicine project"
+// ยังไม่มีผลลัพธ์หรือตัวเลข เลยไม่ทำเป็นการ์ดโปรเจกต์แบบ Problem/Approach/Result และไม่นับรวมในจำนวนโปรเจกต์บนตู้
+//
+// คำอธิบายเขียนจากหัวข้อของแบบฟอร์มเอง ("มุมมอง Gen Z กับแพทย์แผนไทยและสมุนไพร") ไม่แต่งเพิ่ม
+// ลิงก์ใช้ forms.gle ของ Google ตรง ๆ — QR ที่เจ้าของเว็บมีวิ่งผ่าน qrfy.io (บริการ QR แบบเปลี่ยนปลายทางได้)
+// ถ้าบริการนั้นหมดอายุ QR จะตาย แต่ลิงก์บนเว็บจะยังใช้ได้
+// บรรทัด note บอกตรง ๆ ว่าฟอร์มขออีเมล — คนตอบควรรู้ก่อนกด
+
+export const NOW = {
+  eyebrow: { en: "Now · new project", th: "ตอนนี้ · โปรเจกต์ใหม่" },
+  title: { en: "Untitled Gen Z traditional medicine project", th: "โปรเจกต์ Gen Z × แพทย์แผนไทย (ยังไม่มีชื่อ)" },
+  body: {
+    en: "I'm asking young people — mostly Gen Z — how they see Thai traditional medicine and herbs, and what gets in the way of using them. If that's you, I'd love your answers.",
+    th: "ผมกำลังถามคนรุ่นใหม่ ส่วนใหญ่ Gen Z ว่ามองแพทย์แผนไทยกับสมุนไพรยังไง และอะไรที่ทำให้ไม่อยากใช้ ถ้าคุณเป็นหนึ่งในนั้น อยากได้คำตอบของคุณมากครับ",
+  },
+  cta: { en: "Take the survey", th: "ทำแบบสอบถาม" },
+  note: {
+    en: "Google Form · about 9 questions · it asks for your email",
+    th: "Google Form · ราว 9 ข้อ · ฟอร์มขออีเมลด้วย",
+  },
+  href: "https://forms.gle/GAQ4ktK4FnbCnivc9",
 };

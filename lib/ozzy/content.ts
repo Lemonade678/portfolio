@@ -78,6 +78,20 @@ export interface OzEmote {
   name: L10n;
 }
 
+export interface OzFeatured {
+  videoId: string;
+  title: string;
+  /** คลิปแนวตั้ง (Shorts) — ตัวเล่นเป็น 9:16 */
+  short?: boolean;
+}
+
+/** คลิปเด่น — เจ้าของเว็บเลือกเอง (RSS เห็นแค่ 15 คลิปล่าสุด คลิปเก่าที่เป็นตำนานต้องใส่ที่นี่)
+ *  ตรวจชื่อและช่องของแต่ละคลิปด้วย YouTube oEmbed ก่อนใส่ (ต.ค. 2026) */
+const FEATURED: OzFeatured[] = [
+  { videoId: "4ZI_mGuXtaE", title: "สวัสดีอะไร?? — TheOzzy213 (Official MV)" },
+  { videoId: "byii5bL3ogc", title: "ผมไม่ใช่หุ่นยนต์ครับ Pt.1 - I'm not a Robot", short: true },
+];
+
 export const OZZY = {
   streamer: {
     name: "TheOzzy",
@@ -108,10 +122,14 @@ export const OZZY = {
     deckTitle: { en: "Ozzy's deck · 6 cards", th: "เด็คของ Ozzy · 6 ใบ" },
     deckHint: { en: "Play a card to open its window.", th: "ลงไพ่ใบไหน หน้าต่างของใบนั้นจะเปิดขึ้นมา" },
     donate: { en: "Support Ozzy", th: "สนับสนุน Ozzy" },
+    /** บรรทัดเครดิตใต้โต๊ะ — ท่อนแรกเป็นลิงก์กลับไปหน้าพอร์ตของเจ้าของเว็บ (เจ้าของเว็บขอ) ท่อนหลังเป็นข้อความธรรมดา */
     fanNote: {
-      en: "A fan-built site by Nutt (Lemon). Building him a website is my next project.",
-      th: "เว็บที่แฟนทำ โดย Nutt (Lemon) · งานชิ้นถัดไปของผมคือทำเว็บไซต์ให้เขา",
+      link: { en: "A fan-built site by Lemon", th: "เว็บที่แฟนทำ โดยเลม่อน" },
+      rest: { en: "Building him a website is my next project.", th: "งานชิ้นถัดไปของผมคือทำเว็บไซต์ให้เขา" },
     },
+    /** เลขบนไพ่คอลเลกชันเป็นมุก "6 7" ตามที่เจ้าของเว็บขอ (มีอีโมต "6 7" อยู่ในคอลเลกชันจริง — e08)
+     *  ไพ่ใบอื่นยังเป็นตัวเลขจริงทั้งหมด */
+    collectionPower: "6/7",
     close: { en: "Close", th: "ปิด" },
     hearts: { en: "hearts", th: "หัวใจ" },
     powdered: { en: "powdered", th: "โดนทาแป้ง" },
@@ -447,8 +465,7 @@ export const OZZY = {
     credit: { en: "All clips belong to TheOzzy's channel.", th: "คลิปทั้งหมดเป็นของช่อง TheOzzy" },
   },
 
-  /** คลิปเด่น — เจ้าของเว็บเลือกเอง (RSS เห็นแค่ 15 คลิปล่าสุด คลิปเก่าที่เป็นตำนานต้องใส่ที่นี่) */
-  featured: [{ videoId: "4ZI_mGuXtaE", title: "สวัสดีอะไร?? — TheOzzy213 (Official MV)" }],
+  featured: FEATURED,
 
   /** หน้าต่างคอลเลกชัน */
   collection: {

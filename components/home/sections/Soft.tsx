@@ -4,6 +4,7 @@
 // ต่อด้วยกำแพงรูป "ผู้คนที่ได้เจอ" แล้วปิดด้วยการ์ด TheOzzy คนที่กำลังทำเว็บให้ (ย้ายมาจากหน้าต่าง 05)
 
 import NextRunCard from "@/components/NextRun";
+import FavClip from "@/components/home/FavClip";
 import PeopleWall from "@/components/home/PeopleWall";
 import { PEOPLE, SOFT_SKILLS, type Lang } from "@/lib/content";
 import { Reveal, SOFT_ACCENTS, accentVar, t } from "@/components/home/ui";
@@ -36,10 +37,15 @@ export default function Soft({ lang }: { lang: Lang }) {
       <p className="mb-5 mt-1 max-w-[62ch] text-[13.5px] text-ink2">{t(PEOPLE.intro, lang)}</p>
       <PeopleWall lang={lang} />
 
-      <p className="mt-12 font-mono text-[10.5px] uppercase tracking-[0.16em] text-muted">{t(PEOPLE.next, lang)}</p>
-      <Reveal>
-        <NextRunCard lang={lang} />
-      </Reveal>
+      {/* สตรีมเมอร์คนโปรด: คลิปสั้นของเขา (กดแล้วค่อยโหลดตัวเล่น) + การ์ดเว็บที่กำลังทำให้เขา
+          การ์ด NextRun มี mt-8 ในตัว — ในแถวนี้ตัดออก ([&>a]:mt-0) ให้หัวการ์ดตรงกับหัวคลิป */}
+      <h3 className="mt-12 text-[clamp(18px,2.6vw,22px)] font-bold tracking-[-0.02em]">{t(PEOPLE.next, lang)}</h3>
+      <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start">
+        <FavClip lang={lang} />
+        <Reveal className="min-w-0 flex-1 [&_a.oz-teaser]:mt-0">
+          <NextRunCard lang={lang} />
+        </Reveal>
+      </div>
     </>
   );
 }

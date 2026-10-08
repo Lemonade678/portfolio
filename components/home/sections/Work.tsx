@@ -1,13 +1,16 @@
 "use client";
 
 // 01 ผลงานที่เลือกมา — การ์ดโปรเจกต์ (ย้ายมาจาก app/page.tsx ไม่แก้ markup)
+// บนสุดมีการ์ด "ตอนนี้" ชวนทำแบบสอบถามของโปรเจกต์ใหม่ (components/home/NowCard.tsx)
 
+import NowCard from "@/components/home/NowCard";
 import { ACCENT_HEX, PROJECTS, UI, type Lang } from "@/lib/content";
 import { CHIP, CardLink, Field, Reveal, accentVar, t } from "@/components/home/ui";
 
 export default function Work({ lang }: { lang: Lang }) {
   return (
     <>
+      <NowCard lang={lang} />
 
       {PROJECTS.map((p) => (
         <Reveal key={p.id}>

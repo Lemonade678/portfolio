@@ -1,7 +1,7 @@
 // เนื้อหาใหม่ของหน้าหลัก: กำแพงรูปใน People (04) + พิพิธภัณฑ์ YOLO ใน /stack — ครบสองภาษา ข้อมูลสมเหตุสมผล
 import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { PEOPLE, YOLO_MUSEUM } from "@/lib/content";
+import { NOW, PEOPLE, YOLO_MUSEUM } from "@/lib/content";
 
 const both = (s: { en: string; th: string }) => s.en.trim().length > 0 && s.th.trim().length > 0;
 
@@ -57,5 +57,21 @@ describe("YOLO_MUSEUM", () => {
   it("marks exactly one entry as the model running on this site — YOLO11", () => {
     const here = YOLO_MUSEUM.timeline.filter((e) => e.here);
     expect(here.map((e) => e.name)).toEqual(["YOLO11"]);
+  });
+});
+
+describe("NOW (survey invite for the new project)", () => {
+  it("has every line in both languages and links to the Google Form", () => {
+    for (const s of [NOW.eyebrow, NOW.title, NOW.body, NOW.cta, NOW.note]) expect(both(s)).toBe(true);
+    expect(NOW.href).toBe("https://forms.gle/GAQ4ktK4FnbCnivc9");
+  });
+});
+
+describe("PEOPLE favourite streamer", () => {
+  it("calls TheOzzy my favourite streamer and carries his Short", () => {
+    expect(PEOPLE.next.en).toBe("My favourite streamer");
+    expect(both(PEOPLE.next)).toBe(true);
+    expect(PEOPLE.fav.videoId).toBe("byii5bL3ogc");
+    expect(both(PEOPLE.fav.play)).toBe(true);
   });
 });

@@ -6,6 +6,9 @@
 // ไพ่แต่ละใบเป็น <Link> ธรรมดา — ใช้คีย์บอร์ด/เปิดแท็บใหม่/แชร์ลิงก์ได้ตามปกติของเว็บ
 // มุมไพ่สองมุมแบบ Marvel Snap: วงฟ้า = ลำดับไพ่ · หกเหลี่ยมส้ม = "ตัวเลขจริง" ของหน้าต่างนั้น
 // (คลิปที่ลงใน 7 วัน · จำนวนห้อง · จำนวนช่องวงล้อ ฯลฯ) ไม่ใช่เลขสวย ๆ ที่แต่งขึ้น
+// ยกเว้นใบเดียวคือคอลเลกชัน = "6/7" มุกตามที่เจ้าของเว็บขอ (OZZY.table.collectionPower)
+//
+// บรรทัดเครดิต "เว็บที่แฟนทำ โดยเลม่อน" เป็นลิงก์กลับไปหน้าพอร์ตของเจ้าของเว็บ (แนบ ?lang=th ถ้ากำลังเป็นไทย)
 //
 // ตอนหน้าต่างเปิด โต๊ะทั้งโต๊ะเป็น inert (กด/โฟกัสไม่ได้) — คีย์บอร์ดจะได้ไม่หลุดไปหลังหน้าต่าง
 // ปิดหน้าต่างแล้วคืนโฟกัสให้ไพ่ใบที่เปิดมัน (opener) คนใช้คีย์บอร์ดจะได้ไม่ต้องเริ่ม Tab ใหม่จากต้นหน้า
@@ -15,6 +18,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { OZZY, type CardId } from "@/lib/ozzy/content";
 import { useOzzy } from "./OzzyShell";
+import type { Lang } from "@/lib/content";
 import { Art, t } from "./ui";
 
 export default function Table({
@@ -34,12 +38,12 @@ export default function Table({
   const selfie = OZZY.photos.find((p) => p.id === "selfie")!;
 
   // ตัวเลขจริงบนมุมขวาของไพ่แต่ละใบ
-  const power: Record<CardId, number> = {
+  const power: Record<CardId, number | string> = {
     profile: OZZY.photos.length,
     clips: weeklyClips,
     run: OZZY.floors.length,
     wheel: OZZY.wheel.slices.length,
-    collection: OZZY.emotes.length + OZZY.heroes.length,
+    collection: T.collectionPower,
     shop: OZZY.relics.length + OZZY.fun.length,
   };
 
@@ -78,7 +82,9 @@ export default function Table({
             >
               ☕ {t(T.donate, lang)} ↗
             </a>
-            <p className="mt-4 hidden max-w-[34ch] text-[11.5px] leading-relaxed text-(--oz-sky)/70 md:block">{t(T.fanNote, lang)}</p>
+            <p className="mt-4 hidden max-w-[34ch] text-[11.5px] leading-relaxed text-(--oz-sky)/70 md:block">
+              <FanNote lang={lang} />
+            </p>
           </div>
         </section>
 
@@ -100,7 +106,7 @@ export default function Table({
                   className="oz-deck-card group"
                 >
                   <span className="oz-cost">{i + 1}</span>
-                  <span className="oz-power">{power[c.id]}</span>
+                  <span className={`oz-power ${String(power[c.id]).length > 2 ? "oz-power-sm" : ""}`}>{power[c.id]}</span>
                   <span className="oz-deck-art">
                     <Art art={c.art} />
                   </span>
@@ -112,9 +118,27 @@ export default function Table({
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-[11.5px] leading-relaxed text-(--oz-sky)/70 md:hidden">{t(T.fanNote, lang)}</p>
+          <p className="mt-8 text-[11.5px] leading-relaxed text-(--oz-sky)/70 md:hidden">
+            <FanNote lang={lang} />
+          </p>
         </section>
       </div>
     </div>
+  );
+}
+
+/** "เว็บที่แฟนทำ โดยเลม่อน" → กดแล้วกลับไปหน้าพอร์ต · ต่อด้วยข้อความธรรมดา */
+function FanNote({ lang }: { lang: Lang }) {
+  const N = OZZY.table.fanNote;
+  return (
+    <>
+      <Link
+        href={lang === "th" ? "/?lang=th" : "/"}
+        className="font-semibold text-(--oz-yellow) underline decoration-(--oz-yellow)/40 underline-offset-2 hover:decoration-(--oz-yellow)"
+      >
+        {t(N.link, lang)} ↩
+      </Link>{" "}
+      {t(N.rest, lang)}
+    </>
   );
 }

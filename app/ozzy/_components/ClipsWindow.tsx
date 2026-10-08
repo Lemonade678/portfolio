@@ -143,7 +143,8 @@ export default function ClipsWindow({ feed }: { feed: Feed }) {
                   id={f.videoId}
                   title={f.title}
                   thumb={`https://i.ytimg.com/vi/${f.videoId}/hqdefault.jpg`}
-                  onPlay={() => play({ id: f.videoId, short: false, title: f.title })}
+                  tag={f.short ? "Shorts" : undefined}
+                  onPlay={() => play({ id: f.videoId, short: !!f.short, title: f.title })}
                 />
               </li>
             ))}
