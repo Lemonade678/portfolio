@@ -1015,7 +1015,7 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     n: "03",
     nav: UI.nav.stack,
     title: UI.sections.stack,
-    note: { en: "Grouped by how well I actually know them", th: "แบ่งตามว่ารู้จริงแค่ไหน" },
+    note: { en: "Grouped by how well I know them — plus a small YOLO museum", th: "แบ่งตามว่ารู้จริงแค่ไหน — แถมพิพิธภัณฑ์ YOLO" },
     unit: { en: "tools", th: "เครื่องมือ" },
     snack: "pancakes",
   },
@@ -1194,4 +1194,134 @@ export const PEOPLE = {
   next: { en: "Who I'm building for next", th: "คนที่ผมกำลังทำงานให้ต่อไป" },
   /** ปุ่มปิดกล่องดูรูปขยาย */
   close: { en: "Close photo", th: "ปิดรูป" },
+};
+
+// ── พิพิธภัณฑ์ YOLO (ในหน้าต่าง 03 /stack) ─────────────────────
+//
+// YOLO คือเครื่องมือที่เจ้าของเว็บใช้ส่งงานจริงมากที่สุด (ตรวจชิป · lane change · รูปโปรไฟล์หน้าแรก)
+// เลยมีนิทรรศการเล็ก ๆ ห้าชิ้นต่อท้ายรายการเครื่องมือ — "อธิบายได้" สำคัญพอ ๆ กับ "ใช้เป็น"
+// ตัวนิทรรศการอยู่ใน components/home/museum/
+//
+// เรื่องความตรงไปตรงมา (ทั้งเว็บยึดข้อนี้):
+//   นิทรรศการ 01 ใช้กล่องที่ yolo11n รันไว้ล่วงหน้าบนรูปผม (DETECTOR.fallback) — เขียนบอกไว้
+//   นิทรรศการ 02 ใช้กล่องสมมติ — เขียนบอกว่าเป็นภาพประกอบ
+//   นิทรรศการ 04 เป็นผลสดจากโมเดลในเบราว์เซอร์ผู้ชม — เขียนบอกว่าไม่ใช่ภาพเคลื่อนไหว
+//   ไทม์ไลน์ใส่แค่ปี ชื่อรุ่น ผู้ทำ และหนึ่งบรรทัด ตรวจกับ Wikipedia "You Only Look Once"
+//   และเอกสาร Ultralytics เมื่อ ต.ค. 2026 — แหล่งที่มาลิงก์ไว้ท้ายไทม์ไลน์
+
+export interface YoloEra {
+  year: number;
+  name: string;
+  by: string;
+  line: L10n;
+  /** รุ่นที่รันอยู่บนเว็บนี้ (yolo11n) */
+  here?: boolean;
+}
+
+export const YOLO_MUSEUM = {
+  title: { en: "A small YOLO museum", th: "พิพิธภัณฑ์ YOLO ขนาดเล็ก" },
+  intro: {
+    en: "YOLO is the tool I've shipped with most. Five exhibits on how it sees — everything moves when you touch it.",
+    th: "YOLO คือเครื่องมือที่ผมใช้ส่งงานจริงมากที่สุด นี่คือห้านิทรรศการว่ามันมองเห็นยังไง — ทุกชิ้นขยับได้",
+  },
+
+  grid: {
+    n: "01",
+    title: { en: "Look once — the grid", th: "มองครั้งเดียว — ตาราง" },
+    body: {
+      en: "YOLOv1 split the image into an S×S grid. The cell holding the centre of an object is responsible for predicting its box — the whole image in one pass, no sliding window.",
+      th: "YOLOv1 แบ่งภาพเป็นตาราง S×S ช่องที่จุดกึ่งกลางของวัตถุตกอยู่คือช่องที่ต้องทายกล่องของวัตถุนั้น — ดูทั้งภาพในรอบเดียว ไม่ต้องเลื่อนกรอบไล่ดูทีละจุด",
+    },
+    slider: { en: "grid size", th: "ขนาดตาราง" },
+    cell: { en: "responsible cell", th: "ช่องที่รับผิดชอบ" },
+    note: {
+      en: "The person box is yolo11n's output on this photo, saved earlier.",
+      th: "กล่องคนคือผลของ yolo11n บนรูปนี้ที่บันทึกไว้ก่อนหน้า",
+    },
+  },
+
+  iou: {
+    n: "02",
+    title: { en: "IoU — how much two boxes agree", th: "IoU — สองกล่องตรงกันแค่ไหน" },
+    body: {
+      en: "Intersection over union: the overlap divided by everything both boxes cover. 1 is a perfect match, 0 is no overlap. This site treats a box as a duplicate when its IoU with a stronger box of the same class passes 0.45.",
+      th: "Intersection over union: พื้นที่ที่ทับกัน หารด้วยพื้นที่ทั้งหมดที่สองกล่องครอบ ได้ 1 คือทับกันพอดี 0 คือไม่ทับเลย เว็บนี้นับว่าเป็นกล่องซ้ำเมื่อ IoU กับกล่องคลาสเดียวกันที่คะแนนสูงกว่าเกิน 0.45",
+    },
+    move: { en: "move", th: "เลื่อน" },
+    size: { en: "size", th: "ขนาด" },
+    truth: { en: "ground truth", th: "กล่องเฉลย" },
+    pred: { en: "prediction", th: "กล่องที่ทาย" },
+    dup: { en: "a duplicate — NMS would drop the weaker one", th: "กล่องซ้ำ — NMS จะทิ้งกล่องที่อ่อนกว่า" },
+    keep: { en: "different enough — both would stay", th: "ต่างกันพอ — เก็บไว้ทั้งคู่" },
+    note: { en: "Illustration — made-up boxes.", th: "ภาพประกอบ — กล่องสมมติ" },
+  },
+
+  letterbox: {
+    n: "03",
+    title: { en: "Letterbox — any photo into 640×640", th: "Letterbox — ยัดรูปขนาดไหนก็ได้ลงช่อง 640×640" },
+    body: {
+      en: "The model only takes a 640×640 square. Stretching a photo would squash the people in it, so the photo is scaled to fit and the gaps are filled with grey 114 — the same grey the model was trained with.",
+      th: "โมเดลรับได้แค่จัตุรัส 640×640 ถ้ายืดรูปให้เต็ม คนในรูปจะผิดสัดส่วน เลยย่อรูปให้พอดีแล้วเติมช่องว่างด้วยสีเทา 114 — สีเดียวกับตอนเทรนโมเดล",
+    },
+    slider: { en: "photo shape", th: "สัดส่วนรูป" },
+    scale: { en: "scale", th: "ย่อ" },
+    padding: { en: "grey padding", th: "ขอบสีเทา" },
+    each: { en: "each side", th: "ข้างละ" },
+  },
+
+  live: {
+    n: "04",
+    title: { en: "Live — confidence and NMS", th: "สด — ความมั่นใจกับ NMS" },
+    body: {
+      en: "yolo11n looks at 8,400 places at once and scores every one. A confidence threshold drops the weak guesses; non-max suppression keeps the best box per object and deletes its near-duplicates.",
+      th: "yolo11n ดู 8,400 ตำแหน่งพร้อมกันแล้วให้คะแนนทุกตำแหน่ง เกณฑ์ความมั่นใจตัดตัวที่เดาไม่มั่นใจทิ้ง แล้ว non-max suppression เก็บกล่องที่ดีที่สุดของแต่ละวัตถุ ลบกล่องซ้ำที่เกือบเหมือนกันออก",
+    },
+    run: { en: "Run yolo11n on my photo", th: "รัน yolo11n บนรูปผม" },
+    loading: { en: "loading the model (10 MB, once)…", th: "กำลังโหลดโมเดล (10 MB ครั้งเดียว)…" },
+    conf: { en: "confidence ≥", th: "ความมั่นใจ ≥" },
+    nms: { en: "NMS IoU >", th: "NMS IoU >" },
+    raw: { en: "candidates", th: "กล่องดิบ" },
+    kept: { en: "pass the threshold", th: "ผ่านเกณฑ์" },
+    final: { en: "after NMS", th: "หลัง NMS" },
+    failed: {
+      en: "The model couldn't load (slow connection or blocked CDN). Try again in a moment.",
+      th: "โหลดโมเดลไม่ได้ (เน็ตช้าหรือ CDN ถูกบล็อก) ลองใหม่อีกสักครู่",
+    },
+    note: {
+      en: "Real output from the model in your browser — not an animation. Faint boxes passed the threshold but lost to NMS.",
+      th: "ผลจริงจากโมเดลในเบราว์เซอร์คุณ ไม่ใช่ภาพเคลื่อนไหว กล่องจาง ๆ คือตัวที่ผ่านเกณฑ์แต่แพ้ NMS",
+    },
+  },
+
+  history: {
+    n: "05",
+    title: { en: "Ten years of YOLO", th: "สิบปีของ YOLO" },
+    body: {
+      en: "From a 2015 paper to the model running on this page — every version since, in one line each.",
+      th: "จากเปเปอร์ปี 2015 จนถึงโมเดลที่รันอยู่บนหน้านี้ — ทุกรุ่นหลังจากนั้น รุ่นละหนึ่งบรรทัด",
+    },
+    here: { en: "running on this site", th: "ตัวที่รันบนเว็บนี้" },
+    sources: { en: "Sources", th: "แหล่งที่มา" },
+  },
+
+  timeline: [
+    { year: 2015, name: "YOLOv1", by: "Redmon, Divvala, Girshick, Farhadi", line: { en: "One pass over an S×S grid.", th: "ดูภาพรอบเดียวผ่านตาราง S×S" } },
+    { year: 2016, name: "YOLOv2 / YOLO9000", by: "Redmon, Farhadi", line: { en: "Anchor boxes and batch norm.", th: "เพิ่ม anchor box กับ batch norm" } },
+    { year: 2018, name: "YOLOv3", by: "Redmon, Farhadi", line: { en: "The last version by the original authors.", th: "รุ่นสุดท้ายจากผู้สร้างดั้งเดิม" } },
+    { year: 2020, name: "YOLOv4", by: "Bochkovskiy, Wang, Liao", line: { en: "CSP backbone and a bag of training tricks.", th: "backbone แบบ CSP กับเทคนิคการเทรนอีกเพียบ" } },
+    { year: 2020, name: "YOLOv5", by: "Ultralytics", line: { en: "PyTorch, and easy enough to train that everyone did.", th: "เขียนด้วย PyTorch เทรนง่ายจนใคร ๆ ก็เทรน" } },
+    { year: 2022, name: "YOLOv6", by: "Meituan (Li et al.)", line: { en: "Built for industrial deployment.", th: "ออกแบบมาเพื่อใช้งานในอุตสาหกรรม" } },
+    { year: 2022, name: "YOLOv7", by: "Wang, Bochkovskiy, Liao", line: { en: "E-ELAN and re-parameterisation.", th: "E-ELAN กับการ re-parameterize" } },
+    { year: 2023, name: "YOLOv8", by: "Ultralytics", line: { en: "Detection, segmentation and pose in one toolkit.", th: "ตรวจจับ แบ่งส่วน และท่าทาง ในชุดเครื่องมือเดียว" } },
+    { year: 2024, name: "YOLOv9", by: "Wang, Liao (Academia Sinica)", line: { en: "Programmable gradient information (PGI) and GELAN.", th: "PGI กับ GELAN" } },
+    { year: 2024, name: "YOLOv10", by: "Tsinghua University", line: { en: "Trained so it doesn't need NMS at inference.", th: "เทรนให้ไม่ต้องใช้ NMS ตอนใช้งาน" } },
+    { year: 2024, name: "YOLO11", by: "Ultralytics", line: { en: "The nano version is the model on this page.", th: "รุ่นนาโนคือโมเดลบนหน้านี้" }, here: true },
+    { year: 2025, name: "YOLOv12", by: "Tian et al.", line: { en: "Attention-centric design.", th: "ออกแบบโดยมี attention เป็นแกน" } },
+    { year: 2026, name: "YOLO26", by: "Ultralytics", line: { en: "End-to-end; NMS becomes optional.", th: "end-to-end ไม่ต้องพึ่ง NMS ก็ได้" } },
+  ] satisfies YoloEra[],
+
+  sources: [
+    { href: "https://en.wikipedia.org/wiki/You_Only_Look_Once", label: { en: "Wikipedia — You Only Look Once", th: "Wikipedia — You Only Look Once" } },
+    { href: "https://docs.ultralytics.com/models/", label: { en: "Ultralytics docs — models", th: "เอกสาร Ultralytics — โมเดล" } },
+  ],
 };

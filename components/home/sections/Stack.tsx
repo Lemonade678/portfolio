@@ -1,7 +1,8 @@
 "use client";
 
-// 03 เครื่องมือที่ใช้จริง (ย้ายมาจาก app/page.tsx ไม่แก้ markup)
+// 03 เครื่องมือที่ใช้จริง (ย้ายมาจาก app/page.tsx ไม่แก้ markup) + พิพิธภัณฑ์ YOLO ต่อท้าย
 
+import Museum from "@/components/home/museum/Museum";
 import { ACCENT_HEX, STACK, type Lang } from "@/lib/content";
 import { CHIP, Reveal, t } from "@/components/home/ui";
 
@@ -65,6 +66,9 @@ export default function Stack({ lang }: { lang: Lang }) {
           </div>
         ))}
       </div>
+
+      {/* พิพิธภัณฑ์ YOLO ขนาดเล็ก — ต่อท้ายรายการเครื่องมือ (components/home/museum/) */}
+      <Museum lang={lang} />
     </>
   );
 }
