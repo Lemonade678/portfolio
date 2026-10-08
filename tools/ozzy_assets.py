@@ -4,7 +4,7 @@
     python tools/ozzy_assets.py --sheet sheet.png    # + ภาพรวม emote ขยาย 4 เท่า ไว้ดูตอนตั้งชื่อ
 
 อ่านจาก tools/source/ozzy/ (gitignore — ต้นฉบับไม่ขึ้น git):
-    selfie.jpg · giraffe.jpg · stream.webp · emotes.png (ภาพหน้าจอหน้า emote ของช่อง)
+    selfie.jpg · giraffe.jpg · stream.webp · duo.jpg · meetup.jpg · setup.jpg · emotes.png (ภาพหน้าจอหน้า emote ของช่อง)
 
 ทำไมต้องผ่านสคริปต์:
   1. รูปจากมือถือ/เพจมักพก EXIF มาด้วย (บางทีมีพิกัด GPS) — Pillow ไม่เขียน EXIF ต่อให้ถ้าไม่สั่ง
@@ -33,6 +33,10 @@ PHOTOS = {
     "selfie": ("selfie.jpg", 900),  # 896×1195 สัดส่วน 3:4 อยู่แล้ว ใช้ทั้งรูป
     "giraffe": ("giraffe.jpg", 1200),
     "stream": ("stream.webp", 640),  # 640×360 ขนาดเดิม
+    # สามรูปจากอัลบั้มแชร์ "OOOO…ZZY" ของเจ้าของเว็บ (ดาวน์โหลดขนาด 1600 px ด้านยาว) — ทุกคนในรูปยินยอมแล้ว
+    "duo": ("duo.jpg", 1200),  # เซลฟี่สองคนในงานอีเวนต์
+    "meetup": ("meetup.jpg", 1200),  # มีตติ้งแฟน ๆ ต.ค. 2022
+    "setup": ("setup.jpg", 1200),  # แล็ปท็อปเปิดสตรีม พ.ค. 2022
 }
 
 # ขอบเขตแถบคอลัมน์/แถวของตาราง emote (วัดจากภาพหน้าจอ 822×173)

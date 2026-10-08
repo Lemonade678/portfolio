@@ -65,7 +65,7 @@ export interface OzCard {
 }
 
 export interface OzPhoto {
-  id: "selfie" | "giraffe" | "stream";
+  id: "selfie" | "giraffe" | "stream" | "duo" | "meetup" | "setup";
   src: string;
   w: number;
   h: number;
@@ -490,6 +490,38 @@ export const OZZY = {
       w: 640,
       h: 360,
       alt: { en: "TheOzzy live on stream, laughing at the mic", th: "TheOzzy ระหว่างไลฟ์ หัวเราะหน้าไมค์" },
+    },
+    // สามรูปข้างล่างมาจากอัลบั้มแชร์ "OOOO…ZZY" ของเจ้าของเว็บ (ทุกคนในรูปยินยอมแล้ว — ยืนยัน 8 ต.ค. 2026)
+    // alt เขียนแค่สิ่งที่เห็น + วันที่จาก EXIF · ไม่ระบุว่าใครเป็นใครในเซลฟี่ เพราะไม่ได้ยืนยันไว้
+    {
+      id: "duo",
+      src: "/ozzy/photos/duo.webp",
+      w: 1200,
+      h: 900,
+      alt: {
+        en: "A two-person selfie at a busy event — big white glasses on the right, a peace sign on the left",
+        th: "เซลฟี่สองคนในงานที่คนเยอะ — คนขวาใส่แว่นกรอบขาวอันใหญ่ คนซ้ายชูสองนิ้ว",
+      },
+    },
+    {
+      id: "meetup",
+      src: "/ozzy/photos/meetup.webp",
+      w: 1200,
+      h: 900,
+      alt: {
+        en: "A TheOzzy fan meetup at an event booth, October 2022",
+        th: "งานมีตติ้งแฟน ๆ TheOzzy ที่บูธในงานอีเวนต์ ต.ค. 2022",
+      },
+    },
+    {
+      id: "setup",
+      src: "/ozzy/photos/setup.webp",
+      w: 1200,
+      h: 548,
+      alt: {
+        en: "A laptop with a TheOzzy stream open, his face cam in the corner, May 2022",
+        th: "แล็ปท็อปเปิดสตรีมของ TheOzzy เห็นกล้องหน้าเขาที่มุมจอ พ.ค. 2022",
+      },
     },
   ] satisfies OzPhoto[],
   /** emote ของช่อง (เฉพาะที่ไม่ล็อกให้สมาชิก) ตัดจากภาพหน้าจอด้วย tools/ozzy_assets.py
