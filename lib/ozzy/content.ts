@@ -127,11 +127,16 @@ export const OZZY = {
       link: { en: "A fan-built site by Lemon", th: "เว็บที่แฟนทำ โดยเลม่อน" },
       rest: { en: "Building him a website is my next project.", th: "งานชิ้นถัดไปของผมคือทำเว็บไซต์ให้เขา" },
     },
-    /** เลขบนหกเหลี่ยมที่เป็นมุก (เจ้าของเว็บขอ) — ไพ่ใบอื่นยังเป็นตัวเลขจริงทั้งหมด
-     *  คอลเลกชัน = "6/7" มุก six-seven (มีอีโมต "6 7" ในคอลเลกชันจริง — e08)
-     *  โปรไฟล์ = "213" เลขมงคลประจำช่อง (@TheOzzy213) */
-    collectionPower: "6/7",
-    profilePower: "213",
+    /** มุมไพ่ที่เป็นมุก (เจ้าของเว็บขอ) อ่านซ้าย→ขวา: cost (วงฟ้า) · power (หกเหลี่ยมส้ม) — ดู lib/ozzy/deck.ts
+     *  โปรไฟล์ 1·2 = ตรงกับแฟนอาร์ต TheOzzy 1/2 บนไพ่ · คลิป 2·13 = "213" เลขมงคลประจำช่อง (@TheOzzy213)
+     *  คอลเลกชัน 6·7 = มีม six-seven (มีอีโมต "6 7" ในคอลเลกชันจริง) · ร้าน 6·9 = มีม
+     *  ไพ่ที่ไม่อยู่ในนี้ (ดันเจี้ยน · วงล้อ) ใช้ลำดับไพ่ + ตัวเลขจริง */
+    gems: {
+      profile: { cost: 1, power: 2 },
+      clips: { cost: 2, power: 13 },
+      collection: { cost: 6, power: 7 },
+      shop: { cost: 6, power: 9 },
+    },
     /** เครดิตแฟนอาร์ตบนไพ่ — โชว์ใต้เด็ค · ภาพที่ไม่รู้ชื่อผู้วาด เจ้าของเว็บเลือกไม่ใช้ */
     artCredits: [
       { card: "profile", by: { en: "Fan art by Thanpisit", th: "แฟนอาร์ตโดย Thanpisit" } },
@@ -177,7 +182,7 @@ export const OZZY = {
     },
     {
       id: "shop",
-      art: "🛒",
+      art: "/ozzy/cards/shop.svg", // ไอคอนร้าน วาดใหม่เป็น SVG ตามรูปทรงที่เจ้าของเว็บส่งมา
       name: { en: "Points shop", th: "ร้านแต้ม" },
       blurb: { en: "Relics · fun stuff", th: "รีลิค · ของสนุก" },
     },

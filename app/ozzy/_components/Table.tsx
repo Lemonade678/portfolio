@@ -4,9 +4,9 @@
 // โต๊ะไพ่ (แบบ B — หน้าจัดเด็ค): การ์ดฮีโร่ซ้าย · ไพ่ 6 ใบเรียงตารางขวา
 //
 // ไพ่แต่ละใบเป็น <Link> ธรรมดา — ใช้คีย์บอร์ด/เปิดแท็บใหม่/แชร์ลิงก์ได้ตามปกติของเว็บ
-// มุมไพ่สองมุมแบบ Marvel Snap: วงฟ้า = ลำดับไพ่ · หกเหลี่ยมส้ม = "ตัวเลขจริง" ของหน้าต่างนั้น
-// (คลิปที่ลงใน 7 วัน · จำนวนห้อง · จำนวนช่องวงล้อ ฯลฯ) ไม่ใช่เลขสวย ๆ ที่แต่งขึ้น
-// ยกเว้นสองใบที่เป็นมุกตามที่เจ้าของเว็บขอ: โปรไฟล์ = "213" เลขมงคลประจำช่อง · คอลเลกชัน = "6/7"
+// มุมไพ่สองมุมแบบ Marvel Snap: วงฟ้า = cost · หกเหลี่ยมส้ม = power — ค่ามาจาก deckGems() (lib/ozzy/deck.ts)
+// เจ้าของเว็บอยากให้อ่านซ้าย→ขวาเป็นมีม: 1·2 · 2·13 (=213) · 3·4 · 4·8 · 6·7 · 6·9
+// ดันเจี้ยนกับวงล้อยังเป็นตัวเลขจริง (จำนวนห้อง · จำนวนช่องวงล้อ)
 // ใต้เด็คมีเครดิตผู้วาดแฟนอาร์ตบนไพ่ (OZZY.table.artCredits)
 //
 // บรรทัดเครดิต "เว็บที่แฟนทำ โดยเลม่อน" เป็นลิงก์กลับไปหน้าพอร์ตของเจ้าของเว็บ (แนบ ?lang=th ถ้ากำลังเป็นไทย)
@@ -18,17 +18,16 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { OZZY, type CardId } from "@/lib/ozzy/content";
+import { deckGems } from "@/lib/ozzy/deck";
 import { useOzzy } from "./OzzyShell";
 import type { Lang } from "@/lib/content";
 import { Art, t } from "./ui";
 
 export default function Table({
-  weeklyClips,
   inert,
   opener,
   onFocused,
 }: {
-  weeklyClips: number;
   inert: boolean;
   opener: CardId | null;
   onFocused: () => void;
@@ -38,15 +37,7 @@ export default function Table({
   const T = OZZY.table;
   const selfie = OZZY.photos.find((p) => p.id === "selfie")!;
 
-  // ตัวเลขจริงบนมุมขวาของไพ่แต่ละใบ
-  const power: Record<CardId, number | string> = {
-    profile: T.profilePower,
-    clips: weeklyClips,
-    run: OZZY.floors.length,
-    wheel: OZZY.wheel.slices.length,
-    collection: T.collectionPower,
-    shop: OZZY.relics.length + OZZY.fun.length,
-  };
+  const gems = deckGems();
 
   // คืนโฟกัสเฉพาะจังหวะ "หน้าต่างเพิ่งปิด" (inert: true → false) เท่านั้น
   // ถ้าคืนทันทีที่ opener ถูกตั้ง จะไปโดนจังหวะกดไพ่ (ก่อน route เปลี่ยน) แล้ว opener ถูกล้างทิ้งก่อนเวลา
@@ -106,8 +97,8 @@ export default function Table({
                   onClick={() => setOpener(c.id)}
                   className="oz-deck-card group"
                 >
-                  <span className="oz-cost">{i + 1}</span>
-                  <span className={`oz-power ${String(power[c.id]).length > 2 ? "oz-power-sm" : ""}`}>{power[c.id]}</span>
+                  <span className="oz-cost">{gems[c.id].cost}</span>
+                  <span className={`oz-power ${String(gems[c.id].power).length > 2 ? "oz-power-sm" : ""}`}>{gems[c.id].power}</span>
                   <span className="oz-deck-art">
                     <Art art={c.art} />
                   </span>

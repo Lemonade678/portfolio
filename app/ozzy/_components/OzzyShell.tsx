@@ -60,13 +60,7 @@ export function useOzzy(): OzzyCtx {
   return c;
 }
 
-export default function OzzyShell({
-  weeklyClips,
-  children,
-}: {
-  weeklyClips: number;
-  children: React.ReactNode;
-}) {
+export default function OzzyShell({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
   const [run, dispatch] = useReducer(runReducer, initialRun);
   const [save, setSave] = useState<Save>(DEFAULT_SAVE);
@@ -144,7 +138,7 @@ export default function OzzyShell({
     <Ctx.Provider value={value}>
       <main className={`oz oz-grid oz-main min-h-screen ${powdered ? "oz-powdered" : ""}`}>
         <TopBar />
-        <Table weeklyClips={weeklyClips} inert={windowOpen} opener={opener} onFocused={() => setOpener(null)} />
+        <Table inert={windowOpen} opener={opener} onFocused={() => setOpener(null)} />
         {children}
       </main>
       {powdered && <Powder lang={lang} times={save.powdered} onWash={() => setPowdered(false)} />}
