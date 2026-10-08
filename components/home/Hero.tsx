@@ -6,7 +6,7 @@
 import { useRouter } from "next/navigation";
 import PhotoDetect from "@/components/PhotoDetect";
 import BrandIcon, { brandOf } from "@/components/BrandIcon";
-import { SecretLetter } from "@/components/SecretCode";
+import SecretText from "@/components/SecretText";
 import ContactCards from "@/components/home/ContactCards";
 import { ACCENT_HEX, MENU, METRICS, PERSON, type Lang } from "@/lib/content";
 import { windowFromHash, type WindowId } from "@/lib/home";
@@ -32,19 +32,18 @@ export default function Hero({
         </div>
       )}
 
-      <div className="mt-6 flex items-start justify-between gap-4">
-        <h1 className="text-[clamp(38px,8vw,74px)] font-bold leading-[1.02] tracking-[-0.03em]">
-          {PERSON.name}
-        </h1>
-        {/* ตัวที่ 2 — E ปลายบรรทัดชื่อ */}
-        <SecretLetter index={1} className="mt-2" />
-      </div>
+      <h1 className="mt-6 text-[clamp(38px,8vw,74px)] font-bold leading-[1.02] tracking-[-0.03em]">
+        {PERSON.name}
+      </h1>
 
       <p className="mt-3 text-[clamp(17px,3.2vw,26px)] font-semibold tracking-[-0.01em]">
         {PERSON.roles.map((r, i) => (
           <span key={r.text}>
             {i > 0 && <span className="px-1.5 font-normal text-muted">|</span>}
-            <span style={{ color: ACCENT_HEX[r.accent] }}>{r.text}</span>
+            {/* L กับ e ของ LEMONADE ซ่อนอยู่ใน "LLM Fine-tuning" (บทบาทที่สอง) — ดู lib/secret.ts */}
+            <span style={{ color: ACCENT_HEX[r.accent] }}>
+              {i === 1 ? <SecretText text={r.text} place="roles" /> : r.text}
+            </span>
           </span>
         ))}
       </p>
@@ -54,7 +53,8 @@ export default function Hero({
           key={i}
           className="mt-5 max-w-[62ch] text-[clamp(15px,2.1vw,17px)] text-ink2"
         >
-          {t(p, lang)}
+          {/* M ซ่อนอยู่ใน "LLM" ของย่อหน้าแรก */}
+          {i === 0 ? <SecretText text={t(p, lang)} place="intro" /> : t(p, lang)}
         </p>
       ))}
 
@@ -106,11 +106,7 @@ export default function Hero({
       {/* ตัวเลขมี 4 ตัว → 1 / 2 / 4 คอลัมน์ ถ้าใช้ 3 คอลัมน์เหมือนเดิม
           ใบสุดท้ายจะเหลือค้างแถวล่างใบเดียว และบนมือถือยังเป็นคอลัมน์เดียว
           เพราะคำบรรยายยาวเกินกว่าจะบีบสองใบต่อแถวได้ */}
-      {/* ตัวที่ 3 — M แถวบาง ๆ เหนือตัวเลข ชิดขวาให้ตรงแนวกับตัวอื่น */}
-      <div className="mt-2 flex justify-end">
-        <SecretLetter index={2} />
-      </div>
-      <div className="mt-1 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {METRICS.map((m) => (
           <Reveal key={m.value + m.accent}>
             <div className="rounded-xl border border-line bg-surface p-[18px]">
@@ -124,7 +120,8 @@ export default function Hero({
                 )}
               </div>
               <p className="mt-2 text-xs leading-snug text-muted">
-                {t(m.label, lang)}
+                {/* o n a d ซ่อนอยู่ใน "Generation Thailand" ของการ์ดแฮกกาธอน */}
+                {m.secret ? <SecretText text={t(m.label, lang)} place={m.secret} /> : t(m.label, lang)}
               </p>
             </div>
           </Reveal>

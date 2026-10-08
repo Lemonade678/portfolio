@@ -66,6 +66,8 @@ export interface Metric {
   suffix?: string;
   accent: Accent;
   label: L10n;
+  /** การ์ดนี้มีตัวอักษรลับซ่อนในคำ (ดู lib/secret.ts) */
+  secret?: "hackathon";
 }
 
 export interface TimelineItem {
@@ -303,6 +305,8 @@ export const METRICS: Metric[] = [
     value: "6",
     suffix: " / 137",
     accent: "pink",
+    // o n a d ของ LEMONADE ซ่อนอยู่ใน "Generation Thailand" — ห้ามแปลคำนี้เป็นไทย (lib/secret.ts)
+    secret: "hackathon",
     label: {
       en: "Team placing — Generation Thailand Hackathon 2026 · top 5% of the field",
       th: "อันดับทีม — Generation Thailand Hackathon 2026 · 5% แรกของสนาม",
@@ -886,8 +890,8 @@ export const PLAYGROUND = {
   locked: {
     title: { en: "This page is locked.", th: "หน้านี้ล็อกอยู่" },
     body: {
-      en: "Eight letters are hidden on the main page. Press them in order, top to bottom.",
-      th: "มีตัวอักษร 8 ตัวซ่อนอยู่ในหน้าหลัก กดให้ครบตามลำดับ จากบนลงล่าง",
+      en: "Eight letters are hidden inside the words on the main page. Press them in order, top to bottom.",
+      th: "มีตัวอักษร 8 ตัวซ่อนอยู่ในคำบนหน้าหลัก กดให้ครบตามลำดับ จากบนลงล่าง",
     },
   },
 };
@@ -933,8 +937,7 @@ export const NEXT_RUN = {
 //
 // ขนมแต่ละชิ้นเป็นมุกกับชื่อหัวข้อ: Proof = แป้งขนมปังที่ "proof" (พักให้ขึ้นฟู) · Stack = แพนเค้กซ้อน
 // Soft = โมจิ (นุ่ม) · Path = โรลเค้ก (ทางวน) · ผลงาน = บัตเตอร์ต๊อก ของขึ้นชื่อของร้าน · แพชชั่น = น้ำเลมอน
-//
-// ตัวอักษรลับ O N A D E ย้ายจากหัวข้อ 01–05 มาอยู่ปลายขวาของชั้น 01–05 — ยังอ่านไล่ขอบขวาลงมาได้เหมือนเดิม
+
 
 export type WindowId = "work" | "proof" | "stack" | "soft" | "path" | "passions";
 export type SnackId = "tteok" | "bread" | "pancakes" | "dango" | "roll" | "lemonade";
@@ -951,8 +954,6 @@ export interface HomeWindowCopy {
   /** หน่วยของตัวเลขบนชั้น เช่น "5 projects" — ตัวเลขนับจากข้อมูลจริงใน lib/home.ts */
   unit: L10n;
   snack: SnackId;
-  /** index ของตัวอักษรลับใน LEMONADE (ชั้น 01–05 เท่านั้น) */
-  secret?: number;
 }
 
 export interface PassionCard {
@@ -963,8 +964,7 @@ export interface PassionCard {
   links: { href: string; label: L10n }[];
 }
 
-/** แยกเป็นตัวแปรมี type ชัด (ไม่ใช่ satisfies) — ให้ทุกหน้าต่างมี secret?: number เหมือนกัน
- *  ไม่งั้น TypeScript จะจำว่าหน้าต่าง passions "ไม่มี" ช่อง secret แล้วอ่านแบบรวม ๆ ไม่ได้ */
+/** แยกเป็นตัวแปรมี type ชัด (ไม่ใช่ satisfies) — ทุกหน้าต่างมีรูปร่างเดียวกัน อ่านแบบวนลูปได้ตรง ๆ */
 const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
   work: {
     n: "01",
@@ -973,7 +973,6 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     note: { en: "The numbers, and the limits of each", th: "พร้อมตัวเลขและข้อจำกัดของแต่ละอัน" },
     unit: { en: "projects", th: "โปรเจกต์" },
     snack: "tteok",
-    secret: 3,
   },
   proof: {
     n: "02",
@@ -982,7 +981,6 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     note: { en: "The documents behind the numbers — open them yourself", th: "เอกสารที่อยู่เบื้องหลังตัวเลข เปิดดูเองได้" },
     unit: { en: "documents", th: "เอกสาร" },
     snack: "bread",
-    secret: 4,
   },
   stack: {
     n: "03",
@@ -991,7 +989,6 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     note: { en: "Grouped by how well I actually know them", th: "แบ่งตามว่ารู้จริงแค่ไหน" },
     unit: { en: "tools", th: "เครื่องมือ" },
     snack: "pancakes",
-    secret: 5,
   },
   soft: {
     n: "04",
@@ -1000,7 +997,6 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     note: { en: "Each one with a real story behind it", th: "ทุกข้อมีเรื่องจริงรองรับ" },
     unit: { en: "stories", th: "เรื่อง" },
     snack: "dango",
-    secret: 6,
   },
   path: {
     n: "05",
@@ -1009,7 +1005,6 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     note: { en: "Degree, internships, and the next run", th: "ปริญญา ฝึกงาน และรันถัดไป" },
     unit: { en: "stops", th: "จุด" },
     snack: "roll",
-    secret: 7,
   },
   passions: {
     n: "06",

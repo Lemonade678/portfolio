@@ -61,10 +61,6 @@ describe("HOME copy", () => {
     }
   });
 
-  it("rows 01–05 carry the secret letters O N A D E in order; passions has none", () => {
-    expect(HOME_WINDOWS.map((id) => HOME.windows[id].secret)).toEqual([3, 4, 5, 6, 7, undefined]);
-  });
-
   it("passions has three cards", () => {
     expect(HOME.passions.cards).toHaveLength(3);
   });

@@ -12,13 +12,12 @@
 // คนที่ตั้ง "ลดการเคลื่อนไหว" ไว้ เห็นกล่องครบทันที ไม่มีเส้นกวาด
 //
 // โครง HTML ของแต่ละชั้น: <li> ที่มีลิงก์ตัวเดียว (ชื่อหัวข้อ) ซึ่งยืด ::after คลุมทั้งชั้น
-// → กดตรงไหนของชั้นก็เปิดหน้าต่าง · แต่ตัวอักษรลับ (ปุ่ม) ต้องไม่อยู่ "ใน" ลิงก์
-// เพราะปุ่มซ้อนในลิงก์เป็น HTML ผิดกติกา — เลยวางเป็นพี่น้องกัน แล้วยกปุ่มขึ้นเหนือ ::after ด้วย z-index
+// → กดตรงไหนของชั้นก็เปิดหน้าต่าง
 // ─────────────────────────────────────────────────────────────
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { SecretLetter } from "@/components/SecretCode";
+import SecretText from "@/components/SecretText";
 import { useHome } from "@/components/home/HomeShell";
 import Snack from "@/components/home/Snack";
 import { t } from "@/components/home/ui";
@@ -111,18 +110,16 @@ export default function Counter() {
                 <span className="hidden flex-none font-mono text-[11px] uppercase tracking-[0.12em] text-ink2 sm:block">
                   {n[id]} {t(w.unit, lang)} <span className="counter-arrow">→</span>
                 </span>
-
-                {/* ตัวอักษรลับ O N A D E — ปลายขวาของชั้น 01–05 อ่านไล่ขอบขวาลงมาได้ต่อจาก L E M ข้างบน */}
-                <span className="relative z-[2] flex w-6 flex-none justify-center">
-                  {w.secret !== undefined && <SecretLetter index={w.secret} />}
-                </span>
               </li>
             );
           })}
         </ul>
       </div>
 
-      <p className="mt-3 max-w-[62ch] text-[12px] leading-relaxed text-muted">{t(C.honesty, lang)}</p>
+      {/* e ตัวสุดท้ายของ LEMONADE ซ่อนอยู่ในคำ "label" ของบรรทัดนี้ */}
+      <p className="mt-3 max-w-[62ch] text-[12px] leading-relaxed text-muted">
+        <SecretText text={t(C.honesty, lang)} place="honesty" />
+      </p>
     </section>
   );
 }

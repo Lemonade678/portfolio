@@ -1,16 +1,15 @@
 "use client";
 
 // ─────────────────────────────────────────────────────────────
-// ไข่อีสเตอร์: ตัวอักษร L E M O N A D E ซ่อนอยู่ 8 จุดในหน้าหลัก เรียงจากบนลงล่าง
+// ไข่อีสเตอร์: ตัวอักษร L E M O N A D E ซ่อนอยู่ "ในคำ" บนหน้าหลัก เรียงจากบนลงล่าง
 // กดครบตามลำดับ → ปลดล็อกแล้วพาไปหน้า /playground
 //
-//   L  แถบบนสุด (sticky อยู่ตลอด เลยกดก่อนได้เสมอ)
-//   E  ปลายบรรทัดชื่อ        (components/home/Hero.tsx)
-//   M  เหนือแถวตัวเลข        (components/home/Hero.tsx)
-//   O N A D E  ปลายขวาของชั้น 01–05 ในตู้ขนม (components/home/Counter.tsx)
+// ตำแหน่งตัวอักษรอยู่ใน lib/secret.ts · ตัวที่วาดบนจอคือ components/SecretText.tsx
+// ไฟล์นี้ถือแค่ "สถานะ" ว่ากดถูกมาถึงตัวไหนแล้ว (SecretProvider) ให้ทุกจุดบนหน้าแชร์ตัวนับเดียวกัน
 //
-// อ่านไล่ขอบขวาลงมาจะเห็นคำว่า LEMONADE — ตั้งใจให้ "หาเจอได้ถ้าช่างสังเกต"
-// ไม่ใช่ซ่อนจนไม่มีทางเจอ ไข่อีสเตอร์ที่ไม่มีใครเจอก็เท่ากับไม่มี
+// ตั้งใจให้เป็นความลับจริง ๆ: ตัวอักษรหน้าตาเหมือนตัวหนังสือรอบข้างทุกอย่าง
+// จุดสังเกตเดียวคือเอาเมาส์ไปชี้แล้วเคอร์เซอร์เป็นรูปมือ — กดถูกแล้วค่อยเรืองเหลืองให้รู้ว่ามาถูกทาง
+// ไม่มีทางเข้าด้วยคีย์บอร์ด (เจ้าของเว็บเลือกเอง: Tab ไปโดนตัวอักษรเมื่อไหร่ ความลับก็แตก)
 //
 // ⚠️ นี่คือการซ่อน ไม่ใช่การล็อก
 //    เว็บนี้เป็น static ทั้งหมด เนื้อหาหน้า playground อยู่ใน JS bundle อยู่แล้ว
@@ -86,35 +85,7 @@ export function SecretProvider({
   );
 }
 
-/**
- * ตัวอักษรหนึ่งตัวของรหัส — เป็น <button> จริง กดด้วยคีย์บอร์ดได้ด้วย
- * หน้าตาจางมากจนดูเหมือนลายประดับ จนกว่าจะเอาเมาส์ไปชี้หรือกดถูก
- *
- * ปุ่มกว้างอย่างน้อย 24×24 ตามเกณฑ์ WCAG ขั้นต่ำ ทั้งที่ตัวอักษรเล็กนิดเดียว
- * ไม่งั้นบนมือถือกดโดนยากมาก
- */
-export function SecretLetter({
-  index,
-  className = "",
-}: {
-  index: number;
-  className?: string;
-}) {
-  const ctx = useContext(SecretContext);
-  if (!ctx) return null;
-
-  const char = SECRET_WORD[index];
-  const lit = index < ctx.progress;
-
-  return (
-    <button
-      type="button"
-      onClick={() => ctx.press(index)}
-      aria-label={char}
-      data-lit={lit || undefined}
-      className={`secret-letter ${className}`}
-    >
-      {char}
-    </button>
-  );
+/** สถานะของไข่ — null ถ้าไม่ได้อยู่ใต้ SecretProvider (เช่นใช้ข้อความเดียวกันนอกหน้าแรก) */
+export function useSecret(): SecretState | null {
+  return useContext(SecretContext);
 }

@@ -17,7 +17,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import CoverArt from "@/components/CoverArt";
-import { SecretLetter, SecretProvider } from "@/components/SecretCode";
+import { SecretProvider } from "@/components/SecretCode";
 import Hero from "@/components/home/Hero";
 import Outro from "@/components/home/sections/Outro";
 import Counter from "@/components/home/Counter";
@@ -89,7 +89,7 @@ export default function HomeShell({ children }: { children: React.ReactNode }) {
 
   return (
     <Ctx.Provider value={value}>
-      {/* SecretProvider ครอบทั้งหน้า เพราะตัวอักษร 8 ตัวกระจายอยู่ทั้งแถบบน หัวเว็บ และตู้ขนม */}
+      {/* SecretProvider ครอบทั้งหน้า เพราะตัวอักษร 8 ตัวกระจายอยู่ทั้งหัวเว็บ การ์ดตัวเลข และใต้ตู้ขนม */}
       <SecretProvider lang={lang}>
         {/* ───── แถบบน ─────
             อยู่เหนือหน้าต่าง (z-50) และไม่ถูก inert: สลับภาษาได้แม้เปิดหน้าต่างอยู่ */}
@@ -100,8 +100,6 @@ export default function HomeShell({ children }: { children: React.ReactNode }) {
             </Link>
 
             <div className="flex items-center gap-5">
-              {/* ตัวที่ 1 — L อยู่ใน header ที่ sticky เลยมองเห็นและกดได้ตลอด */}
-              <SecretLetter index={0} />
               <nav className="hidden gap-4 lg:flex">
                 {navIds.map((k) => {
                   const label = k === "contact" ? UI.nav.contact : HOME.windows[k].nav;
