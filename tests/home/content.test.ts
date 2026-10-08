@@ -1,7 +1,7 @@
 // เนื้อหาใหม่ของหน้าหลัก: กำแพงรูปใน People (04) + พิพิธภัณฑ์ YOLO ใน /stack — ครบสองภาษา ข้อมูลสมเหตุสมผล
 import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { NOW, PEOPLE, YOLO_MUSEUM } from "@/lib/content";
+import { HOME, MENU, NOW, PEOPLE, SHOP_LOGO, YOLO_MUSEUM } from "@/lib/content";
 
 const both = (s: { en: string; th: string }) => s.en.trim().length > 0 && s.th.trim().length > 0;
 
@@ -73,5 +73,23 @@ describe("PEOPLE favourite streamer", () => {
     expect(both(PEOPLE.next)).toBe(true);
     expect(PEOPLE.fav.videoId).toBe("byii5bL3ogc");
     expect(both(PEOPLE.fav.play)).toBe(true);
+  });
+});
+
+describe("brand: site icon + shop logo", () => {
+  it("the site icon files exist where Next.js looks for them", () => {
+    expect(existsSync("app/icon.png")).toBe(true);
+    expect(existsSync("app/apple-icon.png")).toBe(true);
+  });
+
+  it("the shop logo exists, has a real size and alt text in both languages", () => {
+    expect(existsSync(`public${SHOP_LOGO.src}`)).toBe(true);
+    expect(SHOP_LOGO.w > 0 && SHOP_LOGO.h > 0).toBe(true);
+    expect(both(SHOP_LOGO.alt)).toBe(true);
+  });
+
+  it("the logo shows on the Shop button and on the food & drinks passion", () => {
+    expect(MENU.find((m) => m.href.includes("buttertteok4u"))?.logo).toBe(true);
+    expect(HOME.passions.cards.find((c) => c.id === "food")?.logo).toBe(true);
   });
 });

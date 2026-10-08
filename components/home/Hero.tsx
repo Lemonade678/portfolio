@@ -8,7 +8,7 @@ import PhotoDetect from "@/components/PhotoDetect";
 import BrandIcon, { brandOf } from "@/components/BrandIcon";
 import SecretText from "@/components/SecretText";
 import ContactCards from "@/components/home/ContactCards";
-import { ACCENT_HEX, MENU, METRICS, PERSON, type Lang } from "@/lib/content";
+import { ACCENT_HEX, MENU, METRICS, PERSON, SHOP_LOGO, type Lang } from "@/lib/content";
 import { windowFromHash, type WindowId } from "@/lib/home";
 import { Reveal, t } from "@/components/home/ui";
 
@@ -78,23 +78,35 @@ export default function Hero({
             } : undefined}
             target={m.external ? "_blank" : undefined}
             rel={m.external ? "noopener noreferrer" : undefined}
-            className="group rounded-xl border px-4 py-3.5 transition-all hover:-translate-y-0.5"
+            className={`group rounded-xl border px-4 py-3.5 transition-all hover:-translate-y-0.5 ${m.logo ? "flex items-center gap-3" : ""}`}
             style={{
               color: m.primary ? "#1A1310" : ACCENT_HEX.yellow,
               background: m.primary ? ACCENT_HEX.yellow : `${ACCENT_HEX.yellow}12`,
               borderColor: m.primary ? ACCENT_HEX.yellow : `${ACCENT_HEX.yellow}47`,
             }}
           >
-            <span className="flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em]">
-              {m.external && <BrandIcon brand={brandOf(m.href)} size={14} />}
-              {t(m.label, lang)}
-              {m.external ? " ↗" : win ? " →" : " ↓"}
-            </span>
-            <span
-              className="mt-1 block text-[11.5px] leading-snug"
-              style={{ opacity: m.primary ? 0.72 : 0.78 }}
-            >
-              {t(m.note, lang)}
+            {/* ปุ่มร้าน: โลโก้ร้านซ้าย ข้อความขวา — คนเห็นแล้วจำร้านได้ทันทีโดยไม่ต้องอ่าน */}
+            {m.logo && (
+              <img
+                src={SHOP_LOGO.src}
+                alt={t(SHOP_LOGO.alt, lang)}
+                width={SHOP_LOGO.w}
+                height={SHOP_LOGO.h}
+                className="h-11 w-auto flex-none transition-transform group-hover:-rotate-6"
+              />
+            )}
+            <span className="block min-w-0">
+              <span className="flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em]">
+                {m.external && <BrandIcon brand={brandOf(m.href)} size={14} />}
+                {t(m.label, lang)}
+                {m.external ? " ↗" : win ? " →" : " ↓"}
+              </span>
+              <span
+                className="mt-1 block text-[11.5px] leading-snug"
+                style={{ opacity: m.primary ? 0.72 : 0.78 }}
+              >
+                {t(m.note, lang)}
+              </span>
             </span>
           </a>
           );

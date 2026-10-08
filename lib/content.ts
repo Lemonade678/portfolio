@@ -128,6 +128,8 @@ export interface MenuItem {
   primary?: boolean;
   /** ลิงก์ออกนอกเว็บ → เปิดแท็บใหม่ และต่อท้ายด้วย ↗ */
   external?: boolean;
+  /** โชว์โลโก้ร้าน (SHOP_LOGO) บนปุ่มนี้ */
+  logo?: boolean;
 }
 
 // ── ตัวตน ─────────────────────────────────────────────────────
@@ -264,6 +266,7 @@ export const MENU: MenuItem[] = [
   {
     href: "https://www.instagram.com/buttertteok4u.by.remmie/",
     external: true,
+    logo: true,
     label: { en: "Shop", th: "ร้าน" },
     note: {
       en: "Kapimong — homemade butter tteok, pre-order Fridays",
@@ -991,6 +994,8 @@ export interface PassionCard {
   body: L10n;
   /** ลิงก์ที่ขึ้นต้นด้วย / คือหน้าต่างในเว็บนี้ (แนบ ?lang ให้เอง) · ที่เหลือเปิดแท็บใหม่ */
   links: { href: string; label: L10n }[];
+  /** โชว์โลโก้ร้าน (SHOP_LOGO) บนการ์ดนี้ */
+  logo?: boolean;
 }
 
 /** แยกเป็นตัวแปรมี type ชัด (ไม่ใช่ satisfies) — ทุกหน้าต่างมีรูปร่างเดียวกัน อ่านแบบวนลูปได้ตรง ๆ */
@@ -1090,6 +1095,7 @@ export const HOME = {
       },
       {
         id: "food",
+        logo: true,
         title: { en: "Food & drinks", th: "อาหารและเครื่องดื่ม" },
         body: {
           en: "Kapimong — homemade butter tteok, pre-order Fridays. And yes, the nickname is Lemon.",
@@ -1356,4 +1362,20 @@ export const NOW = {
     th: "Google Form · ราว 9 ข้อ · ฟอร์มขออีเมลด้วย",
   },
   href: "https://forms.gle/GAQ4ktK4FnbCnivc9",
+};
+
+// ── โลโก้ร้านบัตเตอร์ต๊อก ─────────────────────────────────────
+//
+// โลโก้ "Buttertteok 4U" ที่เจ้าของเว็บให้มา — โชว์บนปุ่ม Shop ในหัวเว็บ และการ์ด "อาหารและเครื่องดื่ม" ในหน้าต่างแพชชั่น
+// ไฟล์ทำด้วย tools/brand_assets.py (ลบพื้นขาวด้านนอกให้ใส เพราะเว็บพื้นน้ำตาลเข้ม) · w/h ต้องตรงกับไฟล์จริง
+// ไอคอนเว็บ (คาปิบาร่าในแก้วชามะนาว) อยู่ที่ app/icon.png กับ app/apple-icon.png — Next.js ใส่ <link rel="icon"> ให้เอง
+
+export const SHOP_LOGO = {
+  src: "/brand/buttertteok4u.webp",
+  w: 480,
+  h: 451,
+  alt: {
+    en: "Buttertteok 4U logo — a capybara with a lemon on its head, eating a butter tteok",
+    th: "โลโก้ร้าน Buttertteok 4U — คาปิบาร่ามีมะนาวบนหัว กำลังกินบัตเตอร์ต๊อก",
+  },
 };

@@ -94,10 +94,11 @@ npm i -g vercel && vercel
 | `components/SecretCode.tsx` · `SecretText.tsx` · `lib/secret.ts` | รหัส LEMONADE — สถานะว่ากดถึงตัวไหน · ตัวอักษรที่ซ่อนในคำ · ตำแหน่งที่ซ่อน |
 | `components/YoloLab.tsx` · `lib/lab.ts` | ห้องทดลอง YOLO ในหน้า playground (ผู้ชมเลือกรูปเอง) |
 | `components/NextRun.tsx` | การ์ด "Next run" ท้ายหน้าต่าง 04 People (ไป `/ozzy`) + ไอคอนสายฟ้า |
-| `public/` | `me.jpg` · `models/yolo11n.onnx` · `lane-change-presentation.pdf` · `lane-change-demo.webp` · `hackathon-certificate.jpg` / `.pdf` · `toeic-885-redacted.png` · `degree-2026-redacted.png` · `signature.png` · `people/` · `ozzy/{photos,emotes,characters}/` |
+| `public/` | `me.jpg` · `models/yolo11n.onnx` · `lane-change-presentation.pdf` · `lane-change-demo.webp` · `hackathon-certificate.jpg` / `.pdf` · `toeic-885-redacted.png` · `degree-2026-redacted.png` · `signature.png` · `people/` · `brand/` · `ozzy/{photos,cards,emotes,characters}/` |
 | `tools/censor.py` | ปิดข้อมูลส่วนบุคคลบนเอกสารก่อนขึ้นเว็บ — ดูหัวข้อข้างล่าง |
 | `tools/signature.py` | ลายเซ็น: รูปเส้นสว่างบนพื้นดำ → PNG พื้นใส |
 | `tools/characters.py` · `tools/ozzy_assets.py` | รูปของเว็บ TheOzzy: ตัวละคร 3 ตัว · รูปถ่าย · emote (ทิ้ง EXIF) |
+| `tools/brand_assets.py` | ไอคอนเว็บ (คาปิบาร่าในแก้วชามะนาว → `app/icon.png` · `app/apple-icon.png`) + โลโก้ร้าน Buttertteok 4U พื้นใส → `public/brand/` |
 | `tools/people_assets.py` | รูปกำแพง "ผู้คนที่ได้เจอ" ในหน้าต่าง People → `public/people/` (ทิ้ง EXIF) |
 | `lemon_detector/` | โปรเจกต์ Python เทรน YOLOv11 ให้จับเฉพาะหน้าเรา — ไม่เกี่ยวกับ build ของเว็บ |
 | `portfolio-preview.html` | พรีวิวไฟล์เดียวจบ เปิดด้วยดับเบิลคลิก ไม่ต้อง Node |

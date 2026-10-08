@@ -15,7 +15,7 @@
 import Link from "next/link";
 import { useHome } from "@/components/home/HomeShell";
 import { CardLink, Reveal, SOFT_ACCENTS, accentVar, t } from "@/components/home/ui";
-import { ACCENT_HEX, HOME, type Lang } from "@/lib/content";
+import { ACCENT_HEX, HOME, SHOP_LOGO, type Lang } from "@/lib/content";
 
 export default function Passions({ lang }: { lang: Lang }) {
   const { href } = useHome();
@@ -32,7 +32,20 @@ export default function Passions({ lang }: { lang: Lang }) {
           return (
             <Reveal key={c.id}>
               <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6" style={accentVar(accent)}>
-                <span className="font-mono text-[10.5px] tracking-[0.16em] text-muted">0{i + 1}</span>
+                <span className="flex items-start justify-between gap-3">
+                  <span className="font-mono text-[10.5px] tracking-[0.16em] text-muted">0{i + 1}</span>
+                  {/* การ์ดอาหารและเครื่องดื่ม: โลโก้ร้านบัตเตอร์ต๊อกมุมขวาบน */}
+                  {c.logo && (
+                    <img
+                      src={SHOP_LOGO.src}
+                      alt={t(SHOP_LOGO.alt, lang)}
+                      width={SHOP_LOGO.w}
+                      height={SHOP_LOGO.h}
+                      loading="lazy"
+                      className="-mr-1 -mt-1 h-20 w-auto flex-none"
+                    />
+                  )}
+                </span>
                 <h3 className="mt-1 text-[18px] font-bold tracking-[-0.01em]" style={{ color: "var(--c)" }}>
                   {t(c.title, lang)}
                 </h3>
