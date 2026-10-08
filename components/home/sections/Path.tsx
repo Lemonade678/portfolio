@@ -1,8 +1,8 @@
 "use client";
 
-// 05 เส้นทางที่ผ่านมา + การ์ดรันถัดไป (ย้ายมาจาก app/page.tsx ไม่แก้ markup)
+// 05 เส้นทางที่ผ่านมา — ไทม์ไลน์ (ย้ายมาจาก app/page.tsx ไม่แก้ markup)
+// การ์ด TheOzzy "รันถัดไป" ย้ายไปอยู่ท้ายหน้าต่าง 04 People แล้ว — เขาเป็น "คน" ที่กำลังทำงานให้ ไม่ใช่จุดในไทม์ไลน์
 
-import NextRunCard from "@/components/NextRun";
 import { TIMELINE, type Lang } from "@/lib/content";
 import { Reveal, t } from "@/components/home/ui";
 
@@ -24,11 +24,6 @@ export default function Path({ lang }: { lang: Lang }) {
           </Reveal>
         ))}
       </div>
-
-      {/* รันถัดไป — ไทม์ไลน์เล่าว่าผ่านอะไรมา การ์ดนี้คือก้าวต่อไป (ดู components/NextRun.tsx) */}
-      <Reveal>
-        <NextRunCard lang={lang} />
-      </Reveal>
     </>
   );
 }

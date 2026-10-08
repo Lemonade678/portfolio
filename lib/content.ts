@@ -994,7 +994,7 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     n: "04",
     nav: UI.nav.soft,
     title: UI.sections.soft,
-    note: { en: "Each one with a real story behind it", th: "ทุกข้อมีเรื่องจริงรองรับ" },
+    note: { en: "Stories, photos, and who I'm building for next", th: "เรื่องจริง รูปถ่าย และคนที่กำลังทำงานให้" },
     unit: { en: "stories", th: "เรื่อง" },
     snack: "dango",
   },
@@ -1002,7 +1002,7 @@ const HOME_WINDOW_COPY: Record<WindowId, HomeWindowCopy> = {
     n: "05",
     nav: UI.nav.path,
     title: UI.sections.path,
-    note: { en: "Degree, internships, and the next run", th: "ปริญญา ฝึกงาน และรันถัดไป" },
+    note: { en: "Degree and internships", th: "ปริญญาและการฝึกงาน" },
     unit: { en: "stops", th: "จุด" },
     snack: "roll",
   },
@@ -1088,4 +1088,81 @@ export const HOME = {
       th: "จุดที่สามอย่างมาเจอกัน: เว็บสองภาษา หน้าตาเป็นตู้ขนม ตีกล่องเหมือนชุดข้อมูล",
     },
   },
+};
+
+// ── People (หน้าต่าง 04): กำแพงรูป "ผู้คนที่ได้เจอ" ────────────────
+//
+// หน้าต่าง 04 เดิมมีแค่การ์ด soft skill สามใบ (บอกว่าทำงานกับคนยังไง)
+// เจ้าของเว็บอยากให้เห็น "คน" จริง ๆ ด้วย — เลยต่อท้ายด้วยรูปจากช่วงฝึกงานที่ไต้หวัน + คอนเสิร์ตกับเพื่อน
+// แล้วปิดด้วยการ์ด TheOzzy (คนที่กำลังทำเว็บให้) ซึ่งย้ายมาจากหน้าต่าง 05 เส้นทาง
+//
+// ทุกคนในรูปยินยอมให้ลงเว็บแล้ว (เจ้าของเว็บยืนยัน 8 ต.ค. 2026)
+// คำบรรยายเขียนเฉพาะสิ่งที่เห็นในรูป + วันที่จากชื่อไฟล์ — ไม่แต่งเรื่องหรือชื่อคนในรูปเพิ่ม
+// ไฟล์รูปทำด้วย tools/people_assets.py (ทิ้ง EXIF) · w/h ต้องตรงกับไฟล์จริง เบราว์เซอร์จะกันที่ไว้ก่อนโหลด
+
+export interface PeoplePhoto {
+  id: string;
+  src: string;
+  w: number;
+  h: number;
+  alt: L10n;
+  caption: L10n;
+}
+
+export const PEOPLE = {
+  title: { en: "Connecting with people", th: "ผู้คนที่ได้เจอ" },
+  intro: {
+    en: "The work above happened with these people around.",
+    th: "งานข้างบนทั้งหมดเกิดขึ้นโดยมีคนเหล่านี้อยู่รอบตัว",
+  },
+  photos: [
+    {
+      id: "yzu",
+      src: "/people/yzu.webp",
+      w: 294,
+      h: 392,
+      alt: {
+        en: "A group selfie in front of the big YZU letters on campus",
+        th: "เซลฟี่กลุ่มหน้าตัวอักษร YZU ตัวใหญ่ในมหาวิทยาลัย",
+      },
+      caption: { en: "Yuan Ze University, Taiwan — internship, 2025", th: "มหาวิทยาลัย Yuan Ze ไต้หวัน — ช่วงฝึกงาน 2025" },
+    },
+    {
+      id: "presentation",
+      src: "/people/presentation.webp",
+      w: 406,
+      h: 487,
+      alt: {
+        en: "Two interns standing in front of a KMUTT & YZU internship presentation slide",
+        th: "นักศึกษาฝึกงานสองคนยืนหน้าสไลด์นำเสนองานฝึกงาน KMUTT & YZU",
+      },
+      caption: { en: "KMUTT × YZU internship presentation", th: "นำเสนองานฝึกงาน KMUTT × YZU" },
+    },
+    {
+      id: "dinner",
+      src: "/people/dinner.webp",
+      w: 406,
+      h: 540,
+      alt: {
+        en: "A selfie at a round dinner table full of people and dishes",
+        th: "เซลฟี่ที่โต๊ะกลมเต็มไปด้วยคนและอาหาร",
+      },
+      caption: { en: "Dinner with everyone in Taiwan, 2025", th: "มื้อเย็นกับทุกคนที่ไต้หวัน 2025" },
+    },
+    {
+      id: "concert",
+      src: "/people/concert.webp",
+      w: 406,
+      h: 487,
+      alt: {
+        en: "A singer on a stage lit in pink and blue",
+        th: "นักร้องบนเวทีที่เปิดไฟสีชมพูกับฟ้า",
+      },
+      caption: { en: "A concert with friends, 2026", th: "ไปคอนเสิร์ตกับเพื่อน ๆ 2026" },
+    },
+  ] satisfies PeoplePhoto[],
+  /** บรรทัดนำก่อนการ์ด TheOzzy */
+  next: { en: "Who I'm building for next", th: "คนที่ผมกำลังทำงานให้ต่อไป" },
+  /** ปุ่มปิดกล่องดูรูปขยาย */
+  close: { en: "Close photo", th: "ปิดรูป" },
 };
