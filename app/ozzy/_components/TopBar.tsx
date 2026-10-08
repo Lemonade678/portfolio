@@ -1,6 +1,8 @@
 "use client";
 
-// แถบบน (sticky) ค้างอยู่ทุกหน้าต่าง: ทางกลับพอร์ต · สถานะ · สลับภาษา
+// แถบบน (sticky) ค้างอยู่ทุกหน้าต่าง: ชื่อเว็บ (กลับโต๊ะ) · สถานะ · สลับภาษา
+// ไม่มีลิงก์กลับหน้าพอร์ตตรงนี้แล้ว (เจ้าของเว็บขอเอาออก) — ทางกลับไปหาเจ้าของเว็บเหลือแค่บรรทัด
+// "A fan-built site by Lemon ↩" ใต้โต๊ะ ให้โซนนี้ดูเป็นเว็บของ Ozzy เอง ไม่ใช่หน้าย่อยของพอร์ต
 // สถานะโชว์ของที่ต้องรู้ระหว่างเลื่อนดูส่วนอื่น: หัวใจ (ตอนมีรัน) · แต้ม · โดนแป้งกี่ครั้ง · VIP · ปุ่มปิดเพลง
 
 import Link from "next/link";
@@ -17,11 +19,12 @@ export default function TopBar() {
   return (
     <div className="sticky top-0 z-40 border-b-2 border-(--oz-ink) bg-(--oz-night)/85 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-[1080px] items-center justify-between gap-2 px-3 sm:px-8">
+        {/* ชื่อเว็บ — กดแล้วกลับโต๊ะการ์ด (ปิดหน้าต่างที่เปิดอยู่) */}
         <Link
-          href="/"
-          className="flex-none border-b border-transparent pb-0.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-(--oz-sky) transition-colors hover:border-(--oz-yellow) hover:text-(--oz-yellow) sm:text-[11px]"
+          href={href("/ozzy")}
+          className="flex-none font-mono text-[12px] font-bold uppercase tracking-[0.16em] text-(--oz-sky) transition-colors hover:text-(--oz-yellow)"
         >
-          {t(T.back, lang)}
+          The<span className="text-(--oz-yellow)">Ozzy</span>
         </Link>
 
         <div className="flex min-w-0 items-center gap-2">

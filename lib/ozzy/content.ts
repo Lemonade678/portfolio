@@ -118,7 +118,6 @@ export const OZZY = {
 
   /** โต๊ะไพ่ (หน้า /ozzy) */
   table: {
-    back: { en: "← portfolio", th: "← กลับหน้าพอร์ต" },
     deckTitle: { en: "Ozzy's deck · 6 cards", th: "เด็คของ Ozzy · 6 ใบ" },
     deckHint: { en: "Play a card to open its window.", th: "ลงไพ่ใบไหน หน้าต่างของใบนั้นจะเปิดขึ้นมา" },
     donate: { en: "Support Ozzy", th: "สนับสนุน Ozzy" },
