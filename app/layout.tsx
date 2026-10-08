@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anuphan, IBM_Plex_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // Anuphan รองรับทั้งไทยและละติน เลยใช้ตัวเดียวได้ทั้งเว็บ
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className="font-sans text-base leading-relaxed">
         {children}
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
