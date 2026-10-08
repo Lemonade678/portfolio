@@ -1,6 +1,6 @@
 """ทำรูปของเว็บ TheOzzy (/ozzy) จากไฟล์ต้นฉบับ: รูปถ่าย 3 รูป + emote ของช่อง
 
-    python tools/ozzy_assets.py                      # เขียน public/ozzy/photos + public/ozzy/emotes
+    python tools/ozzy_assets.py                      # เขียน public/ozzy/photos + public/ozzy/cards + public/ozzy/emotes
     python tools/ozzy_assets.py --sheet sheet.png    # + ภาพรวม emote ขยาย 4 เท่า ไว้ดูตอนตั้งชื่อ
 
 อ่านจาก tools/source/ozzy/ (gitignore — ต้นฉบับไม่ขึ้น git):
@@ -27,6 +27,7 @@ from PIL import Image
 SRC = Path("tools/source/ozzy")
 OUT_PHOTOS = Path("public/ozzy/photos")
 OUT_EMOTES = Path("public/ozzy/emotes")
+OUT_CARDS = Path("public/ozzy/cards")
 
 # ชื่อไฟล์ปลายทาง → (ไฟล์ต้นทาง, ด้านยาวสุดหลังย่อ)
 PHOTOS = {
@@ -38,6 +39,15 @@ PHOTOS = {
     "meetup": ("meetup.jpg", 1200),  # มีตติ้งแฟน ๆ ต.ค. 2022
     "setup": ("setup.jpg", 1200),  # แล็ปท็อปเปิดสตรีม พ.ค. 2022
 }
+
+# ภาพบนไพ่ในเด็ค (แฟนอาร์ต) → public/ozzy/cards/<ไพ่>.webp ขนาด 4:3 ตามช่องภาพของไพ่ (.oz-deck-art)
+# ครอปเฉพาะตัวละคร ไม่เอากรอบการ์ดกับเม็ดค่าพลัง/ราคาของต้นฉบับ (ไม่งั้นซ้อนกับเม็ดบนไพ่ของเว็บ)
+# เครดิตผู้วาดอยู่ใน OZZY.table.artCredits (โชว์ใต้เด็ค) — ภาพที่ไม่รู้ชื่อผู้วาด เจ้าของเว็บเลือกไม่ใช้
+CARD_ART = {
+    "profile": ("fanart-thanpisit.jpg", (440, 300, 1080, 780)),  # Fan art by Thanpisit
+    "wheel": ("fanart-zlxwartwork.jpg", (220, 330, 800, 765)),  # Art by zlxwartwork (IG)
+}
+CARD_SIZE = (640, 480)
 
 # ขอบเขตแถบคอลัมน์/แถวของตาราง emote (วัดจากภาพหน้าจอ 822×173)
 COLS = [(6, 45), (115, 154), (225, 264), (334, 374), (443, 487), (552, 596), (662, 705), (772, 815)]
@@ -57,6 +67,15 @@ def photos() -> list[tuple[str, int, int]]:
         done.append((name, im.width, im.height))
         print(f"เขียน {out}  {im.width}x{im.height}  {out.stat().st_size / 1024:.0f} KB")
     return done
+
+
+def card_art() -> None:
+    OUT_CARDS.mkdir(parents=True, exist_ok=True)
+    for card, (src, box) in CARD_ART.items():
+        im = Image.open(SRC / src).convert("RGB").crop(box).resize(CARD_SIZE, Image.LANCZOS)
+        out = OUT_CARDS / f"{card}.webp"
+        im.save(out, "WEBP", quality=82, method=6)  # ไม่ส่ง exif= → ไม่มี EXIF
+        print(f"เขียน {out}  {im.width}x{im.height}  {out.stat().st_size / 1024:.0f} KB")
 
 
 def emotes(sheet: Path | None) -> int:
@@ -103,6 +122,7 @@ def main() -> None:
     ap.add_argument("--sheet", type=Path, help="เขียนภาพรวม emote ขยาย 4 เท่าไว้ตรวจ")
     args = ap.parse_args()
     photos()
+    card_art()
     emotes(args.sheet)
 
 

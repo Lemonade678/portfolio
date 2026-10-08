@@ -6,7 +6,8 @@
 // ไพ่แต่ละใบเป็น <Link> ธรรมดา — ใช้คีย์บอร์ด/เปิดแท็บใหม่/แชร์ลิงก์ได้ตามปกติของเว็บ
 // มุมไพ่สองมุมแบบ Marvel Snap: วงฟ้า = ลำดับไพ่ · หกเหลี่ยมส้ม = "ตัวเลขจริง" ของหน้าต่างนั้น
 // (คลิปที่ลงใน 7 วัน · จำนวนห้อง · จำนวนช่องวงล้อ ฯลฯ) ไม่ใช่เลขสวย ๆ ที่แต่งขึ้น
-// ยกเว้นใบเดียวคือคอลเลกชัน = "6/7" มุกตามที่เจ้าของเว็บขอ (OZZY.table.collectionPower)
+// ยกเว้นสองใบที่เป็นมุกตามที่เจ้าของเว็บขอ: โปรไฟล์ = "213" เลขมงคลประจำช่อง · คอลเลกชัน = "6/7"
+// ใต้เด็คมีเครดิตผู้วาดแฟนอาร์ตบนไพ่ (OZZY.table.artCredits)
 //
 // บรรทัดเครดิต "เว็บที่แฟนทำ โดยเลม่อน" เป็นลิงก์กลับไปหน้าพอร์ตของเจ้าของเว็บ (แนบ ?lang=th ถ้ากำลังเป็นไทย)
 //
@@ -39,7 +40,7 @@ export default function Table({
 
   // ตัวเลขจริงบนมุมขวาของไพ่แต่ละใบ
   const power: Record<CardId, number | string> = {
-    profile: OZZY.photos.length,
+    profile: T.profilePower,
     clips: weeklyClips,
     run: OZZY.floors.length,
     wheel: OZZY.wheel.slices.length,
@@ -118,6 +119,16 @@ export default function Table({
               </li>
             ))}
           </ul>
+          {/* เครดิตผู้วาดแฟนอาร์ตบนไพ่ */}
+          <p className="mt-6 text-[11px] leading-relaxed text-(--oz-sky)/70">
+            {t(T.artLabel, lang)}:{" "}
+            {T.artCredits.map((a, i) => (
+              <span key={a.card}>
+                {i > 0 && " · "}
+                {t(OZZY.cards.find((c) => c.id === a.card)!.name, lang)} — {t(a.by, lang)}
+              </span>
+            ))}
+          </p>
           <p className="mt-8 text-[11.5px] leading-relaxed text-(--oz-sky)/70 md:hidden">
             <FanNote lang={lang} />
           </p>

@@ -127,9 +127,17 @@ export const OZZY = {
       link: { en: "A fan-built site by Lemon", th: "เว็บที่แฟนทำ โดยเลม่อน" },
       rest: { en: "Building him a website is my next project.", th: "งานชิ้นถัดไปของผมคือทำเว็บไซต์ให้เขา" },
     },
-    /** เลขบนไพ่คอลเลกชันเป็นมุก "6 7" ตามที่เจ้าของเว็บขอ (มีอีโมต "6 7" อยู่ในคอลเลกชันจริง — e08)
-     *  ไพ่ใบอื่นยังเป็นตัวเลขจริงทั้งหมด */
+    /** เลขบนหกเหลี่ยมที่เป็นมุก (เจ้าของเว็บขอ) — ไพ่ใบอื่นยังเป็นตัวเลขจริงทั้งหมด
+     *  คอลเลกชัน = "6/7" มุก six-seven (มีอีโมต "6 7" ในคอลเลกชันจริง — e08)
+     *  โปรไฟล์ = "213" เลขมงคลประจำช่อง (@TheOzzy213) */
     collectionPower: "6/7",
+    profilePower: "213",
+    /** เครดิตแฟนอาร์ตบนไพ่ — โชว์ใต้เด็ค · ภาพที่ไม่รู้ชื่อผู้วาด เจ้าของเว็บเลือกไม่ใช้ */
+    artCredits: [
+      { card: "profile", by: { en: "Fan art by Thanpisit", th: "แฟนอาร์ตโดย Thanpisit" } },
+      { card: "wheel", by: { en: "Art by zlxwartwork (IG)", th: "ภาพโดย zlxwartwork (IG)" } },
+    ] satisfies { card: CardId; by: L10n }[],
+    artLabel: { en: "Card art", th: "ภาพบนไพ่" },
     close: { en: "Close", th: "ปิด" },
     hearts: { en: "hearts", th: "หัวใจ" },
     powdered: { en: "powdered", th: "โดนทาแป้ง" },
@@ -139,7 +147,7 @@ export const OZZY = {
   cards: [
     {
       id: "profile",
-      art: "/ozzy/photos/stream.webp",
+      art: "/ozzy/cards/profile.webp", // แฟนอาร์ต — เครดิตใน table.artCredits
       name: { en: "Profile", th: "โปรไฟล์" },
       blurb: { en: "Photos · about · links", th: "รูป · แนะนำตัว · ลิงก์" },
     },
@@ -157,7 +165,7 @@ export const OZZY = {
     },
     {
       id: "wheel",
-      art: "🎡",
+      art: "/ozzy/cards/wheel.webp", // แฟนอาร์ต — เครดิตใน table.artCredits
       name: { en: "Wheel", th: "วงล้อ" },
       blurb: { en: "Mind the baby powder", th: "ระวังโดนแป้ง" },
     },
