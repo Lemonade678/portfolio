@@ -882,6 +882,35 @@ export const PLAYGROUND = {
     th: "NMS เก็บไว้แค่กล่องที่คะแนนสูงสุด แต่ที่เหลือก็โชว์ไว้ด้วย — ตัวเลขทุกตัวในเว็บนี้มีที่มาให้ดู อันนี้ก็เหมือนกัน",
   },
 
+  /** ห้องทดลอง YOLO (components/YoloLab.tsx) — ผู้ชมเลือกรูปของตัวเอง โมเดลรันในเบราว์เซอร์ รูปไม่ออกจากเครื่อง
+   *  คำตัดสินรายของกินอยู่ใน lib/lab.ts */
+  lab: {
+    title: { en: "YOLO lab — what's on your plate?", th: "ห้องทดลอง YOLO — ในจานคุณมีอะไร?" },
+    intro: {
+      en: "Pick a photo of whatever you're eating. The same yolo11n that runs on my profile photo will box what it sees.",
+      th: "เลือกรูปอะไรก็ได้ที่กำลังกินอยู่ โมเดล yolo11n ตัวเดียวกับที่รันบนรูปโปรไฟล์ผมจะตีกล่องสิ่งที่มันเห็น",
+    },
+    choose: { en: "Choose a photo", th: "เลือกรูป" },
+    another: { en: "Try another photo", th: "ลองรูปอื่น" },
+    privacy: {
+      en: "Your photo never leaves your device — the model runs in your browser.",
+      th: "รูปไม่ออกจากเครื่องคุณ — โมเดลรันในเบราว์เซอร์",
+    },
+    loading: { en: "loading the model (10 MB, once)…", th: "กำลังโหลดโมเดล (10 MB ครั้งเดียว)…" },
+    running: { en: "looking…", th: "กำลังดู…" },
+    /** ต่อท้ายจำนวน เช่น "3 things found · 540 ms" */
+    found: { en: "things found", th: "อย่างที่เจอ" },
+    person: { en: "A person — not on the menu (probably).", th: "คน — ไม่ได้อยู่ในเมนู (มั้ง)" },
+    /** {label} แทนด้วยชื่อคลาส */
+    other: { en: "{label} — not on the menu.", th: "{label} — ไม่ได้อยู่ในเมนู" },
+    none: { en: "No snacks detected — the model is hungry.", th: "ไม่เจอขนมเลย — โมเดลหิวแล้ว" },
+    notImage: { en: "That file isn't a photo the browser can open.", th: "ไฟล์นี้ไม่ใช่รูปที่เบราว์เซอร์เปิดได้" },
+    failed: {
+      en: "The model couldn't load (slow connection or blocked CDN). Try again in a moment.",
+      th: "โหลดโมเดลไม่ได้ (เน็ตช้าหรือ CDN ถูกบล็อก) ลองใหม่อีกสักครู่",
+    },
+  },
+
   footnote: {
     en: "Made with love for everyone whose xenogender is real. Mine is mostly a pun on my GitHub handle.",
     th: "ทำด้วยความรักถึงทุกคนที่ xenogender เป็นตัวตนจริง ๆ — ของผมส่วนใหญ่เป็นแค่การเล่นคำกับชื่อ GitHub",

@@ -15,6 +15,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LANG_KEY, UNLOCK_KEY } from "@/components/SecretCode";
+import YoloLab from "@/components/YoloLab";
 import { PLAYGROUND as P, type L10n, type Lang } from "@/lib/content";
 
 const t = (s: L10n, lang: Lang) => s[lang];
@@ -220,6 +221,9 @@ function Result({ lang }: { lang: Lang }) {
           {t(P.nmsNote, lang)}
         </p>
       </section>
+
+      {/* ── ห้องทดลอง YOLO: ลองกับรูปของผู้ชมเอง (components/YoloLab.tsx) ── */}
+      <YoloLab lang={lang} />
 
       <p className="mx-auto mt-10 max-w-[48ch] text-center text-[12px] leading-relaxed text-muted">
         {t(P.footnote, lang)}
